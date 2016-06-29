@@ -1,8 +1,16 @@
 (function(angular){
 	var fizickoLiceModul = angular.module('fizickoLiceEntry', []);
 	
-	fizickoLiceModul.controller('fizickoLiceCtrl', function($http, $scope, $state, $stateParams){
+	fizickoLiceModul.controller('fizickoLiceCtrl', function($http, $scope, $state, $stateParams, zoomServiceFizickoLice){
 		$scope.stanjePregled = true;
+		$scope.zoom = zoomServiceFizickoLice.getZoom();
+		
+		$scope.zoomPickup = function(){
+			zoomServiceFizickoLice.setJmbgKlijenta($scope.sifraSelected);
+			zoomServiceFizickoLice.setImeKlijenta($scope.klijentIme);
+			zoomServiceFizickoLice.setPrezimeKlijenta($scope.klijentPrezime);
+			$state.go('pravno_lice');
+		}
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/findAll')
 		.success(function(data, status, header){
@@ -46,6 +54,7 @@
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = false;
 			
 			$scope.sifraSelected = $scope.listaLica[0].jmbg;
 			$scope.klijentIme = $scope.listaLica[0].naziv;
@@ -60,6 +69,7 @@
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = false;
 			
 			$scope.sifraSelected = $scope.listaLica[$scope.listaLica.length-1].jmbg;
 			$scope.klijentIme = $scope.listaLica[$scope.listaLica.length-1].naziv;
@@ -74,6 +84,7 @@
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = false;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -121,6 +132,7 @@
 			$scope.stanjeAdd = false;
 			$scope.stanjeSearch = false;
 			$scope.stanjePregled = true;
+			$scope.stanjeIzmena = false;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{

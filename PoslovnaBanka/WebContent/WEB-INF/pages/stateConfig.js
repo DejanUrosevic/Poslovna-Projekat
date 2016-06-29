@@ -26,5 +26,9 @@
 			templateUrl: 'fizicko_lice/fizicko_lice.html',
 			controller: 'fizickoLiceCtrl'
 		})
+		.state('pravno_lice', {url: '/pravno_lice',
+			templateUrl: 'pravno_lice/pravno_lice.html',
+			controller: 'pravnoLiceCtrl'
+		})
 	});
 })(angular)

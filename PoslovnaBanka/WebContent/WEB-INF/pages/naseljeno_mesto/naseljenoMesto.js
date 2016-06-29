@@ -24,8 +24,6 @@
 				$scope.stanjeSearch = false;
 			}
 			
-			
-			
 			$scope.oznakaDrzava = zoomService.getSifraDrzave();
 			$scope.nazivDrzava = zoomService.getNazivDrzave();
 			zoomService.setZoom(false);

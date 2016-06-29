@@ -64,8 +64,7 @@ public class FizickoLiceImpl implements FizickoLiceService{
 		stmt.setInt(1, Integer.parseInt(id));
 		stmt.executeUpdate();
 		stmt.close();
-		DBConnection.getConnection().commit();
-		
+		DBConnection.getConnection().commit();	
 	}
 
 	@Override
