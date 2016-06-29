@@ -30,5 +30,9 @@
 			templateUrl: 'valute/valute.html',
 			controller: 'valuteCtrl'
 		})
+		.state('pravno_lice', {url: '/pravno_lice',
+			templateUrl: 'pravno_lice/pravno_lice.html',
+			controller: 'pravnoLiceCtrl'
+		})
 	});
 })(angular)
