@@ -9,7 +9,7 @@
 		
 		if(zoomService.getZoom())
 		{
-			$scope.stanjePregled = false;
+			$scope.stanjePregled = false; 
 			$scope.stanjeIzmena = false;
 			
 			if(zoomService.getPretraga())
@@ -324,6 +324,12 @@
 						$scope.pttOznaka = null;
 						$scope.oznakaDrzava = null;
 						$scope.nazivDrzava = null;
+						 
+						$scope.stanjeAdd = false;
+						$scope.stanjeSearch = false;
+						$scope.stanjePregled = true;
+						$scope.stanjeIzmena = false;
+						
 						$state.go('naseljeno_mesto');
 					});
 				});

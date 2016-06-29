@@ -193,6 +193,7 @@
 					$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
 					.success(function(data, status, header)
 					{
+						
 						$scope.lista = data;
 						$state.go('drzava');
 					});
@@ -213,6 +214,13 @@
 						$scope.lista = data;
 						$scope.sifraSelected = null;
 						$scope.nazivDrzava = null;
+						
+						
+						$scope.stanjeAdd = false;
+						$scope.stanjeSearch = false;
+						$scope.stanjePregled = true;
+						$scope.stanjeIzmena = false;
+						
 						$state.go('drzava');
 					});
 				});

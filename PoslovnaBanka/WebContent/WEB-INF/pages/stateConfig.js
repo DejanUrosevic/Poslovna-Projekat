@@ -26,5 +26,9 @@
 			templateUrl: 'fizicko_lice/fizicko_lice.html',
 			controller: 'fizickoLiceCtrl'
 		})
+		.state('valute', {url: '/valute',
+			templateUrl: 'valute/valute.html',
+			controller: 'valuteCtrl'
+		})
 	});
 })(angular)

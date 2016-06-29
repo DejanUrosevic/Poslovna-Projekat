@@ -248,7 +248,7 @@
 				.success(function(data, status, header){
 					$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/findAll')
 					.success(function(data, status, header){
-						$scope.lista = data;
+						$scope.listaLica = data;
 						$scope.stanjeAdd = false;
 						$scope.stanjeSearch = false;
 						$scope.stanjeIzmena = false;
@@ -259,6 +259,13 @@
 						$scope.klijentEmail = null;
 						$scope.klijentAdresa = null;
 						$scope.klijentTelefon = null;
+						
+						
+						$scope.stanjeAdd = false;
+						$scope.stanjeSearch = false;
+						$scope.stanjePregled = true;
+						$scope.stanjeIzmena = false;
+						
 						$state.go('fizicko_lice');
 					});
 				});
