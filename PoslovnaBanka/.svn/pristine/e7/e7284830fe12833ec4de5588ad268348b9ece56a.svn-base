@@ -1,0 +1,46 @@
+<div id="header">
+	<h1>FTN Banka</h1>
+	<ul>
+		
+	</ul>
+</div>
+<div id="main">
+	<div class="main_body">
+			<br/>
+				
+				<h1 style="text-align: center;"> Dobrodosli na sajt FTN Banke</h1>
+				<br />
+				<hr />
+				<br />
+				<h3 style="text-align: center;"> <u>Izaberite tabelu za pregled </u></h3>
+				<br/>
+				<div style="text-align: center;">
+					<select ng-model="izborTab">
+						<option value=""> </option>
+						<option value="drzava"> Drzava </option>
+						<option value="naseljeno_mesto">Naseljeno mesto</option>
+						<option value="KURSNA_LISTA">Kursna lista</option>
+						<option value="KURS_U_VALUTI">Kurs u valuti</option>
+						<option value="VALUTE">Valute</option>
+						<option value="UKIDANJE">Ukidanje</option>
+						<option value="KODOVI_BANKE">Kodovi banke</option>
+						<option value="PRAVNO_LICE">Pravno lice</option>
+						<option value="FIZICKO_LICE">Fizicko lice</option>
+						<option value="RACUNI_KLIJENTA">Racuni klijenta</option>
+						<option value="KLIRING">Kliring/RTGS</option>
+						<option value="DNEVNO_STANJE_RACUNA">Dnevno stanje racuna</option>
+						<option value="VRSTE_PLACANJA">Vrste placanja</option>
+						<option value="ANALITIKA_IZVODA">Analitika izvoda</option>
+						<option value="ANALITIKE_ZA_KLIRING">Analitike za kliring</option>
+					</select>
+					<br/>
+					<br/>
+					<button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="izborTabela()">
+								<img src="css/images/select.jpg" height="50" />
+					</button>
+				</div>
+				
+				
+	</div>
+</div>

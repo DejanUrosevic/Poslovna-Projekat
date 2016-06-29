@@ -1,0 +1,706 @@
+(function(angular) 
+{
+	
+	
+	
+	
+	
+	var mainCtrl = function($scope, $http, $state)
+	{
+		
+		$scope.izborTabela = function()
+		{
+			if($scope.izborTab === '' || $scope.izborTab === null || $scope.izborTab === undefined)
+			{
+				alert('Izaberite tabelu iz liste.');
+			}
+			else
+			{
+				$state.go($scope.izborTab);
+			}
+			
+		}
+	}
+	
+	var drzavaCtrl = function($scope, $http, $state, $stateParams, zoomService)
+	{
+		//za selektovanje reda
+		//$scope.sifraSelected = null;
+		
+		$scope.stanjePregled = true;
+		$scope.zoom = zoomService.getZoom();
+		
+		$scope.zoomPickup = function()
+		{
+			zoomService.setSifraDrzave($scope.sifraSelected);
+			zoomService.setNazivDrzave($scope.nazivDrzava);
+			$state.go('naseljeno_mesto');
+		}
+		
+		
+		$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+		.success(function(data, status, header)
+		{
+			$scope.lista = data;
+			
+		});
+		
+		//funkcija koja podesava koji ce biti selektovani red
+		$scope.setSelected = function(id, naziv)
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = false;
+			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
+			$scope.sifraSelected = id;
+			$scope.nazivDrzava = naziv;
+		}
+		
+		
+		//refresovanje liste drzava
+		$scope.refreshState = function(){
+			$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+			.success(function(data, status, header)
+			{
+				$scope.lista = data;
+				$scope.sifraSelected = null;
+				$scope.nazivDrzava = null;
+			});
+		}
+		
+		
+		//implementacija gornjih funkija
+		$scope.levoDoKraja = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			$scope.sifraSelected = $scope.lista[0].sifra;
+			$scope.nazivDrzava = $scope.lista[0].naziv;
+		}
+		
+		$scope.desnoDoKraja = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			$scope.sifraSelected = $scope.lista[$scope.lista.length-1].sifra;
+			$scope.nazivDrzava = $scope.lista[$scope.lista.length-1].naziv;
+		}
+		
+		$scope.jedanLevo = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
+			{
+				$scope.sifraSelected = $scope.lista[$scope.lista.length-1].sifra;
+				$scope.nazivDrzava = $scope.lista[$scope.lista.length-1].naziv; 
+			}
+			else
+			{
+				for(var i=0; i<$scope.lista.length; i++)
+				{
+					if($scope.sifraSelected === $scope.lista[i].sifra)
+					{
+						if($scope.sifraSelected === $scope.lista[0].sifra)
+						{
+							$scope.sifraSelected = $scope.lista[$scope.lista.length-1].sifra;
+							$scope.nazivDrzava = $scope.lista[$scope.lista.length-1].naziv; 
+							break;
+						}
+						else
+						{
+							$scope.sifraSelected = $scope.lista[i-1].sifra;
+							$scope.nazivDrzava = $scope.lista[i-1].naziv;
+							break;
+						}
+						
+					}
+				}
+			}
+		}
+		
+		$scope.jedanDesno = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjeSearch = false;
+			$scope.stanjePregled = true;
+			
+			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
+			{
+				$scope.sifraSelected = $scope.lista[0].sifra;
+				$scope.nazivDrzava = $scope.lista[0].naziv; 
+			}
+			else
+			{
+				for(var i=0; i<$scope.lista.length; i++)
+				{
+					if($scope.sifraSelected === $scope.lista[i].sifra)
+					{
+						if($scope.sifraSelected === $scope.lista[$scope.lista.length-1].sifra)
+						{
+							$scope.sifraSelected = $scope.lista[0].sifra;
+							$scope.nazivDrzava = $scope.lista[0].naziv; 
+							break;
+						}
+						else
+						{
+							$scope.sifraSelected = $scope.lista[i+1].sifra;
+							$scope.nazivDrzava = $scope.lista[i+1].naziv;
+							break;	
+						}
+					}
+				}
+			}
+		}
+		
+		//promena stanja na dodavanje
+		$scope.stanjeDodavanje = function()
+		{
+			$scope.stanjeAdd = true;
+			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = false;
+			$scope.stanjePregled = false;
+			
+			
+			$scope.sifraSelected = null;
+			$scope.nazivDrzava = null;
+		}
+		
+		$scope.stanjePretrage = function(){
+			$scope.stanjeAdd = false;
+			$scope.stanjeSearch = true;
+			$scope.stanjeIzmena = false;
+			$scope.stanjePregled = false;
+			
+			$scope.sifraSelected = null;
+			$scope.nazivDrzava = null;
+		}
+		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeAdd)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/save',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivDrzava})
+				.success(function(data, status, header)
+				{
+					$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+					.success(function(data, status, header)
+					{
+						$scope.lista = data;
+						$state.go('drzava');
+					});
+				});
+			}
+			else if($scope.stanjeSearch){
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/search',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivDrzava})
+				.success(function(data, status, header){
+					$scope.lista = data;
+					$state.go('drzava');
+				});
+			}
+			else if($scope.stanjeIzmena)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/update',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivDrzava})
+				.success(function(data, status, header){
+					$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+					.success(function(data, status, header)
+					{
+						$scope.lista = data;
+						$state.go('drzava');
+					});
+				});
+			}
+			else
+			{
+				alert('Morate selektovati stanje.');
+			}	
+		}
+		
+		$scope.deleteState = function(){
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$http.delete('http://localhost:8080/PoslovnaBanka/drzava/delete/' + $scope.sifraSelected)
+				.success(function(data, status, header){
+					$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+					.success(function(data, status, header){
+						$scope.lista = data;
+						$scope.sifraSelected = null;
+						$scope.nazivDrzava = null;
+						$state.go('drzava');
+					});
+				});
+			}
+			else
+			{
+				alert('Morate izabrati drzavu za brisanje.');
+			}
+		}
+		
+		$scope.findNaselja = function(){
+			if($scope.sifraSelected !== null || $scope.sifraSelected !== undefined){
+				$state.go('drzava_naselje', {id: $scope.sifraSelected});
+			}else{
+				alert("Odaberite drzavu.");
+			}	
+		}
+	}
+	
+	var naseljenoMestoCtrl = function($scope, $http, $state, $stateParams, zoomService){
+		
+		$scope.stanjePregled = true;
+		
+		
+		if(zoomService.getZoom())
+		{
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = false;
+			
+			if(zoomService.getPretraga())
+			{
+				$scope.stanjeSearch = true;
+				$scope.stanjeAdd = false;
+				
+			}
+			else
+			{
+				$scope.stanjeAdd = true;
+				$scope.stanjeSearch = false;
+			}
+			
+			
+			
+			$scope.oznakaDrzava = zoomService.getSifraDrzave();
+			$scope.nazivDrzava = zoomService.getNazivDrzave();
+			zoomService.setZoom(false);
+		}
+		
+		if(!angular.equals({}, $stateParams)){
+			var drzavaId = $stateParams.id;
+			$http.get('http://localhost:8080/PoslovnaBanka/drzava/' + drzavaId + '/naseljeno_mesto')
+			.success(function(data, status, header){
+				$scope.listaNaselja = data;
+			});
+		}else{
+			$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+			.success(function(data, status, header){
+				$scope.listaNaselja = data;
+			});
+		}
+		
+		$scope.setSelected = function(id, naziv, ptt_oznaka, drzava_oznaka, naziv_drzave)
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = true;
+			$scope.stanjeSearch = false;
+			
+			
+			$scope.sifraSelected = id;
+			$scope.nazivNaselje = naziv;
+			$scope.pttOznaka = ptt_oznaka;
+			$scope.oznakaDrzava = drzava_oznaka;
+			$scope.nazivDrzava = naziv_drzave;
+		}
+		
+		//implementacija gornjih funkija
+		$scope.levoDoKraja = function()
+		{
+			
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			$scope.sifraSelected = $scope.listaNaselja[0].sifra;
+			$scope.nazivNaselje = $scope.listaNaselja[0].naziv;
+			$scope.pttOznaka = $scope.listaNaselja[0].ptt_oznaka;	
+			$scope.oznakaDrzava = $scope.listaNaselja[0].sifra_drzava;
+			$scope.nazivDrzava = $scope.listaNaselja[0].naziv_drzave;
+		}
+		
+		$scope.desnoDoKraja = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			$scope.sifraSelected = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra;
+			$scope.nazivNaselje = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv;
+			$scope.pttOznaka = $scope.listaNaselja[$scope.listaNaselja.length-1].ptt_oznaka;	
+			$scope.oznakaDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra_drzava;
+			$scope.nazivDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv_drzave;
+		}
+		
+		$scope.jedanLevo = function()
+		{
+			
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
+			{
+				$scope.sifraSelected = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra;
+				$scope.nazivNaselje = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv;
+				$scope.pttOznaka = $scope.listaNaselja[$scope.listaNaselja.length-1].ptt_oznaka;	
+				$scope.oznakaDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra_drzava;
+				$scope.nazivDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv_drzave;
+			}
+			else
+			{
+				for(var i=0; i<$scope.listaNaselja.length; i++)
+				{
+					if($scope.sifraSelected === $scope.listaNaselja[i].sifra)
+					{
+						if($scope.sifraSelected === $scope.listaNaselja[0].sifra)
+						{
+							$scope.sifraSelected = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra;
+							$scope.nazivNaselje = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv;
+							$scope.pttOznaka = $scope.listaNaselja[$scope.listaNaselja.length-1].ptt_oznaka;	
+							$scope.oznakaDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra_drzava;
+							$scope.nazivDrzava = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv_drzave;
+							break;
+						}
+						else
+						{
+							$scope.sifraSelected = $scope.listaNaselja[i-1].sifra;
+							$scope.nazivNaselje = $scope.listaNaselja[i-1].naziv;
+							$scope.pttOznaka = $scope.listaNaselja[i-1].ptt_oznaka;	
+							$scope.oznakaDrzava = $scope.listaNaselja[i-1].sifra_drzava;
+							$scope.nazivDrzava = $scope.listaNaselja[i-1].naziv_drzave;
+							break;
+						}
+						
+					}
+				}
+			}
+		}
+		
+		$scope.jedanDesno = function()
+		{
+			$scope.stanjeAdd = false;
+			$scope.stanjePregled = true;
+			$scope.stanjeSearch = false;
+			
+			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
+			{
+				$scope.sifraSelected = $scope.listaNaselja[0].sifra;
+				$scope.nazivNaselje = $scope.listaNaselja[0].naziv;
+				$scope.pttOznaka = $scope.listaNaselja[0].ptt_oznaka;	
+				$scope.oznakaDrzava = $scope.listaNaselja[0].sifra_drzava;
+				$scope.nazivDrzava = $scope.listaNaselja[0].naziv_drzave;
+			}
+			else
+			{
+				for(var i=0; i<$scope.listaNaselja.length; i++)
+				{
+					if($scope.sifraSelected === $scope.listaNaselja[i].sifra)
+					{
+						if($scope.sifraSelected === $scope.listaNaselja[$scope.listaNaselja.length-1].sifra)
+						{
+							$scope.sifraSelected = $scope.listaNaselja[0].sifra;
+							$scope.nazivNaselje = $scope.listaNaselja[0].naziv;
+							$scope.pttOznaka = $scope.listaNaselja[0].ptt_oznaka;	
+							$scope.oznakaDrzava = $scope.listaNaselja[0].sifra_drzava;
+							$scope.nazivDrzava = $scope.listaNaselja[0].naziv_drzave; 
+							break;
+						}
+						else
+						{
+							$scope.sifraSelected = $scope.listaNaselja[i+1].sifra;
+							$scope.nazivNaselje = $scope.listaNaselja[i+1].naziv;
+							$scope.pttOznaka = $scope.listaNaselja[i+1].ptt_oznaka;	
+							$scope.oznakaDrzava = $scope.listaNaselja[i+1].sifra_drzava;
+							$scope.nazivDrzava = $scope.listaNaselja[i+1].naziv_drzave;
+							break;	
+						}
+					}
+				}
+			}
+		}
+		
+		$scope.stanjeDodavanje = function()
+		{
+			$scope.stanjeAdd = true;
+			$scope.stanjeSearch = false;
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = false;
+			
+			$scope.sifraSelected = null;
+			$scope.nazivNaselje = null;
+			$scope.pttOznaka = null;
+			
+			if(!angular.equals({}, $stateParams)){
+				var drzavaId = $stateParams.id;
+				$scope.oznakaDrzava = drzavaId;
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne',
+				{sifra: drzavaId})
+				.success(function(data, status, header){
+					$scope.nazivDrzava = data[0].naziv;
+				});
+			}else{
+				$scope.oznakaDrzava = null;
+				$scope.nazivDrzava = null;
+			}
+			
+		}
+		
+		$scope.stanjePretrage = function(){
+			$scope.stanjeAdd = false;
+			$scope.stanjeSearch = true;
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = false;
+			
+			
+			$scope.sifraSelected = null;
+			$scope.nazivNaselje = null;
+			$scope.pttOznaka = null;
+			$scope.oznakaDrzava = null;
+			$scope.nazivDrzava = null;
+		}
+		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeAdd)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/save',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams)){
+						var drzavaId = $stateParams.id;
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							for(var i=0; i<$scope.listaNaselja.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								{
+									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
+									break;
+								}
+							}
+							$state.go('drzava_naselje', {id: drzavaId});
+						});
+					}else{
+						$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+						.success(function(data, status, header){
+							
+							$scope.listaNaselja = data;
+							for(var i=0; i<$scope.listaNaselja.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								{
+									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
+									break;
+								}
+							}
+							
+							
+						});
+					}
+				});
+			}
+			else if($scope.stanjeSearch){
+				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/search',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+				.success(function(data, status, header){
+					if(!angular.equals({}, $stateParams))
+					{
+						$scope.listaNaselja = data;
+						$state.go('drzava_naselje');
+					}
+					else
+					{
+						$scope.listaNaselja = data;
+						$state.go('naseljeno_mesto');
+					}
+				});
+			}
+			else if($scope.stanjeIzmena)
+			{
+				
+				if(!angular.equals({}, $stateParams))
+				{
+					var drzavaId = $stateParams.id;
+					
+					$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/update',
+							{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+					.success(function(data, status, header){
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							$state.go('drzava_naselje');
+						});
+					});
+				}
+				else
+				{
+					$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/update',
+							{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+					.success(function(data, status, header){
+						$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							$state.go('naseljeno_mesto');
+						});
+					});
+				}
+			}
+			else
+			{
+				alert('Morate selektovati stanje.');
+			}	
+		}
+		
+		$scope.deleteState = function(){
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$http.delete('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/delete/' + $scope.sifraSelected)
+				.success(function(data, status, header){
+					$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+					.success(function(data, status, header){
+						$scope.listaNaselja = data;
+						$scope.sifraSelected = null;
+						$scope.nazivNaselje = null;
+						$scope.pttOznaka = null;
+						$scope.oznakaDrzava = null;
+						$scope.nazivDrzava = null;
+						$state.go('naseljeno_mesto');
+					});
+				});
+			}
+			else
+			{
+				alert('Morate izabrati naseljeno mesto za brisanje.');
+			}
+		}
+		
+		$scope.refreshState = function(){
+			if(!angular.equals({}, $stateParams))
+			{
+				var drzavaId = $stateParams.id;
+				$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+				.success(function(data, status, header)
+				{
+					$scope.listaNaselja = data;
+					$state.go('drzava_naselje', {id: drzavaId});
+				});
+			}
+			else
+			{
+				$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+				.success(function(data, status, header)
+				{
+					$scope.listaNaselja = data;
+					$scope.sifraSelected = null;
+					$scope.nazivNaselje = null;
+					$scope.pttOznaka = null;
+					$scope.oznakaDrzava = null;
+					$scope.nazivDrzava = null;
+				});
+			}
+			
+		}
+		
+		$scope.zoomPick = function()
+		{
+			zoomService.setZoom(true);
+			
+			if($scope.stanjeSearch)
+			{
+				zoomService.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomService.setPretraga(false);
+			}
+			
+			$state.go('drzava');
+		}
+		
+		
+	}
+	
+	
+	var app = angular.module('app', [ 'ui.router', 'ngResource' ]);
+	app.controller('mainCtrl', mainCtrl);
+	app.controller('drzavaCtrl', drzavaCtrl);
+	app.controller('naseljnoMestoCtrl', naseljenoMestoCtrl);
+	
+	app.config(function($stateProvider, $urlRouterProvider)
+	{
+		$urlRouterProvider.otherwise('/main');
+		
+		$stateProvider
+		.state('main', {url : '/main',
+			templateUrl : 'main.html',
+			controller : 'mainCtrl'
+		})
+		.state('drzava', {url : '/drzave',
+			templateUrl : 'drzava.html',
+			controller : 'drzavaCtrl'
+		})
+		.state('drzava_naselje', {url: '/drzava/:id/naseljena_mesta',
+			templateUrl: 'naseljeno_mesto.html',
+			controller: 'naseljnoMestoCtrl'
+		})
+		.state('naseljeno_mesto', {url: '/naseljeno_mesto',
+			templateUrl: 'naseljeno_mesto.html',
+			controller: 'naseljnoMestoCtrl'
+		})
+	});
+	
+	app.service('zoomService', function() {
+		var zoom = false;
+		var sifraDrzave = '';
+		var nazivDrzave = '';
+		var pretraga = false;
+
+		return {
+			getZoom : function() {
+				return zoom;
+			},
+			setZoom : function(value) {
+				zoom = value;
+			},
+			
+			getSifraDrzave : function()
+			{
+				return sifraDrzave;
+			},
+			setSifraDrzave : function(value)
+			{
+				sifraDrzave = value;
+			},
+			
+			getNazivDrzave : function()
+			{
+				return nazivDrzave;
+			},
+			setNazivDrzave : function(value)
+			{
+				nazivDrzave = value;
+			},
+			
+			getPretraga : function()
+			{
+				return pretraga;
+			},
+			setPretraga : function(value)
+			{
+				pretraga = value;
+			}
+		};
+	});
+		
+}(angular))
