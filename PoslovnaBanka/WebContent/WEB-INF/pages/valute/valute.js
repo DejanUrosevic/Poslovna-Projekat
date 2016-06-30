@@ -324,7 +324,7 @@
 			}
 			else
 			{
-				alert('Morate izabrati drzavu za brisanje.');
+				alert('Morate izabrati valutu za brisanje.');
 			}
 		}
 		

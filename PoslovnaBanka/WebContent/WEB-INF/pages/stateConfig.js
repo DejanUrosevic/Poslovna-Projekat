@@ -34,5 +34,9 @@
 			templateUrl: 'pravno_lice/pravno_lice.html',
 			controller: 'pravnoLiceCtrl'
 		})
+		.state('vrstePlacanja', {url: '/vrstePlacanja',
+			templateUrl: 'vrstePlacanja/vrstePlacanja.html',
+			controller: 'vrstePlacanjaCtrl'
+		})
 	});
 })(angular)
