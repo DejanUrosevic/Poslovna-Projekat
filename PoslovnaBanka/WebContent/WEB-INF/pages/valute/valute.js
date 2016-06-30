@@ -34,13 +34,24 @@
 		}
 		
 		
-		
-		$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
-		.success(function(data, status, header)
+		if(!angular.equals({}, $stateParams))
 		{
-			$scope.listaValuta = data;
-			
-		});
+			var drzavaId = $stateParams.id;
+			$http.get('http://localhost:8080/PoslovnaBanka/drzava/' + drzavaId + '/valute')
+			.success(function(data, status, header)
+			{
+				$scope.listaValuta = data;
+			});
+		}
+		else
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
+			.success(function(data, status, header)
+			{
+				$scope.listaValuta = data;
+			});
+		}
+		
 		
 		//funkcija koja podesava koji ce biti selektovani red
 		$scope.setSelected = function(id, zvanicnaSifra, naziv, domicilna, drzSifra, drzNaziv)
@@ -61,18 +72,43 @@
 		
 		//refresovanje liste drzava
 		$scope.refreshState = function(){
-			$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
-			.success(function(data, status, header)
+			
+			if(!angular.equals({}, $stateParams))
 			{
-				$scope.listaValuta = data;
-				
-				$scope.sifraSelected = null;
-				$scope.zvanicnaSifra = null;
-				$scope.naziv = null;
-				$scope.domicilna = null;
-				$scope.sifraDrzava = null;
-				$scope.nazivDrzava = null;
-			});
+				var drzavaId = $stateParams.id;
+				$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/valute')
+				.success(function(data, status, header)
+				{
+					$scope.listaValuta = data;
+					
+					$scope.stanjeAdd = false;
+					$scope.stanjePregled = true;
+					$scope.stanjeSearch = false;
+					$scope.stanjeIzmena = false;
+					
+					$scope.sifraSelected = null;
+					$scope.zvanicnaSifra = null;
+					$scope.naziv = null;
+					$scope.domicilna = null;
+					$scope.sifraDrzava = $scope.listaValuta[0].drzavaSifra;
+					$scope.nazivDrzava = $scope.listaValuta[0].drzavaNaziv;
+				});
+			}
+			else
+			{
+				$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
+				.success(function(data, status, header)
+				{
+					$scope.listaValuta = data;
+					
+					$scope.sifraSelected = null;
+					$scope.zvanicnaSifra = null;
+					$scope.naziv = null;
+					$scope.domicilna = null;
+					$scope.sifraDrzava = null;
+					$scope.nazivDrzava = null;
+				});
+			}
 		}
 		
 		
@@ -83,13 +119,23 @@
 			$scope.stanjeIzmena = false;
 			$scope.stanjePregled = false;
 			
-			
 			$scope.sifraSelected = null;
 			$scope.zvanicnaSifra = null;
 			$scope.naziv = null;
 			$scope.domicilna = null;
-			$scope.sifraDrzava = null;
-			$scope.nazivDrzava = null;
+			
+			if(!angular.equals({}, $stateParams)){
+				var drzavaId = $stateParams.id;
+				$scope.sifraDrzava = drzavaId;
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne',
+				{sifra: drzavaId})
+				.success(function(data, status, header){
+					$scope.nazivDrzava = data[0].naziv;
+				});
+			}else{
+				$scope.sifraDrzava = null;
+				$scope.nazivDrzava = null;
+			}
 		}
 		
 		
@@ -116,34 +162,63 @@
 					alert('Izaberite da li je valuta strana ili domaca.');
 				}
 				
-				
 				$http.post('http://localhost:8080/PoslovnaBanka/valute/save',
 						{sifra: $scope.sifraSelected, zvanicnaSifra: $scope.zvanicnaSifra, naziv: $scope.naziv, domicilna: $scope.izmenaDomicilna, sifraDrzava: $scope.sifraDrzava, nazivDrzava: $scope.nazivDrzava})
 				.success(function(data, status, header)
 				{
-					$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
-					.success(function(data, status, header)
-					{	
-						$scope.listaValuta = data;
-						for(var i=0; i<$scope.listaValuta.length; i++)
+					if(!angular.equals({}, $stateParams)){
+						var drzavaId = $stateParams.id;
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/valute')
+						.success(function(data, status, header)
 						{
-							if($scope.sifraSelected == $scope.listaValuta[i].idvalute)
+							$scope.listaValuta = data;
+							for(var i=0; i<$scope.listaValuta.length; i++)
 							{
-								$scope.sifraSelected = $scope.listaValuta[i].idvalute;
-								break;
+								if($scope.sifraSelected == $scope.listaValuta[i].idvalute)
+								{
+									$scope.sifraSelected = $scope.listaValuta[i].idvalute;
+									break;
+								}
 							}
-						}
-						$state.go('valute');
-					});
-				});
+							$state.go('valute_drzava', {id: drzavaId});
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
+						.success(function(data, status, header)
+						{	
+							$scope.listaValuta = data;
+							for(var i=0; i<$scope.listaValuta.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaValuta[i].idvalute)
+								{
+									$scope.sifraSelected = $scope.listaValuta[i].idvalute;
+									break;
+								}
+							}
+							$state.go('valute');
+						});
+						
+					}
+				});	
 			}
 			else if($scope.stanjeSearch){
 				$http.post('http://localhost:8080/PoslovnaBanka/valute/search',
 						{sifra: $scope.sifraSelected, zvanicnaSifra: $scope.zvanicnaSifra, naziv: $scope.naziv, domicilna: $scope.izmenaDomicilna, sifraDrzava: $scope.sifraDrzava, nazivDrzava: $scope.nazivDrzava})
 				.success(function(data, status, header){
 					
-					$scope.listaValuta = data;
-					$state.go('valute');
+					if(!angular.equals({}, $stateParams))
+					{
+						$scope.listaValuta = data;
+						$state.go('valute_drzava');
+					}
+					else
+					{
+						$scope.listaValuta = data;
+						$state.go('valute');
+					}
+					
 				});
 			}
 			else if($scope.stanjeIzmena)
@@ -155,13 +230,28 @@
 				
 				$http.post('http://localhost:8080/PoslovnaBanka/valute/update',
 						{sifra: $scope.sifraSelected, zvanicnaSifra: $scope.zvanicnaSifra, naziv: $scope.naziv, domicilna: $scope.izmenaDomicilna, sifraDrzava: $scope.sifraDrzava, nazivDrzava: $scope.nazivDrzava})
-				.success(function(data, status, header){
-					$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
-					.success(function(data, status, header)
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams))
 					{
-						$scope.listaValuta = data;
-						$state.go('valute');
-					});
+						var drzavaId = $stateParams.id;
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/valute')
+						.success(function(data, status, header)
+						{
+							$scope.listaValuta = data;
+							$state.go('valute_drzava');
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.listaValuta = data;
+							$state.go('valute');
+						});
+					}
 				});
 			}
 			else

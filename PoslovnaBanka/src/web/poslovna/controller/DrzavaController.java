@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import web.poslovna.db.DBConnection;
 import web.poslovna.model.Drzava;
 import web.poslovna.model.NaseljenoMesto;
+import web.poslovna.model.Valute;
 import web.poslovna.service.DrzavaService;
 
 
@@ -64,7 +65,14 @@ public class DrzavaController
 	
 	@RequestMapping(value = "/{idDrzava}/naseljeno_mesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<NaseljenoMesto>> findNaselje(@PathVariable(value="idDrzava") String id) throws SQLException{
+		
 		return new ResponseEntity<List<NaseljenoMesto>>(drzSer.findNaseljenoMesto(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{idDrzava}/valute", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<Valute>> findValute(@PathVariable(value="idDrzava") String id) throws SQLException{
+		
+		return new ResponseEntity<List<Valute>>(drzSer.findValute(id), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

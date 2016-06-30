@@ -1,5 +1,5 @@
 <div id="header">
-	<h1>Valute</h1>
+	<h1>Kodovi banke</h1>
 	<ul>
 		<li><a ui-sref="main">Nazad</a></li>
 		<li><a href="#">Products</a></li>
@@ -25,10 +25,6 @@
 						<td><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="refreshState()">
 								<img src="css/images/refresh.png" height="30" />
-						</button></td>
-						<td ng-show="zoom"><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()">
-								<img src="css/images/export.jpg" height="30" />
 						</button></td>
 						
 						<td>&nbsp</td>
@@ -64,7 +60,7 @@
 						<td>&nbsp</td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="findNaselja()">
+								style="background-color: transparent; border-color: transparent;" ng-click="">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
 					</tr>
@@ -76,20 +72,16 @@
 				
 				<table border="1">
 					<tr>
-						<th> ID valute </th>
-						<th> Zvanicna sifra </th>
-						<th> Naziv valute </th>
-						<th> Domicilna </th>
-						<th> Sifra drzave </th>
-						<th> Naziv drzave </th>
+						<th> Sifra banke </th>
+						<th> SWIFT kod </th>
+						<th> PIB pravnog lica </th>
+						<th> Naziv pravnog lica </th>
 					</tr>
-					<tr ng-repeat="list in listaValuta" ng-click="setSelected(list.idvalute, list.zvanicnaSifra, list.naziv, list.domicilna, list.drzavaSifra, list.drzavaNaziv)" ng-class="{selected: list.idvalute === sifraSelected}">
-						<td> {{list.idvalute}}</td>
-						<td> {{list.zvanicnaSifra}}</td>
-						<td> {{list.naziv}}</td>
-						<td ng-show="list.domicilna"> Domaca </td> <td ng-show="!list.domicilna"> Strana </td>
-						<td> {{list.drzavaSifra}}</td>
-						<td> {{list.drzavaNaziv}}</td>
+					<tr ng-repeat="list in listaKodova" ng-click="setSelected(list.sifra, list.swift, list.pibPravnogLica, list.nazivPravnogLica)" ng-class="{selected: list.sifra === sifraSelected}">
+						<td> {{list.sifra}}</td>
+						<td> {{list.swift}}</td>
+						<td> {{list.pibPravnogLica}}</td>
+						<td> {{list.nazivPravnogLica}}</td>
 					</tr>
 				</table>
 			
@@ -102,7 +94,7 @@
 		
 		<div style="padding-left: 50px;">
 			 <br/>
-			 ID valute:  <input type="text" ng-model="sifraSelected"  ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+			 Sifra banke:  <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
 			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
 				<img src="css/images/delete2.ico" height="30" />
 			 </button>
@@ -110,24 +102,14 @@
 				<img src="css/images/commit.png" height="30" />
 			 </button>
 			 <br/> <br/>
-			 Zvanicna sifra:  <input type="text" ng-model="zvanicnaSifra">
-			 <br/> <br/>
-			 Naziv valute:  <input type="text" ng-model="naziv">
+			 SWIFT kod:  <input type="text" ng-model="swift">
 			 <br/> <br/> 
-			 Domicilna:  <input type="text" ng-model="domicilna" ng-show="stanjePregled"> 
-			 <select ng-model="izmenaDomicilna" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch">
-			 	<option value="true"> Domaca</option>
-			 	<option value="false"> Strana</option> 
-			 </select>
-			 <br/> <br/>
-			 Sifra drzave: <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeSearch || stanjeAdd">
+			 PIB pravnog lica: <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
 			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
 				<img src="css/images/zoom.png" height="30" />
 			 </button>
 			 <br/> <br/> 
-			 Naziv drzave:  <input type="text" ng-model="nazivDrzava" disabled>
-			 
-			 
+			 Naziv pravnog lica: <input type="text" ng-model="nazivPravnogLica" disabled>
 		</div>
 				
 	</div>

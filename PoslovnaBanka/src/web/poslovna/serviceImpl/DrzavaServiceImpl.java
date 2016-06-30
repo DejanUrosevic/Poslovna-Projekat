@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import web.poslovna.db.DBConnection;
 import web.poslovna.model.Drzava;
 import web.poslovna.model.NaseljenoMesto;
+import web.poslovna.model.Valute;
 import web.poslovna.service.DrzavaService;
 
 @Service
@@ -128,6 +129,20 @@ public class DrzavaServiceImpl implements DrzavaService{
 	     stmt.executeUpdate();
 	     stmt.close();
 	     DBConnection.getConnection().commit();
+	}
+
+	@Override
+	public List<Valute> findValute(String id) throws SQLException 
+	{
+		Statement stmt = DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT ID_VALUTE, VA_IFRA, VA_NAZIV, VA_DOMICILNA, VALUTE.DR_SIFRA, DR_NAZIV FROM VALUTE"
+				+ " JOIN DRZAVA ON VALUTE.DR_SIFRA = DRZAVA.DR_SIFRA WHERE VALUTE.DR_SIFRA = '"+ id + "' ORDER BY ID_VALUTE");
+		
+		List<Valute> valute = new ArrayList<Valute>();
+		while(rs.next()){
+			valute.add(new Valute(rs.getInt("ID_VALUTE"), rs.getString("VA_IFRA"), rs.getString("VA_NAZIV"), rs.getBoolean("VA_DOMICILNA"), rs.getString("DR_SIFRA"), rs.getString("DR_NAZIV")));
+		}
+		return valute;
 	}
 
 }

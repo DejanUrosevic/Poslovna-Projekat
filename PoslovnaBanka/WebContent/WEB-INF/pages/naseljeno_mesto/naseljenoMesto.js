@@ -272,7 +272,6 @@
 			}
 			else if($scope.stanjeIzmena)
 			{
-				
 				if(!angular.equals({}, $stateParams))
 				{
 					var drzavaId = $stateParams.id;
@@ -359,6 +358,18 @@
 				.success(function(data, status, header)
 				{
 					$scope.listaNaselja = data;
+					
+					$scope.stanjeAdd = false;
+					$scope.stanjePregled = true;
+					$scope.stanjeSearch = false;
+					$scope.stanjeIzmena = false;
+					
+					$scope.sifraSelected = null;
+					$scope.nazivNaselje = null;
+					$scope.pttOznaka = null;
+					$scope.oznakaDrzava = $scope.listaNaselja[0].drzavaSifra;
+					$scope.nazivDrzava = $scope.listaNaselja[0].drzavaNaziv;
+					
 					$state.go('drzava_naselje', {id: drzavaId});
 				});
 			}
@@ -368,6 +379,12 @@
 				.success(function(data, status, header)
 				{
 					$scope.listaNaselja = data;
+					
+					$scope.stanjeAdd = false;
+					$scope.stanjePregled = true;
+					$scope.stanjeSearch = false;
+					$scope.stanjeIzmena = false;
+					
 					$scope.sifraSelected = null;
 					$scope.nazivNaselje = null;
 					$scope.pttOznaka = null;

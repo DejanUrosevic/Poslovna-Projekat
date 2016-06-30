@@ -3,10 +3,12 @@
 	
 	drzavaModul.controller('drzavaCtrl', function($scope, $http, $state, $stateParams, zoomService, zoomValuteService)
 	{
-		//za selektovanje reda
-		//$scope.sifraSelected = null;
 		
 		$scope.stanjePregled = true;
+		$scope.klikZaZoom = false;
+		
+		
+		
 		if(zoomService.getZoom())
 		{
 			$scope.zoom = zoomService.getZoom();
@@ -62,6 +64,12 @@
 			.success(function(data, status, header)
 			{
 				$scope.lista = data;
+				
+				$scope.stanjeAdd = false;
+				$scope.stanjePregled = true;
+				$scope.stanjeSearch = false;
+				$scope.stanjeIzmena = false;
+				
 				$scope.sifraSelected = null;
 				$scope.nazivDrzava = null;
 			});
@@ -252,8 +260,17 @@
 		}
 		
 		$scope.findNaselja = function(){
-			if($scope.sifraSelected !== null || $scope.sifraSelected !== undefined){
-				$state.go('drzava_naselje', {id: $scope.sifraSelected});
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$scope.klikZaZoom = true;
+				
+				if($scope.izborNext === 'drzava_naselje')
+				{
+					$state.go('drzava_naselje', {id: $scope.sifraSelected});
+				}
+				else if($scope.izborNext === 'valute_drzava')
+				{
+					$state.go('valute_drzava', {id: $scope.sifraSelected});
+				}
 			}else{
 				alert("Odaberite drzavu.");
 			}	
