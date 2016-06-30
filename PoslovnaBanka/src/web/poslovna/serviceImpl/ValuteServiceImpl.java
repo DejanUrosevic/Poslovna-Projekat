@@ -57,8 +57,14 @@ public class ValuteServiceImpl implements ValuteService{
 	}
 
 	@Override
-	public void remove(String id) throws SQLException {
-		// TODO Auto-generated method stub
+	public void remove(String id) throws SQLException 
+	{
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement(
+		        "DELETE FROM VALUTE WHERE ID_VALUTE = ? ");
+		stmt.setInt(1, Integer.parseInt(id));
+		stmt.executeUpdate();
+		stmt.close();
+		DBConnection.getConnection().commit();
 		
 	}
 

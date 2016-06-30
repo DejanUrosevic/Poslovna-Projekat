@@ -121,9 +121,12 @@
 			 	<option value="false"> Strana</option> 
 			 </select>
 			 <br/> <br/>
-			 Sifra drzave:  <input type="text" ng-model="sifraDrzava"> 
+			 Sifra drzave: <input type="text" ng-model="sifraDrzava" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraDrzava" ng-show="stanjeSearch || stanjeAdd">
+			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+				<img src="css/images/zoom.png" height="30" />
+			 </button>
 			 <br/> <br/> 
-			 Naziv drzave:  <input type="text" ng-model="nazivDrzava">
+			 Naziv drzave:  <input type="text" ng-model="nazivDrzava" disabled>
 			 
 			 
 		</div>

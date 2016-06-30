@@ -1,19 +1,39 @@
 (function(angular){
 	var drzavaModul = angular.module('drzavaEntry', []);
 	
-	drzavaModul.controller('drzavaCtrl', function($scope, $http, $state, $stateParams, zoomService)
+	drzavaModul.controller('drzavaCtrl', function($scope, $http, $state, $stateParams, zoomService, zoomValuteService)
 	{
 		//za selektovanje reda
 		//$scope.sifraSelected = null;
 		
 		$scope.stanjePregled = true;
-		$scope.zoom = zoomService.getZoom();
+		if(zoomService.getZoom())
+		{
+			$scope.zoom = zoomService.getZoom();
+		}
+		else if(zoomValuteService.getZoom())
+		{
+			$scope.zoom = zoomValuteService.getZoom();
+		}
+		
 		
 		$scope.zoomPickup = function()
 		{
-			zoomService.setSifraDrzave($scope.sifraSelected);
-			zoomService.setNazivDrzave($scope.nazivDrzava);
-			$state.go('naseljeno_mesto');
+			
+			if(zoomService.getZoom())
+			{
+				//za naseljeno mesto podaci
+				zoomService.setSifraDrzave($scope.sifraSelected);
+				zoomService.setNazivDrzave($scope.nazivDrzava);
+				$state.go('naseljeno_mesto');
+			}
+			else if(zoomValuteService.getZoom())
+			{
+				//za valute podaci
+				zoomValuteService.setSifraDrzave($scope.sifraSelected);
+				zoomValuteService.setNazivDrzave($scope.nazivDrzava);
+				$state.go('valute');
+			}	
 		}
 		
 		
