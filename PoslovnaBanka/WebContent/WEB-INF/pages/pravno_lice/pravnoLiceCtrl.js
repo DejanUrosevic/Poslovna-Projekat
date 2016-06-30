@@ -1,7 +1,7 @@
 (function(angular){
 	var pravnoLiceModul = angular.module('pravnoLiceEntry', []);
 	
-	pravnoLiceModul.controller('pravnoLiceCtrl', function($scope, $http, $state, $stateParams, zoomServiceFizickoLice){
+	pravnoLiceModul.controller('pravnoLiceCtrl', function($scope, $http, $state, $stateParams, zoomServiceFizickoLice, kodoviBankeZoomServis){
 		
 		$scope.stanjePregled = true;
 		
@@ -26,6 +26,29 @@
 			zoomServiceFizickoLice.setZoom(false);
 		}
 		
+		
+		
+		
+		
+		
+		if(kodoviBankeZoomServis.getZoom())
+		{
+			$scope.zoom = kodoviBankeZoomServis.getZoom();
+		}
+		
+		$scope.zoomPickup = function()
+		{
+			
+			if(kodoviBankeZoomServis.getZoom())
+			{
+				kodoviBankeZoomServis.setPibPravnogLica($scope.sifraSelected);
+				kodoviBankeZoomServis.setNazivPravnogLica($scope.naziv);
+				$state.go('kodoviBanke');
+			}
+		}
+		
+		
+		
 		$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/findAll')
 		.success(function(data, status, header){
 			$scope.listaLica = data;
@@ -36,6 +59,7 @@
 			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
 			$scope.stanjeIzmena = true;
+			
 			$scope.sifraSelected = pib;
 			$scope.naziv = naziv;
 			$scope.adresa = adresa;
@@ -251,7 +275,17 @@
 				.success(function(data, status, header){
 					$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/findAll')
 					.success(function(data, status, header){
+						
 						$scope.listaLica = data;
+						for(var i=0; i<$scope.listaLica.length; i++)
+						{
+							if($scope.sifraSelected == $scope.listaLica[i].pib.replace(/[\s]/g, ''))
+							{
+								$scope.sifraSelected = $scope.listaLica[i].pib;
+								break;
+							}
+						}
+						
 						$scope.stanjeAdd = false;
 						$scope.stanjeSearch = false;
 						$scope.stanjeIzmena = true;
@@ -315,7 +349,8 @@
 			}
 		}
 		
-		$scope.zoomPick = function(){
+		$scope.zoomPick = function()
+		{
 			zoomServiceFizickoLice.setZoom(true);
 			
 			if($scope.stanjeSearch)
@@ -329,5 +364,6 @@
 			
 			$state.go('fizicko_lice');
 		}
+		
 	});
 })(angular)

@@ -6,7 +6,7 @@
 		
 		$scope.stanjePregled = true;
 		
-		
+	
 		if(zoomService.getZoom())
 		{
 			$scope.stanjePregled = false; 

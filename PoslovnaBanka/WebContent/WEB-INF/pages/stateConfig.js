@@ -38,5 +38,9 @@
 			templateUrl: 'vrstePlacanja/vrstePlacanja.html',
 			controller: 'vrstePlacanjaCtrl'
 		})
+		.state('kodoviBanke', {url: '/kodoviBanke',
+			templateUrl: 'kodoviBanke/kodoviBanke.html',
+			controller: 'kodoviBankeCtrl'
+		})
 	});
 })(angular)

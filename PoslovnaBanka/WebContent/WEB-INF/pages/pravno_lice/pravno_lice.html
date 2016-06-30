@@ -26,6 +26,10 @@
 								style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
 								<img src="css/images/refresh.png" height="30" />
 						</button></td>
+						<td ng-show="zoom"><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()">
+								<img src="css/images/export.jpg" height="30" />
+						</button></td>
 						
 						<td>&nbsp</td>
 						
@@ -90,7 +94,8 @@
 						<td> {{list.web}}</td>
 						<td> {{list.telefon}}</td>
 						<td> {{list.fax}}</td>
-						<td> <p ng-show="{{list.banka}}">da</p> <p ng-show="{{list.banka}} == false">ne</p></td>
+						<td ng-show="list.banka"> Da</td>
+						<td ng-show="!list.banka"> Ne</td>
 						<td> {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}}</td>
 					</tr>
 				</table>

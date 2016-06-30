@@ -42,7 +42,7 @@ public class NaseljenoMestoServiceImpl implements NaseljenoMestoService{
 	@Override
 	public void save(NaseljenoMesto object) throws SQLException {
 		// TODO Auto-generated method stub
-		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("INSERT INTO NASELJENO_MESTO (NM_SIFRA, DR_SIFRA, NM_NAZIV, NM_PTTOZNAKA) VALUES (? ,? ,? ,?)");
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("INSERT INTO NASELJENO_MESTO (NM_SIFRA, DR_SIFRA, NM_NAZIV, NM_PTTOZNAKA) VALUES (?,?,?,?)");
 		stmt.setInt(1, object.getSifra());
 		stmt.setString(2, object.getSifra_drzava());
 		stmt.setString(3, object.getNaziv());

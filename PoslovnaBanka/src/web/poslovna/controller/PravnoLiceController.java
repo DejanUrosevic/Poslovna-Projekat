@@ -1,6 +1,7 @@
 package web.poslovna.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
 import web.poslovna.model.PravnoLice;
 import web.poslovna.service.PravnoLiceService;
@@ -59,5 +61,15 @@ public class PravnoLiceController {
 	public @ResponseBody ResponseEntity<String> deleteState(@PathVariable(value="id") String id) throws SQLException{
 		liceSer.remove(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/findOne", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<PravnoLice>> getOnePravnoLice(@RequestBody String reqBody) throws SQLException
+	{
+		JSONObject json = new JSONObject(reqBody);
+		List<PravnoLice> pl = new ArrayList<PravnoLice>();
+		pl.add(liceSer.findOne(json.getString("sifra")));
+		
+		return new ResponseEntity<List<PravnoLice>>(pl, HttpStatus.OK);
 	}
 }

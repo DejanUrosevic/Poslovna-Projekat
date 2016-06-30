@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import web.poslovna.db.DBConnection;
+import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
 import web.poslovna.model.PravnoLice;
 import web.poslovna.service.PravnoLiceService;
@@ -19,9 +20,16 @@ import web.poslovna.service.PravnoLiceService;
 public class PravnoLiceServiceImpl implements PravnoLiceService{
 
 	@Override
-	public PravnoLice findOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public PravnoLice findOne(String id) throws SQLException 
+	{
+		PravnoLice pl = null;
+		
+		Statement sql = DBConnection.getConnection().createStatement();
+		ResultSet rs = sql.executeQuery("SELECT PR_PIB, banka.JMBG_KLIJENTA, PR_NAZIV, PR_ADRESA, PR_EMAIL, PR_WEB, PR_TELEFON, PR_FAX, PR_BANKA, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA FROM banka JOIN klijent ON banka.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA WHERE PR_PIB = '"+ id + "' ORDER BY PR_PIB");
+		while(rs.next()){
+			pl = new PravnoLice(rs.getString("PR_PIB"), rs.getInt("JMBG_KLIJENTA"), rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), rs.getString("PR_NAZIV"), rs.getString("PR_ADRESA"), rs.getString("PR_EMAIL"), rs.getString("PR_WEB"), rs.getString("PR_TELEFON"), rs.getString("PR_FAX"), rs.getBoolean("PR_BANKA"));
+		}
+		return pl;
 	}
 
 	@Override
