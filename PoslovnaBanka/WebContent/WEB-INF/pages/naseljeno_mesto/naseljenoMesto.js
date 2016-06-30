@@ -314,22 +314,37 @@
 			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
 				$http.delete('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/delete/' + $scope.sifraSelected)
 				.success(function(data, status, header){
-					$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
-					.success(function(data, status, header){
-						$scope.listaNaselja = data;
-						$scope.sifraSelected = null;
-						$scope.nazivNaselje = null;
-						$scope.pttOznaka = null;
-						$scope.oznakaDrzava = null;
-						$scope.nazivDrzava = null;
-						 
-						$scope.stanjeAdd = false;
-						$scope.stanjeSearch = false;
-						$scope.stanjePregled = true;
-						$scope.stanjeIzmena = false;
+					if(!angular.equals({}, $stateParams))
+					{
+						var drzavaId = $stateParams.id;
 						
-						$state.go('naseljeno_mesto');
-					});
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							$state.go('drzava_naselje');
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+						.success(function(data, status, header){
+							$scope.listaNaselja = data;
+							$scope.sifraSelected = null;
+							$scope.nazivNaselje = null;
+							$scope.pttOznaka = null;
+							$scope.oznakaDrzava = null;
+							$scope.nazivDrzava = null;
+							 
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
+							$state.go('naseljeno_mesto');
+						});
+					}
+					
 				});
 			}
 			else
@@ -381,6 +396,14 @@
 			$state.go('drzava');
 		}
 		
+		$scope.searchDrzava = function()
+		{
+			$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne', {sifra : $scope.oznakaDrzava})
+			.success(function(data, header, status)
+			{
+				$scope.nazivDrzava = data[0].naziv;
+			});
+		}
 		
 	});
 })(angular)

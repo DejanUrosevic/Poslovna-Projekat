@@ -349,6 +349,15 @@
 			$state.go('drzava');
 		}
 		
+		$scope.searchDrzava = function()
+		{
+			$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne', {sifra : $scope.sifraDrzava})
+			.success(function(data, header, status)
+			{
+				$scope.nazivDrzava = data[0].naziv;
+			});
+		}
+		
 		
 	});
 	
