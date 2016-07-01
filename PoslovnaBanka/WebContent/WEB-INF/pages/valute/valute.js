@@ -7,6 +7,25 @@
 	{
 		$scope.stanjePregled = true;
 		
+		//postavljanje default vrednosti za option tag domicilna
+		$scope.domicilnaType = [
+		    { name: 'Domaca', value: 'true' }, 
+		    { name: 'Strana', value: 'false' }                  
+		];
+		
+		
+		
+		if(!angular.equals({}, $stateParams))
+		{
+			$scope.zoomIcon = false;
+		}
+		else
+		{
+			$scope.zoomIcon = true;
+		}
+		
+		
+		
 		if(zoomValuteService.getZoom())
 		{
 			$scope.stanjePregled = false; 
@@ -62,12 +81,23 @@
 			$scope.stanjeIzmena = true;
 			
 			
+			
 			$scope.sifraSelected = id;
 			$scope.zvanicnaSifra = zvanicnaSifra;
 			$scope.naziv = naziv;
 			$scope.domicilna = domicilna;
 			$scope.sifraDrzava = drzSifra;
 			$scope.nazivDrzava = drzNaziv;
+			
+			//postavljanje default vrednosti za domicilna
+			for(var i=0; i<$scope.domicilnaType.length; i++)
+			{
+				if($scope.domicilnaType[i].value == domicilna.toString())
+				{
+					$scope.izmenaDomicilna = $scope.domicilnaType[i].value;
+					break;
+				}
+			}
 		}
 		
 		//refresovanje liste drzava

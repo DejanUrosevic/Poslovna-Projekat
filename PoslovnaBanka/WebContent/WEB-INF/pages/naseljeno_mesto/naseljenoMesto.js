@@ -5,6 +5,16 @@
 	naseljenoMestoModul.controller('naseljenoMestoCtrl', function($scope, $http, $state, $stateParams, zoomService){
 		
 		$scope.stanjePregled = true;
+	
+		if(!angular.equals({}, $stateParams))
+		{
+			$scope.zoomIcon = false;
+		}
+		else
+		{
+			$scope.zoomIcon = true;
+		}
+		
 		
 	
 		if(zoomService.getZoom())
@@ -204,8 +214,7 @@
 			$scope.stanjeSearch = true;
 			$scope.stanjePregled = false;
 			$scope.stanjeIzmena = false;
-			
-			
+		
 			$scope.sifraSelected = null;
 			$scope.nazivNaselje = null;
 			$scope.pttOznaka = null;
@@ -258,6 +267,7 @@
 				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/search',
 						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
 				.success(function(data, status, header){
+					
 					if(!angular.equals({}, $stateParams))
 					{
 						$scope.listaNaselja = data;
@@ -413,11 +423,15 @@
 		
 		$scope.searchDrzava = function()
 		{
-			$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne', {sifra : $scope.oznakaDrzava})
-			.success(function(data, header, status)
+			if($scope.listaNaselja.length !== 0)
 			{
-				$scope.nazivDrzava = data[0].naziv;
-			});
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne', {sifra : $scope.oznakaDrzava})
+				.success(function(data, header, status)
+				{
+					$scope.nazivDrzava = data[0].naziv;
+				});
+			}
+			
 		}
 		
 	});

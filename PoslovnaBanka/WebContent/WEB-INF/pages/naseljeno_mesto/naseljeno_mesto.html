@@ -107,13 +107,15 @@
 			 Naziv naseljenog mesta:  <input type="text" ng-model="nazivNaselje">
 			 <br/> <br/> 
 			 PTT oznaka naseljenog mesta: <input type="text" ng-model="pttOznaka">
-			 <br/> <br/> 
-			 Oznaka drzave: <input type="text" ng-model="oznakaDrzava" ng-change="searchDrzava()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="oznakaDrzava" ng-change="searchDrzava()" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/> 
-			 Naziv drzave: <input type="text" ng-model="nazivDrzava" disabled>
+			 <br/> <br/>
+			 <div ng-show="zoomIcon"> 
+				 Oznaka drzave: <input type="text" ng-model="oznakaDrzava" ng-change="searchDrzava()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="oznakaDrzava" ng-change="searchDrzava()" ng-show="stanjeSearch || stanjeAdd">
+				 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+					<img src="css/images/zoom.png" height="40" />
+				 </button>
+				 <br/> <br/> 
+				 Naziv drzave: <input type="text" ng-model="nazivDrzava" disabled>
+			</div>
 		</div>
 				
 	</div>
