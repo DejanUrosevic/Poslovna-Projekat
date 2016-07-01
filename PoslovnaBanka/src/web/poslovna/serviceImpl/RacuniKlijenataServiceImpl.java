@@ -1,5 +1,6 @@
 package web.poslovna.serviceImpl;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,8 +30,6 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 		Statement stmt = DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT ID_RACUNA, racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA, banka.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN klijent ON racuni_pravnih_lica.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA JOIN banka ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB");
 		
-		Statement stmt2 = DBConnection.getConnection().createStatement();
-		ResultSet rs2 = stmt2.executeQuery("SELECT ID_RACUNA,racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.PR_PIB, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV,banka.PR_NAZIV, banka2.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN banka ON racuni_pravnih_lica.PR_PIB = banka.PR_PIB JOIN banka AS banka2 ON racuni_pravnih_lica.BAN_PR_PIB = banka2.PR_PIB");
 		while(rs.next()){
 			lista.add(new RacuniKlijenata(rs.getInt("ID_RACUNA"), rs.getInt("JMBG_KLIJENTA"),
 					rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), 
@@ -40,12 +39,25 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 					rs.getDate("BAR_DATOTV"), rs.getBoolean("BAR_VAZI")));
 		}
 		
+		PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT ID_RACUNA,racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.PR_PIB, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV,banka.PR_NAZIV, banka2.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN banka ON racuni_pravnih_lica.PR_PIB = banka.PR_PIB JOIN banka AS banka2 ON racuni_pravnih_lica.BAN_PR_PIB = banka2.PR_PIB");
+		@SuppressWarnings("unused")
+		ResultSet rs2 = stmt2.executeQuery();
+		
 		while(rs2.next()){
-			lista.add(new RacuniKlijenata(rs.getInt(1), rs.getInt(2), null, null,
-					rs.getInt(3), rs.getString(9), rs.getString(4), 
-					rs.getString(10), rs.getString(5), rs.getString(11), 
-					rs.getString(6), 
-					rs.getDate(7), rs.getBoolean(8)));
+			lista.add(new RacuniKlijenata(
+					rs2.getInt("ID_RACUNA"), 
+					rs2.getInt(2),
+					null,
+					null,
+					rs2.getInt(3),
+					rs2.getString(9),
+					rs2.getString(4), 
+					rs2.getString(10),
+					rs2.getString(5),
+					rs2.getString(11), 
+					rs2.getString(6), 
+					rs2.getDate(7),
+					rs2.getBoolean(8)));
 		}
 		return lista;
 	}

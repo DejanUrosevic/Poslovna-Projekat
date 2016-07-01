@@ -1,16 +1,27 @@
 (function(angular){
 	var fizickoLiceModul = angular.module('fizickoLiceEntry', []);
 	
-	fizickoLiceModul.controller('fizickoLiceCtrl', function($http, $scope, $state, $stateParams, zoomServiceFizickoLice){
+	fizickoLiceModul.controller('fizickoLiceCtrl', function($http, $scope, $state, $stateParams, zoomServiceFizickoLice, zoomRacunFizickoService){
 		$scope.stanjePregled = true;
 		$scope.zoom = zoomServiceFizickoLice.getZoom();
+		$scope.zoomRacuni = zoomRacunFizickoService.getZoom();
+		
 		
 		$scope.zoomPickup = function(){
-			zoomServiceFizickoLice.setJmbgKlijenta($scope.sifraSelected);
-			zoomServiceFizickoLice.setImeKlijenta($scope.klijentIme);
-			zoomServiceFizickoLice.setPrezimeKlijenta($scope.klijentPrezime);
-			$state.go('pravno_lice');
+			if($scope.zoom){
+				zoomServiceFizickoLice.setJmbgKlijenta($scope.sifraSelected);
+				zoomServiceFizickoLice.setImeKlijenta($scope.klijentIme);
+				zoomServiceFizickoLice.setPrezimeKlijenta($scope.klijentPrezime);
+				$state.go('pravno_lice');
+			}else if($scope.zoomRacuni){
+				zoomRacunFizickoService.setJmbg($scope.sifraSelected);
+				zoomRacunFizickoService.setIme($scope.klijentIme);
+				zoomRacunFizickoService.setPrezime($scope.klijentPrezime);
+				$state.go('racuni_klijenata');
+			}
+			
 		}
+		
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/findAll')
 		.success(function(data, status, header){
