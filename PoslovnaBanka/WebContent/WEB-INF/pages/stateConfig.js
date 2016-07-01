@@ -38,6 +38,10 @@
 			templateUrl: 'pravno_lice/pravno_lice.html',
 			controller: 'pravnoLiceCtrl'
 		})
+		.state('ovlasceno_lice', {url: '/lice/:id/pravno_lice',
+			templateUrl: 'pravno_lice/pravno_lice.html',
+			controller: 'pravnoLiceCtrl'
+		})
 		.state('vrstePlacanja', {url: '/vrstePlacanja',
 			templateUrl: 'vrstePlacanja/vrstePlacanja.html',
 			controller: 'vrstePlacanjaCtrl'

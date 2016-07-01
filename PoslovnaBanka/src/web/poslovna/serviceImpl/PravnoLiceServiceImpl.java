@@ -103,6 +103,7 @@ public class PravnoLiceServiceImpl implements PravnoLiceService{
 		String web = "";
 		String telefon = "";
 		String fax = "";
+		Boolean banka = null;
 		int jmbg = 0;
 		String ime = "";
 		String prezime = "";
@@ -177,18 +178,44 @@ public class PravnoLiceServiceImpl implements PravnoLiceService{
 			// TODO: handle exception
 		}
 		
-		List<PravnoLice> lista = new ArrayList<PravnoLice>();
-		Statement sql = DBConnection.getConnection().createStatement();
-		ResultSet rs = sql.executeQuery("SELECT PR_PIB, banka.JMBG_KLIJENTA, PR_NAZIV, PR_ADRESA, PR_EMAIL, PR_WEB, PR_TELEFON, PR_FAX, PR_BANKA, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA FROM banka JOIN klijent ON banka.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA WHERE pr_pib = '" 
-		+ pib + "' OR banka.JMBG_KLIJENTA= '" + jmbg + "' OR PR_NAZIV = '" + naziv +
-				"' OR PR_ADRESA = '" + adresa + "' OR PR_EMAIL = '" + email + "' OR PR_WEB = '" 
-		+ web + "' or PR_TELEFON ='" + telefon + "' or PR_FAX = '" + fax + "'");
-		
-		while(rs.next()){
-			lista.add(new PravnoLice(rs.getString("PR_PIB"), rs.getInt("JMBG_KLIJENTA"), rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), rs.getString("PR_NAZIV"), rs.getString("PR_ADRESA"), rs.getString("PR_EMAIL"), rs.getString("PR_WEB"), rs.getString("PR_TELEFON"), rs.getString("PR_FAX"), rs.getBoolean("PR_BANKA")));
+		try {
+			banka = Boolean.parseBoolean(json.getString("banka"));
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		
-		return lista;
+		if(banka != null)
+		{
+			List<PravnoLice> lista = new ArrayList<PravnoLice>();
+			Statement sql = DBConnection.getConnection().createStatement();
+			ResultSet rs = sql.executeQuery("SELECT PR_PIB, banka.JMBG_KLIJENTA, PR_NAZIV, PR_ADRESA, PR_EMAIL, PR_WEB, PR_TELEFON, PR_FAX, PR_BANKA, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA FROM banka JOIN klijent ON banka.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA WHERE pr_pib = '" 
+			+ pib + "' OR banka.JMBG_KLIJENTA= '" + jmbg + "' OR PR_NAZIV = '" + naziv +
+					"' OR PR_ADRESA = '" + adresa + "' OR PR_EMAIL = '" + email + "' OR PR_WEB = '" 
+			+ web + "' or PR_TELEFON ='" + telefon + "' or PR_FAX = '" + fax + "' OR PR_BANKA = '" + banka + "'");
+			
+			while(rs.next()){
+				lista.add(new PravnoLice(rs.getString("PR_PIB"), rs.getInt("JMBG_KLIJENTA"), rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), rs.getString("PR_NAZIV"), rs.getString("PR_ADRESA"), rs.getString("PR_EMAIL"), rs.getString("PR_WEB"), rs.getString("PR_TELEFON"), rs.getString("PR_FAX"), rs.getBoolean("PR_BANKA")));
+			}
+			
+			return lista;
+		}
+		else
+		{
+			List<PravnoLice> lista = new ArrayList<PravnoLice>();
+			Statement sql = DBConnection.getConnection().createStatement();
+			ResultSet rs = sql.executeQuery("SELECT PR_PIB, banka.JMBG_KLIJENTA, PR_NAZIV, PR_ADRESA, PR_EMAIL, PR_WEB, PR_TELEFON, PR_FAX, PR_BANKA, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA FROM banka JOIN klijent ON banka.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA WHERE pr_pib = '" 
+			+ pib + "' OR banka.JMBG_KLIJENTA= '" + jmbg + "' OR PR_NAZIV = '" + naziv +
+					"' OR PR_ADRESA = '" + adresa + "' OR PR_EMAIL = '" + email + "' OR PR_WEB = '" 
+			+ web + "' or PR_TELEFON ='" + telefon + "' or PR_FAX = '" + fax + "'");
+			
+			while(rs.next()){
+				lista.add(new PravnoLice(rs.getString("PR_PIB"), rs.getInt("JMBG_KLIJENTA"), rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), rs.getString("PR_NAZIV"), rs.getString("PR_ADRESA"), rs.getString("PR_EMAIL"), rs.getString("PR_WEB"), rs.getString("PR_TELEFON"), rs.getString("PR_FAX"), rs.getBoolean("PR_BANKA")));
+			}
+			
+			return lista;
+		}
+		
+		
 	}
 
 }

@@ -34,6 +34,8 @@
 			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
 			$scope.stanjeIzmena = true;
+			
+			
 			$scope.sifraSelected = jmbg;
 			$scope.klijentIme = ime;
 			$scope.klijentPrezime = prezime;
@@ -47,10 +49,13 @@
 			.success(function(data, status, header)
 			{
 				$scope.listaLica = data;
+				
 				$scope.stanjeAdd = false;
 				$scope.stanjePregled = true;
 				$scope.stanjeSearch = false;
 				$scope.stanjeIzmena = false;
+				
+				
 				$scope.sifraSelected = null;
 				$scope.klijentIme = null;
 				$scope.klijentPrezime = null;
@@ -63,9 +68,9 @@
 		$scope.levoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaLica[0].jmbg;
 			$scope.klijentIme = $scope.listaLica[0].naziv;
@@ -78,9 +83,9 @@
 		$scope.desnoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaLica[$scope.listaLica.length-1].jmbg;
 			$scope.klijentIme = $scope.listaLica[$scope.listaLica.length-1].naziv;
@@ -93,9 +98,9 @@
 		$scope.jedanLevo = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -141,9 +146,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjePregled = true;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -297,6 +302,23 @@
 			{
 				alert('Morate izabrati drzavu za brisanje.');
 			}
+		}
+		
+		$scope.nextFunction = function(){
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$scope.klikZaZoom = true;
+				
+				if($scope.izborNext === 'pravno_lice')
+				{
+					$state.go('ovlasceno_lice', {id: $scope.sifraSelected});
+				}
+				else if($scope.izborNext === 'racuni_klijenata')
+				{
+					$state.go('racuni_klijenata', {id: $scope.sifraSelected});
+				}
+			}else{
+				alert("Odaberite fizicko lice.");
+			}	
 		}
 		
 	});

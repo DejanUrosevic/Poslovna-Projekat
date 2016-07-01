@@ -40,7 +40,6 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 		}
 		
 		PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT ID_RACUNA,racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.PR_PIB, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV,banka.PR_NAZIV, banka2.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN banka ON racuni_pravnih_lica.PR_PIB = banka.PR_PIB JOIN banka AS banka2 ON racuni_pravnih_lica.BAN_PR_PIB = banka2.PR_PIB");
-		@SuppressWarnings("unused")
 		ResultSet rs2 = stmt2.executeQuery();
 		
 		while(rs2.next()){

@@ -38,7 +38,7 @@ public class PravnoLiceController {
 	public @ResponseBody ResponseEntity<PravnoLice> saveState(@RequestBody String reqBody) throws SQLException
 	{
 		JSONObject json = new JSONObject(reqBody);	
-		liceSer.save(new PravnoLice(json.getString("pib"), json.getInt("jmbg"), json.getString("ime"), json.getString("prezime"), json.getString("naziv"), json.getString("adresa"), json.getString("email"), json.getString("web"), json.getString("telefon"), json.getString("fax"), true));
+		liceSer.save(new PravnoLice(json.getString("pib"), json.getInt("jmbg"), json.getString("ime"), json.getString("prezime"), json.getString("naziv"), json.getString("adresa"), json.getString("email"), json.getString("web"), json.getString("telefon"), json.getString("fax"), Boolean.parseBoolean(json.getString("banka"))));
 		return new ResponseEntity<PravnoLice>(HttpStatus.OK);	
 	}
 	
@@ -53,7 +53,7 @@ public class PravnoLiceController {
 	public @ResponseBody ResponseEntity<List<PravnoLice>> updateState(@RequestBody String reqBody) throws SQLException
 	{
 		JSONObject json = new JSONObject(reqBody); 
-		liceSer.update(new PravnoLice(json.getString("pib"), json.getInt("jmbg"), json.getString("ime"), json.getString("prezime"), json.getString("naziv"), json.getString("adresa"), json.getString("email"), json.getString("web"), json.getString("telefon"), json.getString("fax"), true));
+		liceSer.update(new PravnoLice(json.getString("pib"), json.getInt("jmbg"), json.getString("ime"), json.getString("prezime"), json.getString("naziv"), json.getString("adresa"), json.getString("email"), json.getString("web"), json.getString("telefon"), json.getString("fax"), Boolean.parseBoolean(json.getString("banka"))));
 		return new ResponseEntity<List<PravnoLice>>(HttpStatus.OK);	
 	}
 	

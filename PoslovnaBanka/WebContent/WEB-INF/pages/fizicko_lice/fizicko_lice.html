@@ -64,9 +64,16 @@
 						<td>&nbsp</td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="">
+								style="background-color: transparent; border-color: transparent;" ng-click="nextFunction()">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
+						<td ng-show="klikZaZoom">
+							<select ng-model="izborNext" ng-change="nextFunction()">
+								<option value=""> * Izaberite tabelu *</option>
+								<option value="pravno_lice"> Pravno lice </option>
+								<option value="racuni_klijenata"> Racuni klijenta </option>
+							</select>
+						</td>
 					</tr>
 				</table>
 				
@@ -100,7 +107,7 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;">
+		<div style="padding-left: 50px;" ng-show="!stanjePregled">
 			 <br/>
 			 Jmbg klijenta: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
 			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">

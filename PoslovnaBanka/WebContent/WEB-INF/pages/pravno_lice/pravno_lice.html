@@ -76,17 +76,17 @@
 				
 				<table border="1">
 					<tr>
-						<th> PIB </th>
-						<th> Naziv </th>
-						<th> Adresa </th>
-						<th> Email </th>
-						<th> Web </th>
-						<th> Telefon </th>
-						<th> Fax </th>
-						<th> Banka </th>
-						<th> Odgovorno lice</th>
+						<th>PIB</th>
+						<th>Naziv</th>
+						<th>Adresa</th>
+						<th>Email</th>
+						<th>Web</th>
+						<th>Telefon</th>
+						<th>Fax</th>
+						<th>Banka</th>
+						<th>Odgovorno lice</th>
 					</tr>
-					<tr ng-repeat="list in listaLica" ng-click="setSelected(list.pib, list.naziv, list.adresa, list.email, list.web, list.telefon, list.fax, list.jmbgKlijenta, list.imeKlijenta, list.prezimeKlijenta)" ng-class="{selected: list.pib === sifraSelected}">
+					<tr ng-repeat="list in listaLica" ng-click="setSelected(list.pib, list.naziv, list.adresa, list.email, list.web, list.telefon, list.fax, list.banka, list.jmbgKlijenta, list.imeKlijenta, list.prezimeKlijenta)" ng-class="{selected: list.pib === sifraSelected}">
 						<td> {{list.pib}}</td>
 						<td> {{list.naziv}}</td>
 						<td> {{list.adresa}}</td>
@@ -107,7 +107,7 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;">
+		<div style="padding-left: 50px;" ng-show="!stanjePregled">
 			 <br/>
 			 PIB: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
 			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
@@ -129,14 +129,19 @@
 			 <br/><br/>
 			 Fax: <input type="text" ng-model="fax">
 			 <br/><br/>
-			 JMBG odgovornog lica: <input type="text" ng-model="jmbg" ng-show="stanjePregled" disabled> <input type="text" ng-model="jmbg" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/><br/>
-			 Ime odgovrnog lica: <input type="text" ng-model="imeKlijenta" disabled>
-			 <br/><br/>
-			 Prezime odgovornog lica: <input type="text" ng-model="prezimeKlijenta" disabled> 
+			 Banka:  <input type="text" ng-model="banka" ng-show="stanjePregled"> 
+			 <select ng-model="izmenaBanka" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch" ng-options='option.value as option.name for option in bankaType'>
+			 </select>
+			 <div ng-show="zoomIcon">
+				 JMBG odgovornog lica: <input type="text" ng-model="jmbg" ng-show="stanjePregled" ng-change="searchFL()" disabled> <input type="text" ng-model="jmbg" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena" ng-change="searchFL()">
+				 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+					<img src="css/images/zoom.png" height="30" />
+				 </button>
+				 <br/><br/>
+				 Ime odgovornog lica: <input type="text" ng-model="imeKlijenta" disabled>
+				 <br/><br/>
+				 Prezime odgovornog lica: <input type="text" ng-model="prezimeKlijenta" disabled> 
+			 </div>
 		</div>
 				
 	</div>

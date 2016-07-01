@@ -48,7 +48,13 @@ float:left;
 
 }
 
+table th{
+	text-align: center;
+}
 
+select option{
+	text-align: center;
+}
 #header ul {
 	padding: 0px;
 	list-style-type: none;
