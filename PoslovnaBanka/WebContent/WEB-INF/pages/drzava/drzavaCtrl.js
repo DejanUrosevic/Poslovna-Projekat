@@ -80,8 +80,9 @@
 		$scope.levoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.lista[0].sifra;
 			$scope.nazivDrzava = $scope.lista[0].naziv;
@@ -90,8 +91,9 @@
 		$scope.desnoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.lista[$scope.lista.length-1].sifra;
 			$scope.nazivDrzava = $scope.lista[$scope.lista.length-1].naziv;
@@ -100,8 +102,9 @@
 		$scope.jedanLevo = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -135,8 +138,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjePregled = true;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{

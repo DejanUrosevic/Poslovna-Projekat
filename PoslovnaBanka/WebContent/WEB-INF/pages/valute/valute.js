@@ -119,7 +119,7 @@
 					$scope.sifraSelected = null;
 					$scope.zvanicnaSifra = null;
 					$scope.naziv = null;
-					$scope.domicilna = null;
+					$scope.izmenaDomicilna = null;
 					$scope.sifraDrzava = $scope.listaValuta[0].drzavaSifra;
 					$scope.nazivDrzava = $scope.listaValuta[0].drzavaNaziv;
 				});
@@ -134,7 +134,7 @@
 					$scope.sifraSelected = null;
 					$scope.zvanicnaSifra = null;
 					$scope.naziv = null;
-					$scope.domicilna = null;
+					$scope.izmenaDomicilna = null;
 					$scope.sifraDrzava = null;
 					$scope.nazivDrzava = null;
 				});
@@ -152,7 +152,7 @@
 			$scope.sifraSelected = null;
 			$scope.zvanicnaSifra = null;
 			$scope.naziv = null;
-			$scope.domicilna = null;
+			$scope.izmenaDomicilna = null;
 			
 			if(!angular.equals({}, $stateParams)){
 				var drzavaId = $stateParams.id;
@@ -178,7 +178,7 @@
 			$scope.sifraSelected = null;
 			$scope.zvanicnaSifra = null;
 			$scope.naziv = null;
-			$scope.domicilna = null;
+			$scope.izmenaDomicilna = null;
 			$scope.sifraDrzava = null;
 			$scope.nazivDrzava = null;
 		}
@@ -296,8 +296,9 @@
 		$scope.levoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaValuta[0].idvalute;
 			$scope.zvanicnaSifra = $scope.listaValuta[0].zvanicnaSifra;
@@ -311,8 +312,9 @@
 		$scope.desnoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaValuta[$scope.listaValuta.length-1].idvalute;
 			$scope.zvanicnaSifra = $scope.listaValuta[$scope.listaValuta.length-1].zvanicnaSifra;
@@ -326,8 +328,9 @@
 		$scope.jedanLevo = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -373,8 +376,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjePregled = true;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -420,26 +424,54 @@
 		$scope.deleteState = function(){
 			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
 				$http.delete('http://localhost:8080/PoslovnaBanka/valute/delete/' + $scope.sifraSelected)
-				.success(function(data, status, header){
-					$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
-					.success(function(data, status, header){
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams))
+					{
+						var drzavaId = $stateParams.id;
 						
-						$scope.listaValuta = data;
-						$scope.sifraSelected = null;
-						$scope.zvanicnaSifra = null;
-						$scope.naziv = null;
-						$scope.domicilna = null;
-						$scope.sifraDrzava = null;
-						$scope.nazivDrzava = null;
-						
-						
-						$scope.stanjeAdd = false;
-						$scope.stanjeSearch = false;
-						$scope.stanjePregled = true;
-						$scope.stanjeIzmena = false;
-						
-						$state.go('valute');
-					});
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/valute')
+						.success(function(data, status, header)
+						{
+							$scope.listaValuta = data;
+							
+							$scope.sifraSelected = null;
+							$scope.zvanicnaSifra = null;
+							$scope.naziv = null;
+							$scope.domicilna = null;
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
+							$state.go('valute_drzava');
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/valute/findAll')
+						.success(function(data, status, header){
+							
+							$scope.listaValuta = data;
+							
+							$scope.sifraSelected = null;
+							$scope.zvanicnaSifra = null;
+							$scope.naziv = null;
+							$scope.domicilna = null;
+							$scope.sifraDrzava = null;
+							$scope.nazivDrzava = null;
+							
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
+							$state.go('valute');
+						});
+					}
+				
 				});
 			}
 			else

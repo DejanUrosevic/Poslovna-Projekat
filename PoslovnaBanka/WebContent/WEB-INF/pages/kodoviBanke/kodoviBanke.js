@@ -57,10 +57,10 @@
 		
 		$scope.levoDoKraja = function()
 		{
-			
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaKodova[0].sifra;
 			$scope.swift = $scope.listaKodova[0].swift;
@@ -71,8 +71,9 @@
 		$scope.desnoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaKodova[$scope.listaKodova.length-1].sifra;
 			$scope.swift = $scope.listaKodova[$scope.listaKodova.length-1].swift;
@@ -82,10 +83,10 @@
 		
 		$scope.jedanLevo = function()
 		{
-			
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -125,8 +126,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -280,6 +282,11 @@
 			.success(function(data, status, header)
 			{
 				$scope.listaKodova = data;
+				
+				$scope.stanjeAdd = false;
+				$scope.stanjePregled = true;
+				$scope.stanjeSearch = false;
+				$scope.stanjeIzmena = false;
 				
 				$scope.sifraSelected = null;
 				$scope.swift = null;

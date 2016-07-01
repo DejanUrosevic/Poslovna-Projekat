@@ -72,8 +72,9 @@
 		{
 			
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaNaselja[0].sifra;
 			$scope.nazivNaselje = $scope.listaNaselja[0].naziv;
@@ -85,8 +86,9 @@
 		$scope.desnoDoKraja = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaNaselja[$scope.listaNaselja.length-1].sifra;
 			$scope.nazivNaselje = $scope.listaNaselja[$scope.listaNaselja.length-1].naziv;
@@ -99,8 +101,9 @@
 		{
 			
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -143,8 +146,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -329,6 +333,16 @@
 						.success(function(data, status, header)
 						{
 							$scope.listaNaselja = data;
+							
+							$scope.sifraSelected = null;
+							$scope.nazivNaselje = null;
+							$scope.pttOznaka = null;
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
 							$state.go('drzava_naselje');
 						});
 					}
@@ -337,6 +351,7 @@
 						$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
 						.success(function(data, status, header){
 							$scope.listaNaselja = data;
+							
 							$scope.sifraSelected = null;
 							$scope.nazivNaselje = null;
 							$scope.pttOznaka = null;

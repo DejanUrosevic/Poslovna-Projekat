@@ -149,15 +149,29 @@ public class ValuteServiceImpl implements ValuteService{
 			
 		}
 		
-		
 		List<Valute> lista = new ArrayList<Valute>();
-		Statement sql = DBConnection.getConnection().createStatement();
-		ResultSet rs = sql.executeQuery("SELECT ID_VALUTE, VA_IFRA, VA_NAZIV, VA_DOMICILNA, VALUTE.DR_SIFRA, DR_NAZIV FROM VALUTE"
-				+ " JOIN DRZAVA ON VALUTE.DR_SIFRA = DRZAVA.DR_SIFRA WHERE ID_VALUTE = '" + sifra + "' OR VA_NAZIV = '" + naziv + "' OR VALUTE.DR_SIFRA = '" + sifraDrzave +"' OR VA_IFRA = '" + zvanicnaSifra + "' OR DR_NAZIV = '" + nazivDrzave + "' OR VA_DOMICILNA = '" + domicilna + "'");
-		while(rs.next())
+		if(domicilna != null)
 		{
-			lista.add(new Valute(rs.getInt("ID_VALUTE"), rs.getString("VA_IFRA"), rs.getString("VA_NAZIV"), rs.getBoolean("VA_DOMICILNA"), rs.getString("DR_SIFRA"), rs.getString("DR_NAZIV")));
+			
+			Statement sql = DBConnection.getConnection().createStatement();
+			ResultSet rs = sql.executeQuery("SELECT ID_VALUTE, VA_IFRA, VA_NAZIV, VA_DOMICILNA, VALUTE.DR_SIFRA, DR_NAZIV FROM VALUTE"
+					+ " JOIN DRZAVA ON VALUTE.DR_SIFRA = DRZAVA.DR_SIFRA WHERE ID_VALUTE = '" + sifra + "' OR VA_NAZIV = '" + naziv + "' OR VALUTE.DR_SIFRA = '" + sifraDrzave +"' OR VA_IFRA = '" + zvanicnaSifra + "' OR DR_NAZIV = '" + nazivDrzave + "' OR VA_DOMICILNA = '" + domicilna + "'");
+			while(rs.next())
+			{
+				lista.add(new Valute(rs.getInt("ID_VALUTE"), rs.getString("VA_IFRA"), rs.getString("VA_NAZIV"), rs.getBoolean("VA_DOMICILNA"), rs.getString("DR_SIFRA"), rs.getString("DR_NAZIV")));
+			}
 		}
+		else
+		{
+			Statement sql = DBConnection.getConnection().createStatement();
+			ResultSet rs = sql.executeQuery("SELECT ID_VALUTE, VA_IFRA, VA_NAZIV, VA_DOMICILNA, VALUTE.DR_SIFRA, DR_NAZIV FROM VALUTE"
+					+ " JOIN DRZAVA ON VALUTE.DR_SIFRA = DRZAVA.DR_SIFRA WHERE ID_VALUTE = '" + sifra + "' OR VA_NAZIV = '" + naziv + "' OR VALUTE.DR_SIFRA = '" + sifraDrzave +"' OR VA_IFRA = '" + zvanicnaSifra + "' OR DR_NAZIV = '" + nazivDrzave + "'");
+			while(rs.next())
+			{
+				lista.add(new Valute(rs.getInt("ID_VALUTE"), rs.getString("VA_IFRA"), rs.getString("VA_NAZIV"), rs.getBoolean("VA_DOMICILNA"), rs.getString("DR_SIFRA"), rs.getString("DR_NAZIV")));
+			}
+		}
+		
 		
 		return lista;
 	}
