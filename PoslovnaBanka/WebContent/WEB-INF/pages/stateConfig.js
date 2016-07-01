@@ -46,5 +46,9 @@
 			templateUrl: 'kodoviBanke/kodoviBanke.html',
 			controller: 'kodoviBankeCtrl'
 		})
+		.state('racuni_klijenata', {url: '/racuni_klijenata',
+			templateUrl: 'racuni_klijenata/racuni.html',
+			controller: 'racuniCtrl'
+		})
 	});
 })(angular)

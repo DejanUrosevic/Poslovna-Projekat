@@ -1,0 +1,140 @@
+<div id="header">
+	<h1>Naseljeno mesto</h1>
+	<ul>
+		<li><a ui-sref="main">Nazad</a></li>
+		<li><a href="#">Products</a></li>
+		<li><a href="#">Services</a></li>
+		<li>Stanje: </li>
+		<li style="color: #00ff00;" ng-show="stanjeAdd">  Dodavanje  </li>
+		<li style="color: #33ccff;" ng-show="stanjeSearch">  Pretraga  </li>
+		<li style="color: white;" ng-show="stanjePregled">  Pregled  </li>
+		<li style="color: yellow;" ng-show="stanjeIzmena">  Izmena  </li>
+	</ul>
+</div>
+<div id="main">
+	<div class="main_body">
+		<div id="tableContainer-1">
+			<div id="tableContainer-2">
+				<table id="myTable">
+					<tr>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjePretrage()">
+								<img src="css/images/search2.gif" height="30" />
+						</button></td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
+								<img src="css/images/refresh.png" height="30" />
+						</button></td>
+						<td ng-show="zoom"><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()">
+								<img src="css/images/export.jpg" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="levoDoKraja()">
+								<img src="css/images/left.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanLevo()">
+								<img src="css/images/left22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanDesno()">
+								<img src="css/images/right22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="desnoDoKraja()">
+								<img src="css/images/right.png" height="35" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjeDodavanje()">
+								<img src="css/images/add.png" height="30" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="deleteLice()">
+								<img src="css/images/delete2.ico" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="">
+								<img src="css/images/chain.jpg" height="35" />
+						</button></td>
+					</tr>
+				</table>
+				
+				<br/>
+				<hr/>
+				<br/>
+				
+				<table border="1">
+					<tr>
+						<th> ID </th>
+						<th> Vlasnik </th>
+						<th> Valuta </th>
+						<th> Banka </th>
+						<th> Broj racuna </th>
+						<th> Datum otvaranja </th>
+						<th> Validan </th>
+					</tr>
+					<tr ng-repeat="list in listaRacuna" ng-click="setSelected(list.pib, list.naziv, list.adresa, list.email, list.web, list.telefon, list.fax, list.jmbgKlijenta, list.imeKlijenta, list.prezimeKlijenta)" ng-class="{selected: list.pib === sifraSelected}">
+						<td> {{list.id}}</td>
+						<td ng-show="list.jmbg != null"> {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}}</td>
+						<td ng-show="list.pibKlijenta != null"> {{list.nazivKlijenta}}</td>
+						<td> {{list.nazivValute}}</td>
+						<td> {{list.nazivBanke}}</td>
+						<td> {{list.brRacuna}}</td>
+						<td> {{list.datumOtvaranja}}</td>
+						<td ng-show="list.vazeci"> Da</td>
+						<td ng-show="!list.vazeci"> Ne</td>
+					</tr>
+				</table>
+			
+			</div>
+		</div>
+		
+		<br/>
+		<hr/>
+		<br/>
+		
+		<div style="padding-left: 50px;">
+			 <br/>
+			 PIB: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
+				<img src="css/images/delete2.ico" height="30" />
+			 </button>
+			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
+				<img src="css/images/commit.png" height="30" />
+			 </button>
+			 <br/> <br/>
+			 Naziv: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" ng-model="naziv">
+			 <br/> <br/> 
+			 Adresa: <input type="text" ng-model="adresa">
+			 <br/> <br/> 
+			 Email:&nbsp;&nbsp;&nbsp; <input type="text" ng-model="email"> 
+			 <br/> <br/> 
+			 Web: &nbsp;<input type="text" ng-model="web">
+			 <br/><br/>
+			 Telefon: <input type="text" ng-model="telefon">
+			 <br/><br/>
+			 Fax: <input type="text" ng-model="fax">
+			 <br/><br/>
+			 JMBG odgovornog lica: <input type="text" ng-model="jmbg" ng-show="stanjePregled" disabled> <input type="text" ng-model="jmbg" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+				<img src="css/images/zoom.png" height="30" />
+			 </button>
+			 <br/><br/>
+			 Ime odgovrnog lica: <input type="text" ng-model="imeKlijenta" disabled>
+			 <br/><br/>
+			 Prezime odgovornog lica: <input type="text" ng-model="prezimeKlijenta" disabled> 
+		</div>
+				
+	</div>
+</div>
