@@ -5,7 +5,7 @@ import java.sql.Date;
 public class RacuniKlijenata {
 
 	private int id; //ID_RACUNA
-	private int jmbg; //JMBG_KLIJENTA, null
+	private Integer jmbg; //JMBG_KLIJENTA, null
 	private String imeKlijenta;
 	private String prezimeKlijenta;
 	private int valuta; //ID_VALUTE
@@ -20,7 +20,7 @@ public class RacuniKlijenata {
 	
 	
 
-	public RacuniKlijenata(int id, int jmbg, String imeKlijenta,
+	public RacuniKlijenata(int id, Integer jmbg, String imeKlijenta,
 			String prezimeKlijenta, int valuta, String nazivValute,
 			String pibKlijenta, String nazivKlijenta, String pibBanke,
 			String nazivBanke, String brRacuna, Date datumOtvaranja,
@@ -54,11 +54,11 @@ public class RacuniKlijenata {
 		this.id = id;
 	}
 	
-	public int getJmbg() {
+	public Integer getJmbg() {
 		return jmbg;
 	}
 	
-	public void setJmbg(int jmbg) {
+	public void setJmbg(Integer jmbg) {
 		this.jmbg = jmbg;
 	}
 	

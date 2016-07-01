@@ -3,10 +3,10 @@
 	var valuteModul = angular.module('valuteEntry', []);
 	
 	
-	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, zoomValuteService)
+	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, zoomValuteService, zoomRacunValutaService)
 	{
 		$scope.stanjePregled = true;
-		
+		$scope.zoomRacuni = zoomRacunValutaService.getZoom();
 		//postavljanje default vrednosti za option tag domicilna
 		$scope.domicilnaType = [
 		    { name: 'Domaca', value: 'true' }, 
@@ -508,6 +508,14 @@
 			{
 				$scope.nazivDrzava = data[0].naziv;
 			});
+		}
+		
+		$scope.zoomPickup = function(){
+			if(zoomRacunValutaService.getZoom()){
+				zoomRacunValutaService.setIdValute($scope.sifraSelected);
+				zoomRacunValutaService.setNazivValute($scope.naziv);
+				$state.go('racuni_klijenata');
+			}
 		}
 		
 		

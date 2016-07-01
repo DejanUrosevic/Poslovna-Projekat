@@ -64,7 +64,24 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 	@Override
 	public void save(RacuniKlijenata object) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement stmt = 
+				DBConnection.getConnection().prepareStatement("INSERT INTO racuni_pravnih_lica (ID_RACUNA, JMBG_KLIJENTA, ID_VALUTE, PR_PIB, BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+		stmt.setInt(1, object.getId());
+		try {
+			stmt.setInt(2, object.getJmbg());
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			stmt.setNull(2, java.sql.Types.INTEGER);
+		}
+		stmt.setInt(3, object.getValuta());
+		stmt.setString(4, object.getPibKlijenta());
+		stmt.setString(5, object.getPibBanke());
+		stmt.setString(6, object.getBrRacuna());
+		stmt.setDate(7, object.getDatumOtvaranja());
+		stmt.setBoolean(8, object.isVazeci());
+		stmt.executeUpdate();
+	    stmt.close();
+	    DBConnection.getConnection().commit();
 	}
 
 	@Override

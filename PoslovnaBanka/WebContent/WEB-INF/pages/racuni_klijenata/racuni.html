@@ -130,7 +130,7 @@
 			 </p>
 			 <p ng-show="lice === 'pravno' || pravnoLice">
 			 PIB pravnog lica : <input type="text" ng-model = "pibKlijenta">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
 				<img src="css/images/zoom.png" height="30" />
 			 </button>
 			 <br/> <br/>
@@ -138,14 +138,14 @@
 			 </p>
 			 <br/> <br/>
 			 ID valute: <input type="text" ng-model="idValuta" ng-show="stanjePregled" disabled> <input ng-model="idValuta" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-			<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+			<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValuta()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
 				<img src="css/images/zoom.png" height="30" />
 			 </button>
 			 <br/> <br/> 
 			 Valuta racuna: <input type="text" ng-model="valuta" disabled>
 			 <br/> <br/> 
 			 PIB banke:&nbsp;&nbsp;&nbsp; <input type="text" ng-model="pibBanka" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="pibBanka" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomBanka()" ng-show="stanjeSearch || stanjeAdd">
 				<img src="css/images/zoom.png" height="30" />
 			 </button>
 			 <br/> <br/> 

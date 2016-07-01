@@ -1,10 +1,10 @@
 (function(angular){
 	var pravnoLiceModul = angular.module('pravnoLiceEntry', []);
 	
-	pravnoLiceModul.controller('pravnoLiceCtrl', function($scope, $http, $state, $stateParams, zoomServiceFizickoLice, kodoviBankeZoomServis){
+	pravnoLiceModul.controller('pravnoLiceCtrl', function($scope, $http, $state, $stateParams, zoomServiceFizickoLice, kodoviBankeZoomServis, zoomRacunPravnoService){
 		
 		$scope.stanjePregled = true;
-		
+		$scope.zoomLice = zoomRacunPravnoService.getZoom();
 		//postavljanje default vrednosti za option tag domicilna
 		$scope.bankaType = [
 		    { name: 'Da', value: 'true' }, 
@@ -19,6 +19,8 @@
 		{
 			$scope.zoomIcon = true;
 		}
+		
+		
 		
 		if(zoomServiceFizickoLice.getZoom()){
 			$scope.stanjePregled = false;
@@ -73,6 +75,18 @@
 				kodoviBankeZoomServis.setPibPravnogLica($scope.sifraSelected);
 				kodoviBankeZoomServis.setNazivPravnogLica($scope.naziv);
 				$state.go('kodoviBanke');
+			}
+			
+			if(zoomRacunPravnoService.getZoom()){
+				if(zoomRacunPravnoService.getBanka()){
+					zoomRacunPravnoService.setIdBanke($scope.sifraSelected);
+					zoomRacunPravnoService.setNazivBanke($scope.naziv);
+					$state.go('racuni_klijenata');
+				}else{
+					zoomRacunPravnoService.setIdKlijenta($scope.sifraSelected);
+					zoomRacunPravnoService.setNazivKlijenta($scope.naziv);
+					$state.go('racuni_klijenata');
+				}
 			}
 		}
 		

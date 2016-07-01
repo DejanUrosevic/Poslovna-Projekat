@@ -22,10 +22,10 @@
 				pretraga = value;
 			},
 			getJmbg : function(){
-				return id;
+				return jmbg;
 			},
 			setJmbg : function(value){
-				id = value;
+				jmbg = value;
 			},
 			getIme : function(){
 				return ime;

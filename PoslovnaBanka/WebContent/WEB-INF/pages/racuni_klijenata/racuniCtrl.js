@@ -1,7 +1,7 @@
 (function(angular){
 	var racuniModul = angular.module('racuniEntry', []);
 	
-	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService){
+	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService){
 		$scope.stanjePregled = true;
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
@@ -21,10 +21,110 @@
 				$scope.stanjeSearch = false;
 			}
 			
+			if(zoomRacunValutaService.getIdValute() != null || zoomRacunValutaService.getIdValute() != undefined){
+				$scope.idValuta = zoomRacunValutaService.getIdValute();
+				$scope.valuta = zoomRacunValutaService.getNazivValute();
+			}
+			
+			if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
+				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
+				$scope.banka = zoomRacunPravnoService.getNazivBanke();
+			}
+			
 			$scope.jmbgKlijenta = zoomRacunFizickoService.getJmbg();
 			$scope.imeKlijenta = zoomRacunFizickoService.getIme();
 			$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
+					
 			zoomRacunFizickoService.setZoom(false);
+		}
+		
+		if(zoomRacunPravnoService.getZoom()){
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = false;
+			
+			if(zoomRacunPravnoService.getPretraga()){
+				$scope.stanjeSearch = true;
+				$scope.stanjeAdd = false;
+			}else{
+				$scope.stanjeAdd = true;
+				$scope.stanjeSearch = false;
+			}
+			
+			if(zoomRacunPravnoService.getBanka()){
+				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
+				$scope.banka = zoomRacunPravnoService.getNazivBanke();
+				
+				if(zoomRacunValutaService.getIdValute() != null || zoomRacunValutaService.getIdValute() != undefined){
+					$scope.idValuta = zoomRacunValutaService.getIdValute();
+					$scope.valuta = zoomRacunValutaService.getNazivValute();
+				}
+				
+				if(zoomRacunFizickoService.getJmbg() != null || zoomRacunFizickoService.getJmbg() != undefined){
+					$scope.jmbgKlijenta = zoomRacunFizickoService.getJmbg();
+					$scope.imeKlijenta = zoomRacunFizickoService.getIme();
+					$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
+				}
+				
+				if(zoomRacunPravnoService.getIdKlijenta() != null || zoomRacunPravnoService.getIdKlijenta() != undefined){
+					$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
+					$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
+				}
+			}else{
+				if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
+					$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
+					$scope.banka = zoomRacunPravnoService.getNazivBanke();
+				}
+				
+				if(zoomRacunValutaService.getIdValute() != null || zoomRacunValutaService.getIdValute() != undefined){
+					$scope.idValuta = zoomRacunValutaService.getIdValute();
+					$scope.valuta = zoomRacunValutaService.getNazivValute();
+				}
+				
+				$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
+				$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
+			}
+			
+			zoomRacunPravnoService.setZoom(false);
+		}
+		
+		if(zoomRacunValutaService.getZoom()){
+			$scope.stanjePregled = false;
+			
+			if(zoomRacunValutaService.getPretraga()){
+				$scope.stanjeSearch = true;
+				$scope.stanjeAdd = false;
+				$scope.stanjeIzmena = false;
+			}else{
+				$scope.stanjeSearch = false;
+				$scope.stanjeAdd = true;
+				$scope.stanjeIzmena = false;
+			}
+			
+			if(zoomRacunValutaService.getIzmena()){
+				$scope.stanjeSearch = false;
+				$scope.stanjeAdd = false;
+				$scope.stanjeIzmena = true;
+			}
+			
+			if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
+				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
+				$scope.banka = zoomRacunPravnoService.getNazivBanke();
+			}
+			
+			if(zoomRacunPravnoService.getIdKlijenta() != null || zoomRacunPravnoService.getIdKlijenta() != undefined){
+				$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
+				$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
+			}
+			
+			if(zoomRacunFizickoService.getJmbg() != null || zoomRacunFizickoService.getJmbg() != undefined){
+				$scope.jmbgKlijenta = zoomRacunFizickoService.getJmbg();
+				$scope.imeKlijenta = zoomRacunFizickoService.getIme();
+				$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
+			}
+			
+			$scope.idValuta = zoomRacunValutaService.getIdValute();
+			$scope.valuta = zoomRacunValutaService.getNazivValute();
+			zoomRacunValutaService.setZoom(false);
 		}
 		
 		$scope.setSelected = function(id, jmbg, imeKlijenta, prezimeKlijenta, valuta,
@@ -410,6 +510,85 @@
 			$scope.validan = null;
 		}
 		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeAdd)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/racuni_klijenata/save',
+						{id: $scope.sifraSelected, jmbg: $scope.jmbgKlijenta, 
+					ime: $scope.imeKlijenta, prezime: $scope.prezimeKlijenta,
+					pib: $scope.pibKlijenta, naziv: $scope.nazivKlijenta, 
+					idValute: $scope.idValuta, valuta: $scope.valuta,
+					pibBanke: $scope.pibBanka, nazivBanke: $scope.banka,
+					racun: $scope.brRacuna, datum: $scope.datumOtvaranja, 
+					validan: $scope.validan})
+				.success(function(data, status, header)
+				{
+					$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
+					.success(function(data, status, header)
+					{
+						$scope.listaRacuna = data;
+						$scope.stanjeAdd = false;
+						$scope.stanjeSearch = false;
+						$scope.stanjeIzmena = true;
+						$scope.stanjePregled = false;
+						$scope.sifraSelected = null;
+						$scope.klijent = false;
+						$scope.pravnoLice = false;
+						$scope.jmbgKlijenta = null;
+						$scope.imeKlijenta = null;
+						$scope.prezimeKlijenta = null;
+						$scope.pibKlijenta = null;
+						$scope.nazivKlijenta = null;
+						$scope.idValuta = null;
+						$scope.valuta = null;
+						$scope.pibBanka = null;
+						$scope.banka = null;
+						$scope.brRacuna = null;
+						$scope.datumOtvaranja = null;
+						$scope.validan = null;
+						zoomRacunFizickoService.setJmbg('');
+						zoomRacunFizickoService.setIme('');
+						zoomRacunFizickoService.setPrezime('');
+						zoomRacunPravnoService.setIdKlijenta('');
+						zoomRacunPravnoService.setNazivKlijenta('');
+						zoomRacunPravnoService.setIdBanke('');
+						zoomRacunPravnoService.setNazivBanke('');
+						zoomRacunValutaService.setIdValute('');
+						zoomRacunValutaService.setNazivValute('');
+						$state.go('racuni_klijenata');
+					});
+				});
+			}
+			else if($scope.stanjeSearch){
+				$http.post('http://localhost:8080/PoslovnaBanka/fizicko_lice/search',
+						{jmbg: $scope.sifraSelected, naziv: $scope.klijentIme, prezime: $scope.klijentPrezime, email: $scope.klijentEmail, 
+					adresa: $scope.klijentAdresa, telefon: $scope.klijentTelefon})
+				.success(function(data, status, header){
+					$scope.listaLica = data;
+					$state.go('fizicko_lice');
+				});
+			}
+			else if($scope.stanjeIzmena)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/fizicko_lice/update',
+						{jmbg: $scope.sifraSelected, naziv: $scope.klijentIme, prezime: $scope.klijentPrezime, email: $scope.klijentEmail, 
+					adresa: $scope.klijentAdresa, telefon: $scope.klijentTelefon})
+				.success(function(data, status, header){
+					$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/findAll')
+					.success(function(data, status, header)
+					{
+						$scope.listaLica = data;
+						$state.go('fizicko_lice');
+					});
+				});
+			}
+			else
+			{
+				alert('Morate selektovati stanje.');
+			}	
+		}
+		
 		$scope.zoomFizickoLice = function(){
 			zoomRacunFizickoService.setZoom(true);
 			if($scope.stanjeSearch){
@@ -420,5 +599,46 @@
 			
 			$state.go('fizicko_lice');
 		}
+		
+		$scope.zoomPravnoLice = function(){
+			zoomRacunPravnoService.setZoom(true);
+			zoomRacunPravnoService.setBanka(false);
+			if($scope.stanjeSearch){
+				zoomRacunPravnoService.setPretraga(true);
+			}else if($scope.stanjeAdd){
+				zoomRacunPravnoService.setPretraga(false);
+			}
+			
+			$state.go('pravno_lice');
+		}
+		
+		$scope.zoomBanka = function(){
+			zoomRacunPravnoService.setZoom(true);
+			zoomRacunPravnoService.setBanka(true);
+			if($scope.stanjeSearch){
+				zoomRacunPravnoService.setPretraga(true);
+			}else if($scope.stanjeAdd){
+				zoomRacunPravnoService.setPretraga(false);
+			}
+			
+			$state.go('pravno_lice');
+		}
+		
+		$scope.zoomValuta = function(){
+			zoomRacunValutaService.setZoom(true);
+			if($scope.stanjeSearch){
+				zoomRacunValutaService.setPretraga(true);
+				zoomRacunValutaService.setIzmena(false);
+			}else if($scope.stanjeAdd){
+				zoomRacunValutaService.setPretraga(false);
+				zoomRacunValutaService.setIzmena(false);
+			}else if($scope.stanjeIzmena){
+				zoomRacunValutaService.setPretraga(false);
+				zoomRacunValutaService.setIzmena(true);
+			}
+			
+			$state.go('valute');
+		}
+		
 	});
 })(angular)
