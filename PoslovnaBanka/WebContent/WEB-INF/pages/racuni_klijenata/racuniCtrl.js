@@ -640,5 +640,44 @@
 			$state.go('valute');
 		}
 		
+		$scope.deleteLice = function(){
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$http.delete('http://localhost:8080/PoslovnaBanka/racuni_klijenata/delete/' + $scope.sifraSelected)
+				.success(function(data, status, header){
+					$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
+					.success(function(data, status, header){
+						$scope.listaRacuna = data;
+							
+						$scope.stanjeAdd = false;
+						$scope.stanjeSearch = false;
+						$scope.stanjeIzmena = false;
+						$scope.stanjePregled = true;
+							
+						$scope.sifraSelected = null;
+						$scope.klijent = false;
+						$scope.pravnoLice = false;
+						$scope.jmbgKlijenta = null;
+						$scope.imeKlijenta = null;
+						$scope.prezimeKlijenta = null;
+						$scope.pibKlijenta = null;
+						$scope.nazivKlijenta = null;
+						$scope.idValuta = null;
+						$scope.valuta = null;
+						$scope.pibBanka = null;
+						$scope.banka = null;
+						$scope.brRacuna = null;
+						$scope.datumOtvaranja = null;
+						$scope.validan = null;
+							
+						$state.go('racuni_klijenata');
+					});				
+				});
+			}
+			else
+			{
+				alert('Morate izabrati pravno lice za brisanje.');
+			}
+		}
+		
 	});
 })(angular)

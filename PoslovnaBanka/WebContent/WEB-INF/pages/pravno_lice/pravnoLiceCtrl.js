@@ -542,11 +542,7 @@
 							
 							$state.go('pravno_lice');
 						});
-					}
-					
-					
-					
-				
+					}				
 				});
 			}
 			else

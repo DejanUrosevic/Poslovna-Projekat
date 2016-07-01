@@ -87,7 +87,12 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 	@Override
 	public void remove(String id) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement(
+				"DELETE FROM racuni_pravnih_lica WHERE ID_RACUNA = ?");
+		stmt.setString(1, id);
+		stmt.executeUpdate();
+		stmt.close();
+		DBConnection.getConnection().commit();	
 	}
 
 	@Override
