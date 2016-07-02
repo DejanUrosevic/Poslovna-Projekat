@@ -34,6 +34,18 @@
 			$scope.jmbgKlijenta = zoomRacunFizickoService.getJmbg();
 			$scope.imeKlijenta = zoomRacunFizickoService.getIme();
 			$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
+			
+			$scope.sifraSelected = zoomRacunFizickoService.getSifraSelected();
+			$scope.pibKlijenta = zoomRacunFizickoService.getPibKlijenta();
+			$scope.nazivKlijenta = zoomRacunFizickoService.getNazivKlijenta();
+			$scope.pibBanka = zoomRacunFizickoService.getPibBanka();
+			$scope.brRacuna = zoomRacunFizickoService.getBrRacuna();
+			$scope.datumOtvaranja = zoomRacunFizickoService.getDatumOtvaranja();
+			$scope.validan = zoomRacunFizickoService.getValidan();
+			$scope.klijent = true;
+			$scope.pravnoLice = zoomRacunFizickoService.getPravnoLice();
+			$scope.idValuta = zoomRacunFizickoService.getIdValute();
+			$scope.valuta = zoomRacunFizickoService.getNazivValute();
 					
 			zoomRacunFizickoService.setZoom(false);
 		}
@@ -69,6 +81,14 @@
 					$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
 					$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
 				}
+				
+				$scope.sifraSelected = zoomRacunPravnoService.getSifraSelected();
+				$scope.brRacuna = zoomRacunPravnoService.getBrRacuna();
+				$scope.datumOtvaranja = zoomRacunPravnoService.getDatumOtvaranja();
+				$scope.validan = zoomRacunPravnoService.getValidan();
+				$scope.klijent = zoomRacunPravnoService.getKlijent();
+				$scope.pravnoLice = zoomRacunPravnoService.getPravnoLice();
+				
 			}else{
 				if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
 					$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
@@ -79,6 +99,13 @@
 					$scope.idValuta = zoomRacunValutaService.getIdValute();
 					$scope.valuta = zoomRacunValutaService.getNazivValute();
 				}
+				
+				$scope.sifraSelected = zoomRacunPravnoService.getSifraSelected();
+				$scope.brRacuna = zoomRacunPravnoService.getBrRacuna();
+				$scope.datumOtvaranja = zoomRacunPravnoService.getDatumOtvaranja();
+				$scope.validan = zoomRacunPravnoService.getValidan();
+				$scope.klijent = zoomRacunPravnoService.getKlijent();
+				$scope.pravnoLice = true;
 				
 				$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
 				$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
@@ -123,6 +150,9 @@
 					$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
 				}
 			}
+			
+			$scope.klijent = zoomRacunValutaService.getKlijent();
+			$scope.pravnoLice = zoomRacunValutaService.getPravnoLice();
 			
 			$scope.sifraSelected = zoomRacunValutaService.getSifraSelected();
 			$scope.jmbgKlijenta = zoomRacunValutaService.getJmbgKlijenta();
@@ -561,6 +591,7 @@
 						$scope.brRacuna = null;
 						$scope.datumOtvaranja = null;
 						$scope.validan = null;
+						
 						zoomRacunFizickoService.setJmbg('');
 						zoomRacunFizickoService.setIme('');
 						zoomRacunFizickoService.setPrezime('');
@@ -575,12 +606,17 @@
 				});
 			}
 			else if($scope.stanjeSearch){
-				$http.post('http://localhost:8080/PoslovnaBanka/fizicko_lice/search',
-						{jmbg: $scope.sifraSelected, naziv: $scope.klijentIme, prezime: $scope.klijentPrezime, email: $scope.klijentEmail, 
-					adresa: $scope.klijentAdresa, telefon: $scope.klijentTelefon})
+				$http.post('http://localhost:8080/PoslovnaBanka/racuni_klijenata/search',
+						{id: $scope.sifraSelected, jmbg: $scope.jmbgKlijenta, 
+					ime: $scope.imeKlijenta, prezime: $scope.prezimeKlijenta,
+					pib: $scope.pibKlijenta, naziv: $scope.nazivKlijenta, 
+					idValute: $scope.idValuta, valuta: $scope.valuta,
+					pibBanke: $scope.pibBanka, nazivBanke: $scope.banka,
+					racun: $scope.brRacuna, datum: $scope.datumOtvaranja, 
+					validan: $scope.validan})
 				.success(function(data, status, header){
-					$scope.listaLica = data;
-					$state.go('fizicko_lice');
+					$scope.listaRacuna = data;
+					$state.go('racuni_klijenata');
 				});
 			}
 			else if($scope.stanjeIzmena)
@@ -610,11 +646,20 @@
 		
 		$scope.zoomFizickoLice = function(){
 			zoomRacunFizickoService.setZoom(true);
+			
 			if($scope.stanjeSearch){
 				zoomRacunFizickoService.setPretraga(true);
 			}else if($scope.stanjeAdd){
 				zoomRacunFizickoService.setPretraga(false);
 			}
+			
+			zoomRacunFizickoService.setSifraSelected($scope.sifraSelected);
+			zoomRacunFizickoService.setDatumOtvaranja($scope.datumOtvaranja);
+			zoomRacunFizickoService.setValidan($scope.validan);
+			zoomRacunFizickoService.setKlijent($scope.klijent);
+			zoomRacunFizickoService.setPravnoLice($scope.pravnoLice);
+			zoomRacunFizickoService.setIdValute($scope.idValuta);
+			zoomRacunFizickoService.setNazivValute($scope.valuta);
 			
 			$state.go('fizicko_lice');
 		}
@@ -622,11 +667,20 @@
 		$scope.zoomPravnoLice = function(){
 			zoomRacunPravnoService.setZoom(true);
 			zoomRacunPravnoService.setBanka(false);
+			
 			if($scope.stanjeSearch){
 				zoomRacunPravnoService.setPretraga(true);
 			}else if($scope.stanjeAdd){
 				zoomRacunPravnoService.setPretraga(false);
 			}
+			
+			zoomRacunPravnoService.setSifraSelected($scope.sifraSelected);
+
+			zoomRacunPravnoService.setBrRacuna($scope.brRacuna);
+			zoomRacunPravnoService.setDatumOtvaranja($scope.datumOtvaranja);
+			zoomRacunPravnoService.setValidan($scope.validan);
+			zoomRacunPravnoService.setKlijent($scope.klijent);
+			zoomRacunPravnoService.setPravnoLice($scope.pravnoLice);
 			
 			$state.go('pravno_lice');
 		}
@@ -634,17 +688,26 @@
 		$scope.zoomBanka = function(){
 			zoomRacunPravnoService.setZoom(true);
 			zoomRacunPravnoService.setBanka(true);
+			
 			if($scope.stanjeSearch){
 				zoomRacunPravnoService.setPretraga(true);
 			}else if($scope.stanjeAdd){
 				zoomRacunPravnoService.setPretraga(false);
 			}
 			
+			zoomRacunPravnoService.setSifraSelected($scope.sifraSelected);
+			zoomRacunPravnoService.setBrRacuna($scope.brRacuna);
+			zoomRacunPravnoService.setDatumOtvaranja($scope.datumOtvaranja);
+			zoomRacunPravnoService.setValidan($scope.validan);
+			zoomRacunPravnoService.setKlijent($scope.klijent);
+			zoomRacunPravnoService.setPravnoLice($scope.pravnoLice);
+			
 			$state.go('pravno_lice');
 		}
 		
 		$scope.zoomValuta = function(){
 			zoomRacunValutaService.setZoom(true);
+			
 			if($scope.stanjeSearch){
 				zoomRacunValutaService.setPretraga(true);
 				zoomRacunValutaService.setIzmena(false);
@@ -666,7 +729,16 @@
 				zoomRacunValutaService.setBrRacuna($scope.brRacuna);
 				zoomRacunValutaService.setDatumOtvaranja($scope.datumOtvaranja);
 				zoomRacunValutaService.setValidan($scope.validan);
+				zoomRacunValutaService.setKlijent($scope.klijent);
+				zoomRacunValutaService.setPravnoLice($scope.pravnoLice);
 			}
+		
+			zoomRacunValutaService.setSifraSelected($scope.sifraSelected);
+			zoomRacunValutaService.setBrRacuna($scope.brRacuna);
+			zoomRacunValutaService.setDatumOtvaranja($scope.datumOtvaranja);
+			zoomRacunValutaService.setValidan($scope.validan);
+			zoomRacunValutaService.setKlijent($scope.klijent);
+			zoomRacunValutaService.setPravnoLice($scope.pravnoLice);
 			
 			$state.go('valute');
 		}

@@ -19,6 +19,9 @@
 		var brRacuna = '';
 		var datumOtvaranja = '';
 		var validan = true;
+		
+		var klijent = false;
+		var pravnoLice = false;
 			
 		return {
 			getZoom : function() {
@@ -109,15 +112,26 @@
 				return datumOtvaranja;
 			},
 			setDatumOtvaranja : function(value){
-				datumOtvaranja = new Date(value);
+				datumOtvaranja = value;
 			},
 			getValidan : function(){
 				return validan;
 			},
 			setValidan : function(value){
 				validan = value;
+			},
+			getKlijent : function(){
+				return klijent;
+			},
+			setKlijent : function(value){
+				klijent = value;
+			},
+			getPravnoLice : function(){
+				return pravnoLice;
+			},
+			setPravnoLice : function(value){
+				pravnoLice = value;
 			}
-			
 		};
 	});
 })(angular)

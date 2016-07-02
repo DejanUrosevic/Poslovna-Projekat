@@ -1,12 +1,17 @@
 package web.poslovna.serviceImpl;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -115,6 +120,142 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 		stmt.executeUpdate();
 	    stmt.close();
 	    DBConnection.getConnection().commit();
+	}
+
+	@Override
+	public List<RacuniKlijenata> pretraga(String postPayload)throws SQLException, ParseException {
+		// TODO Auto-generated method stub
+		JSONObject json = new JSONObject(postPayload); 
+		
+		boolean fizickoLice = false;
+		boolean pravnoLice = false;
+		
+		//fizicko lice
+		Integer jmbg = null;
+		
+		//pravno lice
+		String pib = null;
+		
+		//banka
+		String pibBanka = null;
+		
+		//valuta
+		Integer idValute = null;
+		
+		//id racuna
+		Integer idRacuna = null;
+		
+		//broj racuna
+		String brRacuna = null;
+		
+		try {
+			brRacuna = json.getString("racun");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		try {
+			idRacuna = json.getInt("id");
+		} catch (Exception e) {
+			// TODO: handle exception
+			idRacuna = -1;
+		}
+		
+		try {
+			idValute = json.getInt("idValute");
+		} catch (Exception e) {
+			// TODO: handle exception
+			idValute = -1;
+		}
+		
+		try {
+			pibBanka = json.getString("pibBanke");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		try {
+			jmbg = json.getInt("jmbg");
+		} catch (Exception e) {
+			// TODO: handle exception
+			jmbg = -1;
+		}
+		
+		try {
+			pib = json.getString("pib");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		//validan
+		Boolean aktivan = true;
+		try {
+			if(json.getString("validan").equals("da")){
+				aktivan = true;
+			}else if(json.getString("validan").equals("ne")){
+				aktivan = false;
+			}	
+		} catch (Exception e) {
+			// TODO: handle exception
+			aktivan = true;
+		}
+		Date date = null;
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String[] datum = (json.getString("datum")).split("T");
+			date = new Date((dateFormat.parse(datum[0])).getTime());	
+		} catch (Exception e) {
+			// TODO: handle exception
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			date = new Date((dateFormat.parse("8000-01-01")).getTime());
+		}
+		
+		/*
+		 * ID RACUNA - idRacuna
+		 * FIZICKO LICE - jmbg
+		 * PRAVNO LICE - pib
+		 * ID VALUTE - idValute
+		 * BANKA - pibBanke
+		 * BR. RACUNA - brRacuna
+		 * DATUM - date
+		 * VALIDAN - aktivan 
+		 */
+		
+		List<RacuniKlijenata> lista = new ArrayList<RacuniKlijenata>();
+		Statement stmt = DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT ID_RACUNA, racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA, banka.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN klijent ON racuni_pravnih_lica.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA JOIN banka ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB WHERE " +
+				"ID_RACUNA = '" + idRacuna + "' OR racuni_pravnih_lica.JMBG_KLIJENTA = '" + jmbg + "' OR racuni_pravnih_lica.ID_VALUTE = '" + idValute + "' OR racuni_pravnih_lica.BAN_PR_PIB = '" + pibBanka + "' OR BAR_RACUN LIKE '%" + brRacuna + "%' OR BAR_DATOTV >= '" + date + "' AND BAR_VAZI = '" + aktivan +"'");
+		
+		while(rs.next()){
+			lista.add(new RacuniKlijenata(rs.getInt("ID_RACUNA"), rs.getInt("JMBG_KLIJENTA"),
+					rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), 
+					rs.getInt("ID_VALUTE"), rs.getString("VA_NAZIV"), 
+					null, null, rs.getString("BAN_PR_PIB"),
+					rs.getString("PR_NAZIV"), rs.getString("BAR_RACUN"), 
+					rs.getDate("BAR_DATOTV"), rs.getBoolean("BAR_VAZI")));
+		}
+		
+		PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT ID_RACUNA,racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.PR_PIB, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV,banka.PR_NAZIV, banka2.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN banka ON racuni_pravnih_lica.PR_PIB = banka.PR_PIB JOIN banka AS banka2 ON racuni_pravnih_lica.BAN_PR_PIB = banka2.PR_PIB WHERE " +
+				"ID_RACUNA = '" + idRacuna + "' OR racuni_pravnih_lica.JMBG_KLIJENTA = '" + jmbg + "' OR racuni_pravnih_lica.ID_VALUTE = '" + idValute + "' OR racuni_pravnih_lica.PR_PIB = '" + pib +"' OR racuni_pravnih_lica.BAN_PR_PIB = '" + pibBanka + "' OR BAR_RACUN LIKE '%" + brRacuna + "%' OR BAR_DATOTV >= '" + date + "' AND BAR_VAZI = '" + aktivan +"'");
+		ResultSet rs2 = stmt2.executeQuery();
+		
+		while(rs2.next()){
+			lista.add(new RacuniKlijenata(
+					rs2.getInt("ID_RACUNA"), 
+					rs2.getInt(2),
+					null,
+					null,
+					rs2.getInt(3),
+					rs2.getString(9),
+					rs2.getString(4), 
+					rs2.getString(10),
+					rs2.getString(5),
+					rs2.getString(11), 
+					rs2.getString(6), 
+					rs2.getDate(7),
+					rs2.getBoolean(8)));
+		}
+		return lista;
 	}
 
 }

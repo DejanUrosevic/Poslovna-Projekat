@@ -192,4 +192,11 @@ public class RacuniKlijenataController {
 
 		return new ResponseEntity<List<RacuniKlijenata>>(HttpStatus.OK);	
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> searchState(@RequestBody String reqBody) throws SQLException, ParseException
+	{
+		
+		return new ResponseEntity<List<RacuniKlijenata>>(racuniSer.pretraga(reqBody), HttpStatus.OK);	
+	}
 }
