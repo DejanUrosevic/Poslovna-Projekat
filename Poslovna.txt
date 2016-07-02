@@ -1,8 +1,3 @@
-aleksandarmanasijevic
-060319933aA
-manasbre@gmail.com
-
-
 
 
 2. Da se odradi error handling nakon dodatog entiteta, 
