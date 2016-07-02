@@ -135,11 +135,11 @@ public class NaseljenoMestoServiceImpl implements NaseljenoMestoService{
 	@Override
 	public void update(NaseljenoMesto object) throws SQLException 
 	{
-		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("UPDATE NASELJENO_MESTO SET NM_NAZIV = ?, NM_PTTOZNAKA = ? WHERE NM_SIFRA = ? AND DR_SIFRA = ?");
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("UPDATE NASELJENO_MESTO SET NM_NAZIV = ?, NM_PTTOZNAKA = ?, DR_SIFRA = ? WHERE NM_SIFRA = ?");
 		stmt.setString(1, object.getNaziv());
 		stmt.setString(2, object.getPtt_oznaka());
-		stmt.setInt(3, object.getSifra());
-		stmt.setString(4, object.getSifra_drzava());
+		stmt.setString(3,  object.getSifra_drzava());
+		stmt.setInt(4, object.getSifra());
 		
 		stmt.executeUpdate();
 	    stmt.close();

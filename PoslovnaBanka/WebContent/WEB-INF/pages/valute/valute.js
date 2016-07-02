@@ -179,8 +179,19 @@
 			$scope.zvanicnaSifra = null;
 			$scope.naziv = null;
 			$scope.izmenaDomicilna = null;
-			$scope.sifraDrzava = null;
-			$scope.nazivDrzava = null;
+			
+			if(!angular.equals({}, $stateParams)){
+				var drzavaId = $stateParams.id;
+				$scope.sifraDrzava = drzavaId;
+				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne',
+				{sifra: drzavaId})
+				.success(function(data, status, header){
+					$scope.nazivDrzava = data[0].naziv;
+				});
+			}else{
+				$scope.sifraDrzava = null;
+				$scope.nazivDrzava = null;
+			}
 		}
 		
 		$scope.commitAction = function()

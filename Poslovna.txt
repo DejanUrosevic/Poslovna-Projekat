@@ -1,24 +1,27 @@
+aleksandarmanasijevic
+060319933aA
+manasbre@gmail.com
+
+
+
+
+2. Da se odradi error handling nakon dodatog entiteta, 
+jer je i dalje stanje dodavanja i ako kliknes na commit, 
+pokusace da doda isti entitet, a to ne sme.
+4. Search po datumima ne valja!
+5. Search nije dobar, kada se koristi NEXT mehanizam.
+
+-------------------------------------------------------------------------------------------------------
 1. Da li prilikom dodavanja pravnog lica(banke) treba da dodamo i zoom za kod banke (swift kod)?
 
 Odgovor(komentar):
+Nema potrebe.
 ---------------
 2. Da li valuta treba za next dugme da vodi na kurs te valute?
 
 Odgovor(komentar):
+Pa tako smo radili i ostale tabele, ne vidim razlog zasto i za ovu ne bi.
 ---------------
-3. Treba dodati da kada se unosi pravno lice moze da se odabere da li je banka ili nije.
 
-Odgovor(komentar):
----------------
-4. Prilikom selektovanja valute i prilikom pretrage, select box za stranu ili domacu valutu ne radi, ako se prvo stisnu strelice pa onda selektuje neka druga klikom na tabelu onda ispadne da li je domicila (true or false) i ponudi chack box za odabir.
-
-Odgovor(komentar):
----------------
 5. Da li jedna banka moze da ima vise kodovaBanke?
-
-Odgovor(komentar):
----------------
-6. Posto nemamo racun koji u sebi ima i fizickog i pravnog klijenta kao vlasnika, odnosno jedan je null pravio sam dva select upita, u prvom vraca samo racune gde su vlasnici fizicka lica, a drugi bi trebao pravna lica, ali drugi ne valja i baca exception (java.sql.SQLException: No current row in the ResultSet) i ja ne mogu da nadjem sta je resenje, pokusao sam i sa imenima kolona prilikom pozivanja.
-
-Odgovor(komentar):
----------------
+Ma moze, kao da je bitno.

@@ -20,22 +20,36 @@
 		if(zoomService.getZoom())
 		{
 			$scope.stanjePregled = false; 
-			$scope.stanjeIzmena = false;
+			
 			
 			if(zoomService.getPretraga())
 			{
 				$scope.stanjeSearch = true;
 				$scope.stanjeAdd = false;
+				$scope.stanjeIzmena = false;
 				
 			}
+			else if(zoomService.getIzmena())
+			{
+				$scope.stanjeSearch = false;
+				$scope.stanjeAdd = false;
+				$scope.stanjeIzmena = true;
+			}
+			
 			else
 			{
 				$scope.stanjeAdd = true;
 				$scope.stanjeSearch = false;
+				$scope.stanjeIzmena = false;
 			}
+			
+			$scope.sifraSelected = zoomService.getSifra();
+			$scope.nazivNaselje = zoomService.getNaziv();
+			$scope.pttOznaka = zoomService.getPtt();
 			
 			$scope.oznakaDrzava = zoomService.getSifraDrzave();
 			$scope.nazivDrzava = zoomService.getNazivDrzave();
+			
 			zoomService.setZoom(false);
 		}
 		
@@ -424,6 +438,10 @@
 		{
 			zoomService.setZoom(true);
 			
+			zoomService.setSifra($scope.sifraSelected);
+			zoomService.setNaziv($scope.nazivNaselje);
+			zoomService.setPtt($scope.pttOznaka);
+			
 			if($scope.stanjeSearch)
 			{
 				zoomService.setPretraga(true);
@@ -431,6 +449,10 @@
 			else if($scope.stanjeAdd)
 			{
 				zoomService.setPretraga(false);
+			}
+			else if($scope.stanjeIzmena)
+			{
+				zoomService.setIzmena(true);
 			}
 			
 			$state.go('drzava');
