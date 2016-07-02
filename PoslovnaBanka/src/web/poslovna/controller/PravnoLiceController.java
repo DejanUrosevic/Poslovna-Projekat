@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
+import web.poslovna.model.KodoviBanke;
 import web.poslovna.model.KursnaLista;
 import web.poslovna.model.NaseljenoMesto;
 import web.poslovna.model.PravnoLice;
@@ -76,8 +77,14 @@ public class PravnoLiceController {
 	}
 	
 	@RequestMapping(value = "/{idPravnoLice}/kursne_liste", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<KursnaLista>> findNaselje(@PathVariable(value="idPravnoLice") String id) throws SQLException{
+	public @ResponseBody ResponseEntity<List<KursnaLista>> findKursneListe(@PathVariable(value="idPravnoLice") String id) throws SQLException{
 		
 		return new ResponseEntity<List<KursnaLista>>(liceSer.findKursneListe(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{idPravnoLice}/kodovi_banke", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<KodoviBanke>> findKodoviBanke(@PathVariable(value="idPravnoLice") String id) throws SQLException{
+		
+		return new ResponseEntity<List<KodoviBanke>>(liceSer.findKodoviBanke(id), HttpStatus.OK);
 	}
 }

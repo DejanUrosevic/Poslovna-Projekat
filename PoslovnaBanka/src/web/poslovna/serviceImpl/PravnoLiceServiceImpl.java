@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import web.poslovna.db.DBConnection;
 import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
+import web.poslovna.model.KodoviBanke;
 import web.poslovna.model.KursnaLista;
 import web.poslovna.model.PravnoLice;
 import web.poslovna.service.PravnoLiceService;
@@ -232,6 +233,20 @@ public class PravnoLiceServiceImpl implements PravnoLiceService{
 		}
 		
 		return lista;
+	}
+
+	@Override
+	public List<KodoviBanke> findKodoviBanke(String id) throws SQLException 
+	{
+		Statement stmt = DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT SIFRA_BANKE, SWIFT_KOD, KODOVI_BANKE.PR_PIB, PR_NAZIV FROM KODOVI_BANKE"
+				+ " JOIN BANKA ON KODOVI_BANKE.PR_PIB = BANKA.PR_PIB WHERE KODOVI_BANKE.PR_PIB = '" + Integer.parseInt(id) + "' ORDER BY SIFRA_BANKE" );
+		
+		List<KodoviBanke> kodovi = new ArrayList<KodoviBanke>();
+		while(rs.next()){
+			kodovi.add(new KodoviBanke(rs.getString("SIFRA_BANKE"), rs.getString("SWIFT_KOD"), rs.getString("PR_PIB"), rs.getString("PR_NAZIV")));
+		}
+		return kodovi;
 	}
 
 }

@@ -50,6 +50,10 @@
 			templateUrl: 'kodoviBanke/kodoviBanke.html',
 			controller: 'kodoviBankeCtrl'
 		})
+		.state('pravni_kod_banke', {url: '/pravno_lice/:id/kod_banke',
+			templateUrl: 'kodoviBanke/kodoviBanke.html',
+			controller: 'kodoviBankeCtrl'
+		})
 		.state('racuni_klijenata', {url: '/racuni_klijenata',
 			templateUrl: 'racuni_klijenata/racuni.html',
 			controller: 'racuniCtrl'

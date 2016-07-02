@@ -613,11 +613,11 @@
 				
 				if($scope.izborNext === 'kodovi_banke')
 				{
-					$state.go('ovlasceno_lice', {id: $scope.sifraSelected});
+					$state.go('pravni_kod_banke', {id: $scope.sifraSelected.replace(/\s/g, '')});
 				}
 				else if($scope.izborNext === 'racuni_klijenata')
 				{
-					$state.go('racuni_klijenata', {id: $scope.sifraSelected});
+					$state.go('racuni_klijenata', {id: $scope.sifraSelected.replace(/\s/g, '')});
 				}
 				else if($scope.izborNext === 'kursna_lista')
 				{

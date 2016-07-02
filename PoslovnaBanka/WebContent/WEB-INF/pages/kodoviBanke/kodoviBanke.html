@@ -109,8 +109,8 @@
 								<input type="text" ng-model="swift">
 							</td>
 						</tr>
-						<tr>
-							<td> PIB pravnog lica: </td>
+						<tr ng-show="zoomIcon">
+							<td > PIB pravnog lica: </td>
 							<td>
 								  <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeIzmena || stanjePregled" disabled> 
 								  <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
@@ -121,7 +121,7 @@
 								 </button>
 							</td>
 						</tr>
-						<tr>
+						<tr ng-show="zoomIcon">
 							<td>   Naziv pravnog lica:  </td>
 							<td>
 								  <input type="text" ng-model="nazivPravnogLica" disabled>

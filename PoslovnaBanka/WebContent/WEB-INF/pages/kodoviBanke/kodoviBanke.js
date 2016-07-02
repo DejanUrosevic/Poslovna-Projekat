@@ -7,6 +7,16 @@
 		
 		$scope.stanjePregled = true;
 		
+		if(!angular.equals({}, $stateParams))
+		{
+			$scope.zoomIcon = false;
+		}
+		else
+		{
+			$scope.zoomIcon = true;
+		}
+		
+		
 		if(kodoviBankeZoomServis.getZoom())
 		{
 			$scope.stanjePregled = false; 
@@ -33,12 +43,23 @@
 		}
 		
 		
+		if(!angular.equals({}, $stateParams))
+		{
+			var drzavaId = $stateParams.id;
+			$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/' + drzavaId + '/kodovi_banke')
+			.success(function(data, status, header){
+				$scope.listaKodova = data;
+			});
+		}
+		else
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
+			.success(function(data, status, header){
+				
+				$scope.listaKodova = data;
+			});
+		}
 		
-		$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
-		.success(function(data, status, header){
-			
-			$scope.listaKodova = data;
-		});
 		
 		
 		$scope.setSelected = function(id, swift, pib, nazivPL)
@@ -174,8 +195,23 @@
 			
 			$scope.sifraSelected = null;
 			$scope.swift = null;
-			$scope.pibPravnogLica = null;
-			$scope.nazivPravnogLica = null;
+			
+			if(!angular.equals({}, $stateParams))
+			{
+				var pravnoLiceId = $stateParams.id;
+				$scope.pibPravnogLica = drzavaId;
+				$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/findOne',
+				{sifra: pravnoLiceId})
+				.success(function(data, status, header){
+					$scope.nazivPravnogLica = data[0].naziv;
+				});
+			}
+			else
+			{
+				$scope.pibPravnogLica = null;
+				$scope.nazivPravnogLica = null;
+			}
+			
 			
 		}
 		
@@ -201,19 +237,40 @@
 						{sifra: $scope.sifraSelected, swift: $scope.swift, pibPravnogLica: $scope.pibPravnogLica, nazivPravnogLica: $scope.nazivPravnogLica})
 				.success(function(data, status, header)
 				{
-					$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
-					.success(function(data, status, header)
-					{
-						$scope.listaKodova = data;
-						for(var i=0; i<$scope.listaKodova.length; i++)
-						{
-							if($scope.sifraSelected == $scope.listaKodova[i].sifra.replace(/[\s]/g, ''))
+					if(!angular.equals({}, $stateParams)){
+						var drzavaId = $stateParams.id;
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/' + drzavaId + '/kodovi_banke')
+						.success(function(data, status, header){
+							$scope.listaKodova = data;
+							
+							for(var i=0; i<$scope.listaKodova.length; i++)
 							{
-								$scope.sifraSelected = $scope.listaKodova[i].sifra;
-								break;
+								if($scope.sifraSelected == $scope.listaKodova[i].sifra.replace(/[\s]/g, ''))
+								{
+									$scope.sifraSelected = $scope.listaKodova[i].sifra;
+									break;
+								}
 							}
-						}
-					});
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.listaKodova = data;
+							for(var i=0; i<$scope.listaKodova.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaKodova[i].sifra.replace(/[\s]/g, ''))
+								{
+									$scope.sifraSelected = $scope.listaKodova[i].sifra;
+									break;
+								}
+							}
+						});
+					}
+					
 				});
 			}
 			else if($scope.stanjeSearch){
@@ -221,22 +278,46 @@
 						{sifra: $scope.sifraSelected, swift: $scope.swift, pibPravnogLica: $scope.pibPravnogLica, nazivPravnogLica: $scope.nazivPravnogLica})
 				.success(function(data, status, header){
 					
+					if(!angular.equals({}, $stateParams))
+					{
+						$scope.listaKodova = data;
+						$state.go('pravni_kod_banke');
+					}
+					else
+					{
 						$scope.listaKodova = data;
 						$state.go('kodoviBanke');
-					
+					}
+
 				});
 			}
 			else if($scope.stanjeIzmena)
 			{
 				$http.post('http://localhost:8080/PoslovnaBanka/kodoviBanke/update',
 						{sifra: $scope.sifraSelected, swift: $scope.swift, pibPravnogLica: $scope.pibPravnogLica, nazivPravnogLica: $scope.nazivPravnogLica})
-				.success(function(data, status, header){
-					$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
-					.success(function(data, status, header)
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams))
 					{
-						$scope.listaKodova = data;
-						$state.go('kodoviBanke');
-					});
+						var drzavaId = $stateParams.id;
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/' + drzavaId + '/kodovi_banke')
+						.success(function(data, status, header){
+							
+							$scope.listaKodova = data;
+							$state.go('pravni_kod_banke');
+					
+						});
+					}
+					else
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.listaKodova = data;
+							$state.go('kodoviBanke');
+						});
+					}
 				});
 				
 			}
@@ -249,7 +330,22 @@
 		$scope.deleteState = function(){
 			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
 				$http.delete('http://localhost:8080/PoslovnaBanka/kodoviBanke/delete/' + $scope.sifraSelected)
-				.success(function(data, status, header){
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams))
+					{
+						var drzavaId = $stateParams.id;
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/' + drzavaId + '/kodovi_banke')
+						.success(function(data, status, header){
+							
+							$scope.listaKodova = data;
+							$state.go('pravni_kod_banke');
+					
+						});
+					}
+					else
+					{
 						$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
 						.success(function(data, status, header){
 							
@@ -267,6 +363,8 @@
 							
 							$state.go('kodoviBanke');
 						});		
+					}
+						
 				});
 			}
 			else
@@ -276,23 +374,39 @@
 		}
 		
 		
-		$scope.refreshState = function(){
-			
-			$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
-			.success(function(data, status, header)
+		$scope.refreshState = function()
+		{
+			if(!angular.equals({}, $stateParams))
 			{
-				$scope.listaKodova = data;
+				var drzavaId = $stateParams.id;
 				
-				$scope.stanjeAdd = false;
-				$scope.stanjePregled = true;
-				$scope.stanjeSearch = false;
-				$scope.stanjeIzmena = false;
-				
-				$scope.sifraSelected = null;
-				$scope.swift = null;
-				$scope.pibPravnogLica = null;
-				$scope.nazivPravnogLica = null;
-			});
+				$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/' + drzavaId + '/kodovi_banke')
+				.success(function(data, status, header){
+					
+					$scope.listaKodova = data;
+			
+				});
+			}
+			else
+			{
+				$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findAll')
+				.success(function(data, status, header)
+				{
+					$scope.listaKodova = data;
+					
+					$scope.stanjeAdd = false;
+					$scope.stanjePregled = true;
+					$scope.stanjeSearch = false;
+					$scope.stanjeIzmena = false;
+					
+					$scope.sifraSelected = null;
+					$scope.swift = null;
+					$scope.pibPravnogLica = null;
+					$scope.nazivPravnogLica = null;
+				});
+			}
+			
+			
 		}
 		
 		
