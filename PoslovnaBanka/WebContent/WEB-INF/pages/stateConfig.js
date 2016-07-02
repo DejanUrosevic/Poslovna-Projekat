@@ -58,5 +58,9 @@
 			templateUrl: 'kursna_lista/kursnaLista.html',
 			controller: 'kursnaListaCtrl'
 		})
+		.state('pravna_lica_kurs', {url: '/pravno_lice/:id/kursne_liste',
+			templateUrl: 'kursna_lista/kursnaLista.html',
+			controller: 'kursnaListaCtrl'
+		})
 	});
 })(angular)

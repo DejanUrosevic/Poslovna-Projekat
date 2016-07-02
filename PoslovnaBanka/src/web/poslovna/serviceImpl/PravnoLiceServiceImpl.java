@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import web.poslovna.db.DBConnection;
 import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
+import web.poslovna.model.KursnaLista;
 import web.poslovna.model.PravnoLice;
 import web.poslovna.service.PravnoLiceService;
 
@@ -216,6 +217,21 @@ public class PravnoLiceServiceImpl implements PravnoLiceService{
 		}
 		
 		
+	}
+
+	@Override
+	public List<KursnaLista> findKursneListe(String id) throws SQLException 
+	{
+		Statement stmt = DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT ID_KURSNE_LISTE, KL_DATUM, KURSNA_LISTA.PR_PIB, PR_NAZIV, KL_BROJ, KL_DATPR FROM KURSNA_LISTA"
+				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB WHERE KURSNA_LISTA.PR_PIB = '"+ Integer.parseInt(id.replace(" ", "")) + "' ORDER BY ID_KURSNE_LISTE" );
+		
+		List<KursnaLista> lista = new ArrayList<KursnaLista>();
+		while(rs.next()){
+			lista.add(new KursnaLista(rs.getInt("ID_KURSNE_LISTE"), rs.getDate("KL_DATUM"), rs.getBigDecimal("KL_BROJ"), rs.getDate("KL_DATPR"), rs.getString("PR_PIB"), rs.getString("PR_NAZIV")));
+		}
+		
+		return lista;
 	}
 
 }

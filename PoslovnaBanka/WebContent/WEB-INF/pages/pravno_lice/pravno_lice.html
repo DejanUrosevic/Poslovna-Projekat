@@ -64,9 +64,17 @@
 						<td>&nbsp</td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="">
+								style="background-color: transparent; border-color: transparent;" ng-click="nextFunction()">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
+						<td ng-show="klikZaZoom">
+							<select ng-model="izborNext" ng-change="nextFunction()">
+								<option value=""> * Izaberite tabelu *</option>
+								<option value="kodovi_banke"> Kodovi banke </option>
+								<option value="racuni_klijenata"> Racuni klijenta </option>
+								<option value="kursna_lista"> Kursna lista </option>
+							</select>
+						</td>
 					</tr>
 				</table>
 				

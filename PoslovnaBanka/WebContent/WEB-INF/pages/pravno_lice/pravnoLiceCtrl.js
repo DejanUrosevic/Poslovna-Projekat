@@ -606,5 +606,27 @@
 			});
 		}
 		
+		
+		$scope.nextFunction = function(){
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined){
+				$scope.klikZaZoom = true;
+				
+				if($scope.izborNext === 'kodovi_banke')
+				{
+					$state.go('ovlasceno_lice', {id: $scope.sifraSelected});
+				}
+				else if($scope.izborNext === 'racuni_klijenata')
+				{
+					$state.go('racuni_klijenata', {id: $scope.sifraSelected});
+				}
+				else if($scope.izborNext === 'kursna_lista')
+				{
+					$state.go('pravna_lica_kurs', {id: $scope.sifraSelected.replace(/\s/g, '')});
+				}
+			}else{
+				alert("Odaberite fizicko lice.");
+			}	
+		}
+		
 	});
 })(angular)

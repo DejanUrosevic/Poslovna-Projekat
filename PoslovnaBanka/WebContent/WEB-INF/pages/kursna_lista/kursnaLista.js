@@ -52,10 +52,22 @@
 		}
 		//
 		
-		$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
-		.success(function(data, status, header){
-			$scope.listaKursa = data;
-		});
+		if(!angular.equals({}, $stateParams))
+		{
+			var pravnoLiceId = $stateParams.id;
+			
+			$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/+ ' + pravnoLiceId +'/kursne_liste')
+			.success(function(data, status, header){
+				$scope.listaKursa = data;
+			});
+		}
+		else
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
+			.success(function(data, status, header){
+				$scope.listaKursa = data;
+			});
+		}
 		
 		$scope.setSelected = function(id, datum, broj_liste, primenjuje_se_od, pib, naziv_banke)
 		{
@@ -216,11 +228,12 @@
 			
 			if(!angular.equals({}, $stateParams)){
 				var drzavaId = $stateParams.id;
-				$scope.oznakaDrzava = drzavaId;
-				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne',
+				
+				$scope.pibBanka = drzavaId;
+				$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/findOne',
 				{sifra: drzavaId})
 				.success(function(data, status, header){
-					$scope.nazivDrzava = data[0].naziv;
+					$scope.nazivBanke = data[0].naziv;
 				});
 			}else{
 				$scope.pibBanka = null;
@@ -253,19 +266,20 @@
 				{
 					if(!angular.equals({}, $stateParams)){
 						var drzavaId = $stateParams.id;
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
 						.success(function(data, status, header)
 						{
-							$scope.listaNaselja = data;
-							for(var i=0; i<$scope.listaNaselja.length; i++)
+							$scope.listaKursa = data;
+							for(var i=0; i<$scope.listaKursa.length; i++)
 							{
-								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								if($scope.sifraSelected == $scope.listaKursa[i].id)
 								{
-									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
+									$scope.sifraSelected = $scope.listaKursa[i].id;
 									break;
 								}
 							}
-							$state.go('drzava_naselje', {id: drzavaId});
+							$state.go('pravna_lica_kurs');
 						});
 					}else{
 						$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
@@ -292,7 +306,7 @@
 					if(!angular.equals({}, $stateParams))
 					{
 						$scope.listaKursa = data;
-						$state.go('drzava_naselje');
+						$state.go('pravna_lica_kurs');
 					}
 					else
 					{
@@ -310,11 +324,11 @@
 					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/update',
 							{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
 					.success(function(data, status, header){
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
 						.success(function(data, status, header)
 						{
 							$scope.listaKursa = data;
-							$state.go('drzava_naselje');
+							$state.go('pravna_lica_kurs');
 						});
 					});
 				}
@@ -342,10 +356,10 @@
 			if(!angular.equals({}, $stateParams))
 			{
 				var drzavaId = $stateParams.id;
-				$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+				$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
 				.success(function(data, status, header)
 				{
-					$scope.listaNaselja = data;
+					$scope.listaKursa = data;
 					
 					$scope.stanjeAdd = false;
 					$scope.stanjePregled = true;
@@ -353,12 +367,13 @@
 					$scope.stanjeIzmena = false;
 					
 					$scope.sifraSelected = null;
-					$scope.nazivNaselje = null;
-					$scope.pttOznaka = null;
-					$scope.oznakaDrzava = $scope.listaNaselja[0].drzavaSifra;
-					$scope.nazivDrzava = $scope.listaNaselja[0].drzavaNaziv;
+					$scope.danasnjiDatum = null;
+					$scope.brKursneListe = null;
+					$scope.primenjujeSeOd = null;
+					$scope.pibBanka = $scope.listaKursa[0].pib;
+					$scope.nazivBanke = $scope.listaKursa[0].nazivBanke;
 					
-					$state.go('drzava_naselje', {id: drzavaId});
+					$state.go('pravna_lica_kurs', {id: drzavaId});
 				});
 			}
 			else
@@ -392,21 +407,24 @@
 					{
 						var drzavaId = $stateParams.id;
 						
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
 						.success(function(data, status, header)
 						{
-							$scope.listaNaselja = data;
+							$scope.listaKursa = data;
 							
 							$scope.sifraSelected = null;
-							$scope.nazivNaselje = null;
-							$scope.pttOznaka = null;
+							$scope.danasnjiDatum = null;
+							$scope.brKursneListe = null;
+							$scope.primenjujeSeOd = null;
+							$scope.pibBanka = null;
+							$scope.nazivBanke = null;
 							
 							$scope.stanjeAdd = false;
 							$scope.stanjeSearch = false;
 							$scope.stanjePregled = true;
 							$scope.stanjeIzmena = false;
 							
-							$state.go('drzava_naselje');
+							$state.go('pravna_lica_kurs');
 						});
 					}
 					else
