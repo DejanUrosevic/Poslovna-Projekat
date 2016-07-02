@@ -54,5 +54,9 @@
 			templateUrl: 'racuni_klijenata/racuni.html',
 			controller: 'racuniCtrl'
 		})
+		.state('kursna_lista', {url: '/kursne_liste',
+			templateUrl: 'kursna_lista/kursnaLista.html',
+			controller: 'kursnaListaCtrl'
+		})
 	});
 })(angular)
