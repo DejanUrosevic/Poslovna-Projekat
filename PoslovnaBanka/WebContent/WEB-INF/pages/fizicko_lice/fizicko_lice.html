@@ -107,25 +107,58 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;" ng-show="!stanjePregled">
-			 <br/>
-			 Jmbg klijenta: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 Ime klijenta: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" ng-model="klijentIme">
-			 <br/> <br/> 
-			 Prezime klijenta: <input type="text" ng-model="klijentPrezime">
-			 <br/> <br/> 
-			 Email klijenta:&nbsp;&nbsp;&nbsp; <input type="text" ng-model="klijentEmail"> 
-			 <br/> <br/> 
-			 Adresa klijenta: &nbsp;<input type="text" ng-model="klijentAdresa">
-			 <br/><br/>
-			 Telefon klijenta: <input type="text" ng-model="klijentTelefon">
+		<div ng-show="!stanjePregled">
+			  <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> Jmbg klijenta: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>
+							     <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr>
+							<td>  Ime klijenta: </td>
+							<td>
+								<input type="text" ng-model="klijentIme">
+							</td>
+						</tr>
+						<tr>
+							<td>   Prezime klijenta:  </td>
+							<td>
+								  <input type="text" ng-model="klijentPrezime">
+							</td>
+						</tr>
+						<tr>
+							<td>    Email klijenta:  </td>
+							<td>
+								  <input type="text" ng-model="klijentEmail">
+							</td>
+						</tr>
+						<tr>
+							<td>    Adresa klijenta:  </td>
+							<td>
+								  <input type="text" ng-model="klijentAdresa">
+							</td>
+						</tr>
+						<tr>
+							<td>   Telefon klijenta:  </td>
+							<td>
+								  <input type="text" ng-model="klijentTelefon">
+							</td>
+						</tr>
+					</table>
+				</div>
+			 </div>
+			 <div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
+			 </div>
 		</div>
 				
 	</div>

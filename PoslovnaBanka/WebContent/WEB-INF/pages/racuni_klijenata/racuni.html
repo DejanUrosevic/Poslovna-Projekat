@@ -86,12 +86,14 @@
 					</tr>
 					<tr ng-repeat="list in listaRacuna" ng-click="setSelected(list.id, list.jmbg, list.imeKlijenta, list.prezimeKlijenta, list.valuta, list.nazivValute,list.pibKlijenta, list.nazivValute, list.pibBanke, list.nazivBanke, list.brRacuna, list.datumOtvaranja, list.vazeci)" ng-class="{selected: list.id === sifraSelected}">
 						<td> {{list.id}}</td>
-						<td> <p ng-show="list.jmbg != null"> {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}} </p><p ng-show="list.pibKlijenta != null">{{list.nazivKlijenta}}</p></td>
+						<td ng-show="list.jmbg">  {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}} </td>
+						<td ng-show="list.pibKlijenta">{{list.nazivKlijenta}}</td>
 						<td> {{list.nazivValute}}</td>
 						<td> {{list.nazivBanke}}</td>
 						<td> {{list.brRacuna}}</td>
 						<td> {{list.datumOtvaranja}}</td>
-						<td > <p ng-show="!list.vazeci">Ne</p><p ng-show="list.vazeci">Da</p></td>
+						<td ng-show="!list.vazeci">Ne</td>
+						<td ng-show="list.vazeci">Da</td>
 					</tr>
 				</table>
 			
@@ -102,61 +104,142 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;">
-			 <br/>
-			 ID racuna: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 <!-- select dugme da se bira da li je fizicko lice ili pravno lice -->
-			 <select ng-model="lice" ng-show="stanjeSearch || stanjeAdd">
-			 	<option value="fizicko">Fizicko lice</option>
-			 	<option value="pravno">Pravno lice</option>
-			 </select>
-			 <p ng-show="lice === 'fizicko' || klijent">
-			 ID fizickog lica : <input type="text" ng-model = "jmbgKlijenta"  ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="jmbgKlijenta" ng-show="stanjeIzmena || stanjePregled" disabled>
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomFizickoLice()" ng-show="stanjeSearch || stanjeAdd">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/> 
-			 Ime klijenta : <input type="text" ng-model = "imeKlijenta" disabled>
-			 <br/> <br/>
-			 Prezime klinta : <input type="text" ng-model = "prezimeKlijenta" disabled>
-			 <br/> <br/>
-			 </p>
-			 <p ng-show="lice === 'pravno' || pravnoLice">
-			 PIB pravnog lica : <input type="text" ng-model = "pibKlijenta">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 Naziv klijenta : <input type="text" ng-model = "nazivKlijenta" disabled>
-			 </p>
-			 <br/> <br/>
-			 ID valute: <input type="text" ng-model="idValuta" ng-show="stanjePregled" disabled> <input ng-model="idValuta" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-			<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValuta()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/> 
-			 Valuta racuna: <input type="text" ng-model="valuta" disabled>
-			 <br/> <br/> 
-			 PIB banke:&nbsp;&nbsp;&nbsp; <input type="text" ng-model="pibBanka" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="pibBanka" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomBanka()" ng-show="stanjeSearch || stanjeAdd">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/> 
-			 Banka: <input ng-model="banka" disabled>
-			 <br/><br/>
-			 Broj racuna: &nbsp;<input type="text" ng-model="brRacuna" ng-show="stanjeIzmena || stanjePregled" disabled> <input ng-model="brRacuna" ng-show="stanjeSearch || stanjeAdd">
-			 <br/><br/>
-			 Datum otvaranja: <input type="date" ng-model="datumOtvaranja">
-			 <br/><br/>
-			 Validan: <input type="text" ng-model="validan" ng-show="stanjePregled" disabled> <input type="text" ng-model="validan" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-			 <br/><br/>
+		<div ng-show="!stanjePregled">
+			 <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> ID racuna: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr ng-show="stanjeSearch || stanjeAdd">
+							<td>  Izaberite lice: </td>
+							<td>
+								<select ng-model="lice">
+								 	<option value="fizicko">Fizicko lice</option>
+								 	<option value="pravno">Pravno lice</option>
+								 </select>
+							</td>
+						</tr>
+						<tr ng-show="lice === 'fizicko'">
+							<td>  ID fizickog lica:  </td>
+							<td>
+								  <input type="text" ng-model = "jmbgKlijenta"  ng-show="stanjeSearch || stanjeAdd">
+								  <input type="text" ng-model="jmbgKlijenta" ng-show="stanjeIzmena || stanjePregled" disabled>
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomFizickoLice()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="lice === 'fizicko'">
+							<td> Ime klijenta: </td>
+							<td>
+								  <input type="text" ng-model="imeKlijenta" disabled>
+							</td>
+						</tr>
+						<tr ng-show="lice === 'fizicko' ">
+							<td>   Prezime klijenta:  </td>
+							<td>
+								  <input type="text" ng-model="prezimeKlijenta" disabled>
+							</td>
+						</tr>
+						
+						<tr ng-show="lice === 'pravno' ">
+							<td>  PIB pravnog lica:  </td>
+							<td>
+								  <input type="text" ng-model = "pibKlijenta">
+								  
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="lice === 'pravno'">
+							<td>  Naziv pravnog lica: </td>
+							<td>
+								  <input type="text" ng-model="nazivKlijenta" disabled>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>  ID valute:  </td>
+							<td>
+								  <input type="text" ng-model="idValuta" ng-show="stanjePregled" disabled>
+								  <input ng-model="idValuta" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+								  
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValuta()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr>
+							<td>   Valuta racuna: </td>
+							<td>
+								  <input type="text" ng-model="valuta" disabled>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>  PIB banke:  </td>
+							<td>
+								  <input type="text" ng-model="pibBanka" ng-show="stanjeIzmena || stanjePregled" disabled>
+								  <input type="text" ng-model="pibBanka" ng-show="stanjeSearch || stanjeAdd">
+								  
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomBanka()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr>
+							<td>  Banka: </td>
+							<td>
+								  <input type="text" ng-model="banka" disabled>
+							</td>
+						</tr>
+						<tr>
+							<td>  Broj racuna: </td>
+							<td>
+								  <input type="text" ng-model="brRacuna" ng-show="stanjeIzmena || stanjePregled" disabled>
+								  <input ng-model="brRacuna" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr>
+							<td>  Datum otvaranja racuna: </td>
+							<td>
+								  <input type="date" ng-model="datumOtvaranja">
+							</td>
+						</tr>
+						<tr>
+							<td>  Validan: </td>
+							<td>
+								  <input type="text" ng-model="validan" ng-show="stanjePregled" disabled>
+								  <input type="text" ng-model="validan" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+							</td>
+						</tr>
+					
+					</table>
+				</div>
+			 </div>
+			   
+			 <div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
+			 </div>
 		</div>
 				
 	</div>

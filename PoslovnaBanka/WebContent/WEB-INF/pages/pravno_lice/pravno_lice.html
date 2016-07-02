@@ -107,40 +107,96 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;" ng-show="!stanjePregled">
-			 <br/>
-			 PIB: &nbsp;&nbsp;&nbsp; <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 Naziv: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" ng-model="naziv">
-			 <br/> <br/> 
-			 Adresa: <input type="text" ng-model="adresa">
-			 <br/> <br/> 
-			 Email:&nbsp;&nbsp;&nbsp; <input type="text" ng-model="email"> 
-			 <br/> <br/> 
-			 Web: &nbsp;<input type="text" ng-model="web">
-			 <br/><br/>
-			 Telefon: <input type="text" ng-model="telefon">
-			 <br/><br/>
-			 Fax: <input type="text" ng-model="fax">
-			 <br/><br/>
-			 Banka:  <input type="text" ng-model="banka" ng-show="stanjePregled"> 
-			 <select ng-model="izmenaBanka" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch" ng-options='option.value as option.name for option in bankaType'>
-			 </select>
-			 <div ng-show="zoomIcon">
-				 JMBG odgovornog lica: <input type="text" ng-model="jmbg" ng-show="stanjePregled" ng-change="searchFL()" disabled> <input type="text" ng-model="jmbg" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena" ng-change="searchFL()">
-				 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-					<img src="css/images/zoom.png" height="30" />
-				 </button>
-				 <br/><br/>
-				 Ime odgovornog lica: <input type="text" ng-model="imeKlijenta" disabled>
-				 <br/><br/>
-				 Prezime odgovornog lica: <input type="text" ng-model="prezimeKlijenta" disabled> 
+		<div ng-show="!stanjePregled">
+			 <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> PIB: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled> 
+							 	 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr>
+							<td>  Naziv: </td>
+							<td>
+								<input type="text" ng-model="naziv">
+							</td>
+						</tr>
+						<tr>
+							<td>  Adresa: </td>
+							<td>
+								  <input type="text" ng-model="adresa">
+							</td>
+						</tr>
+						<tr>
+							<td>  Email:  </td>
+							<td>
+								  <input type="text" ng-model="email">
+							</td>
+						</tr>
+						<tr>
+							<td>  Web: </td>
+							<td>
+								  <input type="text" ng-model="web">
+							</td>
+						</tr>
+						<tr>
+							<td>  Telefon: </td>
+							<td>
+								  <input type="text" ng-model="telefon">
+							</td>
+						</tr>
+						<tr>
+							<td>  Fax: </td>
+							<td>
+								  <input type="text" ng-model="fax">
+							</td>
+						</tr>
+						<tr>
+							<td>  Banka:  </td>
+							<td>
+								  <input type="text" ng-model="banka" ng-show="stanjePregled">
+								  <select ng-model="izmenaBanka" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch" 
+								          ng-options='option.value as option.name for option in bankaType'>
+			 					  </select>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td> JMBG odgovornog lica: </td>
+							<td>
+								  <input type="text" ng-model="jmbg" ng-show="stanjePregled" ng-change="searchFL()" disabled>
+								  <input type="text" ng-model="jmbg" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena" ng-change="searchFL()">
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>   Ime odgovornog lica:  </td>
+							<td>
+								  <input type="text" ng-model="imeKlijenta" disabled>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>   Prezime odgovornog lica:  </td>
+							<td>
+								  <input type="text" ng-model="prezimeKlijenta" disabled>
+							</td>
+						</tr>
+					</table>
+				</div>
+			 </div>
+			 <div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
 			 </div>
 		</div>
 				

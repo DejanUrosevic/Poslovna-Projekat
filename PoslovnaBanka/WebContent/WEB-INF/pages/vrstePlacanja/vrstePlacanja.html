@@ -92,18 +92,33 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;" ng-show="!stanjePregled">
-			 <br/>
-			 Oznaka vrste placanja:  <input type="text" ng-model="sifraSelected" maxlength="3" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraSelected" maxlength="3" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 Naziv vrste placanja:  <input type="text" ng-model="nazivPlacanja"> 
-			 
+		<div ng-show="!stanjePregled">
+			 <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> Oznaka vrste placanja: </td>
+							<td>  <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>
+							      <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						<tr>
+						<tr>
+							<td> Naziv vrste placanja: </td>
+							<td> <input type="text" ng-model="nazivPlacanja"> </td>
+						<tr>
+					</table>
+					
+				</div>
+			</div>
+			<br/>
+			<div style="text-align: center;">
+			   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+									<img src="css/images/commit.png" height="30" />
+				</button> &nbsp
+				<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+									<img src="css/images/delete2.ico" height="30" />
+				</button>
+			</div>
 		</div>
 				
 	</div>

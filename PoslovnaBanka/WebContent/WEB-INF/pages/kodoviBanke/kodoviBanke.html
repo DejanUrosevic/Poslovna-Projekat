@@ -92,24 +92,52 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;" ng-show="!stanjePregled">
-			 <br/>
-			 Sifra banke:  <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>  <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 SWIFT kod:  <input type="text" ng-model="swift">
-			 <br/> <br/> 
-			 PIB pravnog lica: <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
-				<img src="css/images/zoom.png" height="30" />
-			 </button>
-			 <br/> <br/> 
-			 Naziv pravnog lica: <input type="text" ng-model="nazivPravnogLica" disabled>
+		<div ng-show="!stanjePregled">
+			<div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> Sifra banke: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled> 
+							 	 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr>
+							<td>  SWIFT kod: </td>
+							<td>
+								<input type="text" ng-model="swift">
+							</td>
+						</tr>
+						<tr>
+							<td> PIB pravnog lica: </td>
+							<td>
+								  <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeIzmena || stanjePregled" disabled> 
+								  <input type="text" ng-model="pibPravnogLica" ng-change="searchPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+							<td>
+								 <button type="button" title="Izaberite pravno lice" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr>
+							<td>   Naziv pravnog lica:  </td>
+							<td>
+								  <input type="text" ng-model="nazivPravnogLica" disabled>
+							</td>
+						</tr>
+					</table>
+				</div>
+			 </div>
+			 <div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
+			 </div>
 		</div>
 				
 	</div>

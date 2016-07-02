@@ -100,34 +100,68 @@
 		<hr/>
 		<br/>
 		
-		<div style="padding-left: 50px;" ng-show="!stanjePregled">
-			 <br/>
-			 ID valute:  <input type="text" ng-model="sifraSelected"  ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right;" ng-click="">
-				<img src="css/images/delete2.ico" height="30" />
-			 </button>
-			 <button type="button" style="background-color: transparent; border-color: transparent; float: right; " ng-click="commitAction()">
-				<img src="css/images/commit.png" height="30" />
-			 </button>
-			 <br/> <br/>
-			 Zvanicna sifra:  <input type="text" ng-model="zvanicnaSifra">
-			 <br/> <br/>
-			 Naziv valute:  <input type="text" ng-model="naziv">
-			 <br/> <br/> 
-			 Domicilna:  <input type="text" ng-model="domicilna" ng-show="stanjePregled"> 
-			 <select ng-model="izmenaDomicilna" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch" ng-options='option.value as option.name for option in domicilnaType'>
-			 </select>
-			 <br/> <br/>
-			 <div ng-show="zoomIcon">
-				 Sifra drzave: <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeIzmena || stanjePregled" disabled> <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeSearch || stanjeAdd">
-				 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
-					<img src="css/images/zoom.png" height="30" />
-				 </button>
-				 <br/> <br/> 
-				 Naziv drzave:  <input type="text" ng-model="nazivDrzava" disabled>
-			 <div ng-show="zoomIcon">
-			 
-		</div>
-				
+		<div ng-show="!stanjePregled">
+			 <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> ID valute: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled> 
+							 	 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr>
+							<td>  Zvanicna sifra: </td>
+							<td>
+								<input type="text" ng-model="zvanicnaSifra">
+							</td>
+						</tr>
+						<tr>
+							<td>  Naziv valute:  </td>
+							<td>
+								  <input type="text" ng-model="naziv">
+							</td>
+						</tr>
+						<tr>
+							<td>  Domicilna:  </td>
+							<td>
+								  <input type="text" ng-model="domicilna" ng-show="stanjePregled">
+								  <select ng-model="izmenaDomicilna" ng-show="stanjeIzmena || stanjeAdd || stanjeSearch" 
+								          ng-options='option.value as option.name for option in domicilnaType'>
+								  </select>
+								  
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td> Sifra drzave: </td>
+							<td>
+								  <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeIzmena || stanjePregled" disabled>
+								  <input type="text" ng-model="sifraDrzava" ng-change="searchDrzava()" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPick()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>  Naziv drzave:  </td>
+							<td>
+								  <input type="text" ng-model="nazivDrzava" disabled>
+							</td>
+						</tr>
+					</table>
+				</div>
+			 </div>
+			 <div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
+			</div>
+		</div>	
 	</div>
 </div>
