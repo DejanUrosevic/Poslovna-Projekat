@@ -117,4 +117,79 @@ public class RacuniKlijenataController {
 		racuniSer.remove(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> updateState(@RequestBody String reqBody) throws SQLException, ParseException
+	{
+		JSONObject json = new JSONObject(reqBody); 
+		
+		boolean fizickoLice = false;
+		boolean pravnoLice = false;
+		
+		int jmbg = 0;
+		String ime = null;
+		String prezime = null;
+		
+		String pib = null;
+		String naziv = null;
+		
+		try {
+			if(!json.getString("ime").equals("")){
+				jmbg = json.getInt("jmbg");
+				ime = json.getString("ime");
+				prezime = json.getString("prezime");
+				fizickoLice = true;
+			}else{
+				fizickoLice = false;
+			}
+			
+			if(jmbg == 0){
+				fizickoLice = false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			fizickoLice = false;
+		}
+		
+		try {
+			if(!json.getString("pib").equals("")){
+				pib = json.getString("pib");
+				naziv = json.getString("naziv");
+				pravnoLice = true;
+			}else{
+				pravnoLice = false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			pravnoLice = false;
+		}
+		
+		boolean aktivan = false;
+		
+		if(json.getString("validan").equals("da")){
+			aktivan = true;
+		}else if(json.getString("validan").equals("ne")){
+			aktivan = false;
+		}
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String[] datum = (json.getString("datum")).split("T");
+		Date date = new Date((dateFormat.parse(datum[0])).getTime());
+		
+		if(fizickoLice && !pravnoLice){
+			//snimanje racuna fizickih lica
+			racuniSer.update(new RacuniKlijenata(json.getInt("id"), jmbg,
+					ime, prezime, json.getInt("idValute"), json.getString("valuta"),
+					pib, naziv, json.getString("pibBanke"), json.getString("nazivBanke"),
+					json.getString("racun"), date, aktivan));
+		}else if(!fizickoLice && pravnoLice){
+			//snimanje racuna pravnih lica
+			racuniSer.update(new RacuniKlijenata(json.getInt("id"), (Integer) null,
+					ime, prezime, json.getInt("idValute"), json.getString("valuta"),
+					pib, naziv, json.getString("pibBanke"), json.getString("nazivBanke"),
+					json.getString("racun"), date, aktivan));
+		}
+
+		return new ResponseEntity<List<RacuniKlijenata>>(HttpStatus.OK);	
+	}
 }
