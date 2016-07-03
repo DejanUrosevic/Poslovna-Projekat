@@ -66,5 +66,9 @@
 			templateUrl: 'kursna_lista/kursnaLista.html',
 			controller: 'kursnaListaCtrl'
 		})
+		.state('ukidanje', {url: '/ukidanje',
+			templateUrl: 'ukidanje/ukidanje.html',
+			controller: 'ukidanjeCtrl'
+		})
 	});
 })(angular)
