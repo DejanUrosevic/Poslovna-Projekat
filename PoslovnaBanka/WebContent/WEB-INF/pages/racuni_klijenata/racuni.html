@@ -104,7 +104,8 @@
 		<hr/>
 		<br/>
 		
-		<div ng-show="!stanjePregled">
+		<!-- <div ng-show="!stanjePregled"> -->
+		<div>
 			 <div id="tableContainer-1">
 				<div id="tableContainer-2">
 					<table id="myTable">
@@ -124,7 +125,7 @@
 								 </select>
 							</td>
 						</tr>
-						<tr ng-show="lice === 'fizicko'">
+						<tr ng-show="lice === 'fizicko' || klijent">
 							<td>  ID fizickog lica:  </td>
 							<td>
 								  <input type="text" ng-model = "jmbgKlijenta"  ng-show="stanjeSearch || stanjeAdd">
@@ -136,24 +137,24 @@
 								 </button>
 							</td>
 						</tr>
-						<tr ng-show="lice === 'fizicko'">
+						<tr ng-show="lice === 'fizicko' || klijent">
 							<td> Ime klijenta: </td>
 							<td>
 								  <input type="text" ng-model="imeKlijenta" disabled>
 							</td>
 						</tr>
-						<tr ng-show="lice === 'fizicko' ">
+						<tr ng-show="lice === 'fizicko' || klijent">
 							<td>   Prezime klijenta:  </td>
 							<td>
 								  <input type="text" ng-model="prezimeKlijenta" disabled>
 							</td>
 						</tr>
 						
-						<tr ng-show="lice === 'pravno' ">
+						<tr ng-show="lice === 'pravno' || pravnoLice">
 							<td>  PIB pravnog lica:  </td>
 							<td>
-								  <input type="text" ng-model = "pibKlijenta">
-								  
+								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjePregled" disabled>
 							</td>
 							<td>
 								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPravnoLice()" ng-show="stanjeSearch || stanjeAdd">
@@ -161,7 +162,7 @@
 								 </button>
 							</td>
 						</tr>
-						<tr ng-show="lice === 'pravno'">
+						<tr ng-show="lice === 'pravno' || pravnoLice">
 							<td>  Naziv pravnog lica: </td>
 							<td>
 								  <input type="text" ng-model="nazivKlijenta" disabled>
@@ -224,7 +225,10 @@
 							<td>  Validan: </td>
 							<td>
 								  <input type="text" ng-model="validan" ng-show="stanjePregled" disabled>
-								  <input type="text" ng-model="validan" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+								  <select ng-model="validan" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+								  	<option value="da">da</option>
+								  	<option value="ne">ne</option>								  	
+								  </select>
 							</td>
 						</tr>
 					

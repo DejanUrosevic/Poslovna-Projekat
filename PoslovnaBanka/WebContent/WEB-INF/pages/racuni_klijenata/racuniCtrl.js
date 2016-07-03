@@ -30,22 +30,18 @@
 				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
 				$scope.banka = zoomRacunPravnoService.getNazivBanke();
 			}
+			zoomRacunPravnoService.setIdKlijenta('');
+			zoomRacunPravnoService.setNazivKlijenta('');
 			
 			$scope.jmbgKlijenta = zoomRacunFizickoService.getJmbg();
 			$scope.imeKlijenta = zoomRacunFizickoService.getIme();
 			$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
 			
 			$scope.sifraSelected = zoomRacunFizickoService.getSifraSelected();
-			$scope.pibKlijenta = zoomRacunFizickoService.getPibKlijenta();
-			$scope.nazivKlijenta = zoomRacunFizickoService.getNazivKlijenta();
-			$scope.pibBanka = zoomRacunFizickoService.getPibBanka();
 			$scope.brRacuna = zoomRacunFizickoService.getBrRacuna();
 			$scope.datumOtvaranja = zoomRacunFizickoService.getDatumOtvaranja();
 			$scope.validan = zoomRacunFizickoService.getValidan();
 			$scope.klijent = true;
-			$scope.pravnoLice = zoomRacunFizickoService.getPravnoLice();
-			$scope.idValuta = zoomRacunFizickoService.getIdValute();
-			$scope.valuta = zoomRacunFizickoService.getNazivValute();
 					
 			zoomRacunFizickoService.setZoom(false);
 		}
@@ -104,8 +100,11 @@
 				$scope.brRacuna = zoomRacunPravnoService.getBrRacuna();
 				$scope.datumOtvaranja = zoomRacunPravnoService.getDatumOtvaranja();
 				$scope.validan = zoomRacunPravnoService.getValidan();
-				$scope.klijent = zoomRacunPravnoService.getKlijent();
 				$scope.pravnoLice = true;
+				
+				zoomRacunFizickoService.setJmbg('');
+				zoomRacunFizickoService.setIme('');
+				zoomRacunFizickoService.setPrezime('');
 				
 				$scope.pibKlijenta = zoomRacunPravnoService.getIdKlijenta();
 				$scope.nazivKlijenta = zoomRacunPravnoService.getNazivKlijenta();
@@ -149,22 +148,25 @@
 					$scope.imeKlijenta = zoomRacunFizickoService.getIme();
 					$scope.prezimeKlijenta = zoomRacunFizickoService.getPrezime();
 				}
+			}else{
+				
+				$scope.jmbgKlijenta = zoomRacunValutaService.getJmbgKlijenta();
+				$scope.imeKlijenta = zoomRacunValutaService.getImeKlijenta();
+				$scope.prezimeKlijenta = zoomRacunValutaService.getPrezimeKlijenta();
+				$scope.pibKlijenta= zoomRacunValutaService.getPibKlijenta();
+				$scope.nazivKlijenta = zoomRacunValutaService.getNazivKlijenta();
+				$scope.pibBanka = zoomRacunValutaService.getPibBanka();
+				$scope.banka = zoomRacunValutaService.getBanka();
+			
 			}
-			
-			$scope.klijent = zoomRacunValutaService.getKlijent();
-			$scope.pravnoLice = zoomRacunValutaService.getPravnoLice();
-			
+				
 			$scope.sifraSelected = zoomRacunValutaService.getSifraSelected();
-			$scope.jmbgKlijenta = zoomRacunValutaService.getJmbgKlijenta();
-			$scope.imeKlijenta = zoomRacunValutaService.getImeKlijenta();
-			$scope.prezimeKlijenta = zoomRacunValutaService.getPrezimeKlijenta();
-			$scope.pibKlijenta= zoomRacunValutaService.getPibKlijenta();
-			$scope.nazivKlijenta = zoomRacunValutaService.getNazivKlijenta();
-			$scope.pibBanka = zoomRacunValutaService.getPibBanka();
-			$scope.banka = zoomRacunValutaService.getBanka();
 			$scope.brRacuna = zoomRacunValutaService.getBrRacuna();
 			$scope.datumOtvaranja = zoomRacunValutaService.getDatumOtvaranja();
 			$scope.validan = zoomRacunValutaService.getValidan();
+			
+			$scope.klijent = zoomRacunValutaService.getKlijent();
+			$scope.pravnoLice = zoomRacunValutaService.getPravnoLice();
 			
 			$scope.idValuta = zoomRacunValutaService.getIdValute();
 			$scope.valuta = zoomRacunValutaService.getNazivValute();
@@ -574,8 +576,8 @@
 						$scope.listaRacuna = data;
 						$scope.stanjeAdd = false;
 						$scope.stanjeSearch = false;
-						$scope.stanjeIzmena = true;
-						$scope.stanjePregled = false;
+						$scope.stanjeIzmena = false;
+						$scope.stanjePregled = true;
 						$scope.sifraSelected = null;
 						$scope.klijent = false;
 						$scope.pravnoLice = false;

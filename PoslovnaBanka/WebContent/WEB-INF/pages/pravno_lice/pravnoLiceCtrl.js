@@ -5,10 +5,14 @@
 		
 		$scope.stanjePregled = true;
 		$scope.zoomLice = zoomRacunPravnoService.getZoom();
+		$scope.zoomKursnaLista = zoomKursnaListaService.getZoom();
+		
 		if(zoomKursnaListaService.getZoom())
 		{
 			$scope.zoomLice = zoomKursnaListaService.getZoom();
+			
 		}
+		
 		//postavljanje default vrednosti za option tag domicilna
 		$scope.bankaType = [
 		    { name: 'Da', value: 'true' }, 
