@@ -340,6 +340,15 @@
 						.success(function(data, status, header){
 							
 							$scope.listaKodova = data;
+							
+							$scope.sifraSelected = null;
+							$scope.swift = null;
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
 							$state.go('pravni_kod_banke');
 					
 						});
