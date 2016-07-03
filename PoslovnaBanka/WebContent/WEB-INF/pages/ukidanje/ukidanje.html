@@ -110,21 +110,22 @@
 								 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
 							</td>
 						</tr>
+
 						<tr>
 							<td>  Vlasnik racuna: </td>
 							<td>
 								<input type="text" ng-model="nazivVlasnika">
-							</td>
-							<td>
-								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValuta()" ng-show="stanjeSearch || stanjeAdd">
-									<img src="css/images/zoom.png" height="30" />
-								 </button>
 							</td>
 						</tr>
 						<tr>
 							<td>  Racun </td>
 							<td>
 								<input type="text" ng-model="brRacuna" disabled> 
+							</td>
+							<td>
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomRacun()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
 							</td>
 						</tr>
 						<tr>
@@ -139,7 +140,7 @@
 								<input type="text" ng-model="racunZaPrebacivanje" disabled>
 							</td>
 							<td>
-								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValuta()" ng-show="stanjeSearch || stanjeAdd">
+								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomRacun2()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
 								 </button>
 							</td>

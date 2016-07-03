@@ -26,7 +26,7 @@
 								style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
 								<img src="css/images/refresh.png" height="30" />
 						</button></td>
-						<td ng-show="zoom"><button type="button"
+						<td ng-show="zoom || zoomUkidanje"><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()">
 								<img src="css/images/export.jpg" height="30" />
 						</button></td>
@@ -83,8 +83,8 @@
 						<th> Broj racuna </th>
 						<th> Datum otvaranja </th>
 						<th> Validan </th>
-					</tr>
-					<tr ng-repeat="list in listaRacuna" ng-click="setSelected(list.id, list.jmbg, list.imeKlijenta, list.prezimeKlijenta, list.valuta, list.nazivValute,list.pibKlijenta, list.nazivValute, list.pibBanke, list.nazivBanke, list.brRacuna, list.datumOtvaranja, list.vazeci)" ng-class="{selected: list.id === sifraSelected}">
+					</tr>													<!--   id,      jmbg,      imeKlijenta,      prezimeKlijenta,      valuta,     nazivValute,       pibKlijenta,      nazivKlijenta, pibBanke, nazivBanke, brRacuna, datumOtvaranja, vazeci -->
+					<tr ng-repeat="list in listaRacuna" ng-click="setSelected(list.id, list.jmbg, list.imeKlijenta, list.prezimeKlijenta, list.valuta, list.nazivValute, list.pibKlijenta, list.nazivKlijenta, list.pibBanke, list.nazivBanke, list.brRacuna, list.datumOtvaranja, list.vazeci)" ng-class="{selected: list.id === sifraSelected}">
 						<td> {{list.id}}</td>
 						<td ng-show="list.jmbg">  {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}} </td>
 						<td ng-show="list.pibKlijenta">{{list.nazivKlijenta}}</td>
@@ -153,8 +153,8 @@
 						<tr ng-show="lice === 'pravno' || pravnoLice">
 							<td>  PIB pravnog lica:  </td>
 							<td>
-								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
-								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjePregled" disabled>
+								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjeSearch || stanjeAdd ">
+								  <input type="text" ng-model = "pibKlijenta" ng-show="stanjePregled || stanjeIzmena" disabled>
 							</td>
 							<td>
 								 <button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPravnoLice()" ng-show="stanjeSearch || stanjeAdd">

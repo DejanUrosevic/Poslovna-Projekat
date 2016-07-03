@@ -1,8 +1,9 @@
 (function(angular){
 	var racuniModul = angular.module('racuniEntry', []);
 	
-	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService){
+	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje){
 		$scope.stanjePregled = true;
+		$scope.zoomUkidanje = zoomServiceUkidanje.getZoom();
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
 		.success(function(data, status, header){
@@ -743,6 +744,26 @@
 			zoomRacunValutaService.setPravnoLice($scope.pravnoLice);
 			
 			$state.go('valute');
+		}
+		
+		$scope.zoomPickup = function(){
+			if(zoomServiceUkidanje.getZoom()){
+				if(zoomServiceUkidanje.getKlijent()){
+					zoomServiceUkidanje.setBrRacuna($scope.brRacuna)
+					zoomServiceUkidanje.setIme($scope.imeKlijenta);
+					zoomServiceUkidanje.setPrezime($scope.prezimeKlijenta);
+					zoomServiceUkidanje.setNaziv($scope.nazivKlijenta);
+					zoomServiceUkidanje.setNazivBanke($scope.banka);
+					zoomServiceUkidanje.setIdRacuna($scope.sifraSelected);
+				}else{
+					zoomServiceUkidanje.setIme2($scope.imeKlijenta);
+					zoomServiceUkidanje.setPrezime2($scope.prezimeKlijenta);
+					zoomServiceUkidanje.setNaziv2($scope.nazivKlijenta);
+					zoomServiceUkidanje.setBrRacunaPrebacivanje($scope.brRacuna);
+				}
+				
+				$state.go('ukidanje');
+			}
 		}
 		
 		$scope.deleteLice = function(){
