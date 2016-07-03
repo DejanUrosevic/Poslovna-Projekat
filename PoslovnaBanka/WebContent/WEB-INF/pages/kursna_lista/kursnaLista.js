@@ -2,10 +2,15 @@
 	
 	var kursnaListaModul = angular.module('kursnaListaEntry', []);
 	
-	kursnaListaModul.controller('kursnaListaCtrl', function($scope, $http, $state, $stateParams, zoomKursnaListaService)
+	kursnaListaModul.controller('kursnaListaCtrl', function($scope, $http, $state, $stateParams, zoomKursnaListaService, zoomKursUValutiService)
 	{
 		
 		$scope.stanjePregled = true;
+		
+		if(zoomKursUValutiService.getZoom())
+		{
+			$scope.zoom = zoomKursUValutiService.getZoom();
+		}
 		
 		if(!angular.equals({}, $stateParams))
 		{
@@ -495,6 +500,17 @@
 				});
 			}
 			
+		}
+		
+		$scope.zoomPickup = function()
+		{
+			if(zoomKursUValutiService.getZoom())
+			{
+				zoomKursUValutiService.setIdKursneListe($scope.sifraSelected);
+				zoomKursUValutiService.setPrimenjujeSeOd($scope.primenjujeSeOd);
+				
+				$state.go('kurs_u_valuti');
+			}
 		}
 		
 	});

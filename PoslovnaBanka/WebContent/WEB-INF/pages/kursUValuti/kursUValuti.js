@@ -1,7 +1,7 @@
 (function(angular){
 	var kursUValutiModul = angular.module('kursUValutiEntry',[]);
 	
-	kursUValutiModul.controller('kursUValutiCtrl', function($scope, $http, $state, $stateParams)
+	kursUValutiModul.controller('kursUValutiCtrl', function($scope, $http, $state, $stateParams, zoomKursUValutiService)
 	{
 		
 		$scope.stanjePregled = true;
@@ -17,7 +17,37 @@
 		
 		
 		// ovde ide za zoom, kasnije cu to.
-		
+		if(zoomKursUValutiService.getZoom())
+		{
+			$scope.stanjePregled = false; 
+			$scope.stanjeIzmena = false;
+			
+			if(zoomKursUValutiService.getPretraga())
+			{
+				$scope.stanjeSearch = true;
+				$scope.stanjeAdd = false;
+			}
+			else
+			{
+				$scope.stanjeAdd = true;
+				$scope.stanjeSearch = false;
+			}
+			
+			$scope.sifraSelected = zoomKursUValutiService.getRedniBroj();
+			$scope.idKursneListe = zoomKursUValutiService.getIdKursneListe();
+			$scope.primenjujeSeOd = new Date(zoomKursUValutiService.getPrimenjujeSeOd());
+			$scope.idOsnovneValute = zoomKursUValutiService.getIdOsnovneValute();
+			$scope.nazivOsnovneValute = zoomKursUValutiService.getNazivOsnovneValute();
+			$scope.idPremaValute = zoomKursUValutiService.getIdPremaValuti();
+			$scope.nazivPremaValute = zoomKursUValutiService.getNazivPremaValuti();
+			$scope.kupovni = zoomKursUValutiService.getKupovni();
+			$scope.srednji = zoomKursUValutiService.getSrednji();
+			$scope.prodajni = zoomKursUValutiService.getProdajni();
+			
+			zoomKursUValutiService.setOsnovna(false);
+			zoomKursUValutiService.setPrema(false);
+			zoomKursUValutiService.setZoom(false);
+		}
 		//
 		
 		if(!angular.equals({}, $stateParams)){
@@ -465,6 +495,101 @@
 			}
 			
 		}
+		
+		$scope.zoomValuteOsnovne = function()
+		{
+			zoomKursUValutiService.setZoom(true);
+			zoomKursUValutiService.setOsnovna(true);
+			zoomKursUValutiService.setPrema(false);
+			
+			zoomKursUValutiService.setRedniBroj($scope.sifraSelected);
+			zoomKursUValutiService.setIdKursneListe($scope.idKursneListe);
+			zoomKursUValutiService.setPrimenjujeSeOd($scope.primenjujeSeOd);
+			zoomKursUValutiService.setIdOsnovneValute($scope.idOsnovneValute);
+			zoomKursUValutiService.setNazivOsnovneValute($scope.nazivOsnovneValute);
+			zoomKursUValutiService.setIdPremaValuti($scope.idPremaValute);
+			zoomKursUValutiService.setNazivPremaValuti($scope.nazivPremaValute);
+			zoomKursUValutiService.setKupovni($scope.kupovni);
+			zoomKursUValutiService.setSrednji($scope.srednji);
+			zoomKursUValutiService.setProdajni($scope.prodajni);
+			
+			
+			
+			if($scope.stanjeSearch)
+			{
+				zoomKursUValutiService.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomKursUValutiService.setPretraga(false);
+			}
+			
+			$state.go('valute');
+		}
+		
+		$scope.zoomValutePrema = function()
+		{
+			zoomKursUValutiService.setZoom(true);
+			zoomKursUValutiService.setPrema(true);
+			zoomKursUValutiService.setOsnovna(false);
+			
+			zoomKursUValutiService.setRedniBroj($scope.sifraSelected);
+			zoomKursUValutiService.setIdKursneListe($scope.idKursneListe);
+			zoomKursUValutiService.setPrimenjujeSeOd($scope.primenjujeSeOd);
+			zoomKursUValutiService.setIdOsnovneValute($scope.idOsnovneValute);
+			zoomKursUValutiService.setNazivOsnovneValute($scope.nazivOsnovneValute);
+			zoomKursUValutiService.setIdPremaValuti($scope.idPremaValute);
+			zoomKursUValutiService.setNazivPremaValuti($scope.nazivPremaValute);
+			zoomKursUValutiService.setKupovni($scope.kupovni);
+			zoomKursUValutiService.setSrednji($scope.srednji);
+			zoomKursUValutiService.setProdajni($scope.prodajni);
+			
+			
+			
+			if($scope.stanjeSearch)
+			{
+				zoomKursUValutiService.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomKursUValutiService.setPretraga(false);
+			}
+			
+			$state.go('valute');
+		}
+		
+		$scope.zoomKursneListe = function()
+		{
+			zoomKursUValutiService.setZoom(true);
+			
+			zoomKursUValutiService.setPrema(true);
+			zoomKursUValutiService.setOsnovna(false);
+			
+			zoomKursUValutiService.setRedniBroj($scope.sifraSelected);
+			zoomKursUValutiService.setIdKursneListe($scope.idKursneListe);
+			zoomKursUValutiService.setPrimenjujeSeOd($scope.primenjujeSeOd);
+			zoomKursUValutiService.setIdOsnovneValute($scope.idOsnovneValute);
+			zoomKursUValutiService.setNazivOsnovneValute($scope.nazivOsnovneValute);
+			zoomKursUValutiService.setIdPremaValuti($scope.idPremaValute);
+			zoomKursUValutiService.setNazivPremaValuti($scope.nazivPremaValute);
+			zoomKursUValutiService.setKupovni($scope.kupovni);
+			zoomKursUValutiService.setSrednji($scope.srednji);
+			zoomKursUValutiService.setProdajni($scope.prodajni);
+			
+			
+			
+			if($scope.stanjeSearch)
+			{
+				zoomKursUValutiService.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomKursUValutiService.setPretraga(false);
+			}
+			
+			$state.go('kursna_lista');
+		}
+		
 		
 	});
 		

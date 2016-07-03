@@ -205,7 +205,7 @@ public class KursUValutiServiceImpl implements KursUValutiService{
 		Statement stmt = DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT kuv.KLS_RBR, valOsnovno.ID_VALUTE, valPrema.ID_VALUTE, kl.ID_KURSNE_LISTE, kuv.KLS_KUPOVNI, kuv.KLS_SREDNJI, kuv.KLS_PRODAJNI, kl.KL_DATPR, valOsnovno.VA_NAZIV, valPrema.VA_NAZIV FROM KURS_U_VALUTI kuv"
 				+ " JOIN VALUTE valPrema ON kuv.VAL_ID_VALUTE = valPrema.ID_VALUTE JOIN VALUTE valOsnovno ON kuv.ID_VALUTE = valOsnovno.ID_VALUTE JOIN KURSNA_LISTA kl ON kuv.ID_KURSNE_LISTE = kl.ID_KURSNE_LISTE "
-				+ "WHERE kuv.KLS_RBR = '" + redniBroj + "' OR valOsnovno.ID_VALUTE = '" + idOsnovneValute + "' OR valPrema.ID_VALUTE = '" + idPremaValute+ "' OR kl.ID_KURSNE_LISTE = '" + idKursneListe+ "' OR kuv.KLS_KUPOVNI = '" + kupovni+ "' OR kuv.KLS_SREDNJI = '" +srednji + "' OR kuv.KLS_PRODAJNI = '" + prodajni+ "' OR kl.KL_DATPR >= '" +primenjujeSeOd + "' OR valOsnovno.VA_NAZIV = '" + nazivOsnovneValute + "' OR valPrema.VA_NAZIV = '" + nazivPremaValute + "' ORDER BY kuv.KLS_RBR" );
+				+ "WHERE kuv.KLS_RBR = '" + redniBroj + "' OR valOsnovno.ID_VALUTE = '" + idOsnovneValute + "' OR valPrema.ID_VALUTE = '" + idPremaValute+ "' OR kl.ID_KURSNE_LISTE = '" + idKursneListe+ "' OR kuv.KLS_KUPOVNI = '" + kupovni+ "' OR kuv.KLS_SREDNJI = '" +srednji + "' OR kuv.KLS_PRODAJNI = '" + prodajni+ "' OR valOsnovno.VA_NAZIV = '" + nazivOsnovneValute + "' OR valPrema.VA_NAZIV = '" + nazivPremaValute + "' ORDER BY kuv.KLS_RBR" );
 		
 		List<KursUValuti> lista = new ArrayList<KursUValuti>();
 		while(rs.next()){

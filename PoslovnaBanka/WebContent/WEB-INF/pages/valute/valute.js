@@ -3,10 +3,14 @@
 	var valuteModul = angular.module('valuteEntry', []);
 	
 	
-	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, zoomValuteService, zoomRacunValutaService)
+	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, zoomValuteService, zoomRacunValutaService, zoomKursUValutiService)
 	{
 		$scope.stanjePregled = true;
 		$scope.zoomRacuni = zoomRacunValutaService.getZoom();
+		if(zoomKursUValutiService.getZoom())
+		{
+			$scope.zoom = zoomKursUValutiService.getZoom();
+		}
 		//postavljanje default vrednosti za option tag domicilna
 		$scope.domicilnaType = [
 		    { name: 'Domaca', value: 'true' }, 
@@ -51,6 +55,8 @@
 			$scope.nazivDrzava = zoomValuteService.getNazivDrzave();
 			zoomValuteService.setZoom(false);
 		}
+		
+		
 		
 		
 		if(!angular.equals({}, $stateParams))
@@ -526,6 +532,23 @@
 				zoomRacunValutaService.setIdValute($scope.sifraSelected);
 				zoomRacunValutaService.setNazivValute($scope.naziv);
 				$state.go('racuni_klijenata');
+			}
+			else if(zoomKursUValutiService.getZoom())
+			{
+				if(zoomKursUValutiService.getOsnovna())
+				{
+					zoomKursUValutiService.setIdOsnovneValute($scope.sifraSelected);
+					zoomKursUValutiService.setNazivOsnovneValute($scope.naziv);
+					
+					$state.go('kurs_u_valuti');
+				}
+				else if(zoomKursUValutiService.getPrema())
+				{
+					zoomKursUValutiService.setIdPremaValuti($scope.sifraSelected);
+					zoomKursUValutiService.setNazivPremaValuti($scope.naziv);
+					
+					$state.go('kurs_u_valuti');
+				}
 			}
 		}
 		
