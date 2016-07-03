@@ -70,5 +70,9 @@
 			templateUrl: 'ukidanje/ukidanje.html',
 			controller: 'ukidanjeCtrl'
 		})
+		.state('kurs_u_valuti', {url: '/kurs_u_valuti',
+			templateUrl: 'kursUValuti/kursUValuti.html',
+			controller: 'kursUValutiCtrl'
+		})
 	});
 })(angular)

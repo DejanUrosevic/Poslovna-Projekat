@@ -91,7 +91,7 @@
 						<td> {{list.nazivValute}}</td>
 						<td> {{list.nazivBanke}}</td>
 						<td> {{list.brRacuna}}</td>
-						<td> {{list.datumOtvaranja}}</td>
+						<td> {{list.datumOtvaranja | date:'dd.MM.yyyy.'}}</td>
 						<td ng-show="!list.vazeci">Ne</td>
 						<td ng-show="list.vazeci">Da</td>
 					</tr>

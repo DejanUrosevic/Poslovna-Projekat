@@ -34,7 +34,7 @@ public class KursnaListaServiceImpl implements KursnaListaService{
 	{
 		Statement stmt = DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT ID_KURSNE_LISTE, KL_DATUM, KURSNA_LISTA.PR_PIB, PR_NAZIV, KL_BROJ, KL_DATPR FROM KURSNA_LISTA"
-				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB ORDER BY ID_KURSNE_LISTE" );
+				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB ORDER BY KL_DATUM" );
 		
 		List<KursnaLista> lista = new ArrayList<KursnaLista>();
 		while(rs.next()){
@@ -149,7 +149,7 @@ public class KursnaListaServiceImpl implements KursnaListaService{
 		
 		Statement stmt = DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT ID_KURSNE_LISTE, KL_DATUM, KURSNA_LISTA.PR_PIB, PR_NAZIV, KL_BROJ, KL_DATPR FROM KURSNA_LISTA"
-				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB WHERE ID_KURSNE_LISTE = '"+ sifra+ "' OR KURSNA_LISTA.PR_PIB = '" + pib + "' OR PR_NAZIV = '" + nazivBanke + "' OR KL_BROJ = '" + brojKursneListe + "' OR KL_DATPR = '" + primenjujeSeOd+"'  ORDER BY ID_KURSNE_LISTE" );
+				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB WHERE ID_KURSNE_LISTE = '"+ sifra+ "' OR KURSNA_LISTA.PR_PIB = '" + pib + "' OR PR_NAZIV = '" + nazivBanke + "' OR KL_BROJ = '" + brojKursneListe + "' OR KL_DATPR >= '" + primenjujeSeOd+"'  ORDER BY KL_DATUM" );
 		
 		List<KursnaLista> lista = new ArrayList<KursnaLista>();
 		while(rs.next()){

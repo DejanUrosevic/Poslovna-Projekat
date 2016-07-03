@@ -1,0 +1,200 @@
+<div id="header">
+	<h1>Naseljeno mesto</h1>
+	<ul>
+		<li><a ui-sref="main">Nazad</a></li>
+		<li><a href="#">Products</a></li>
+		<li><a href="#">Services</a></li>
+		<li>Stanje: </li>
+		<li style="color: #00ff00;" ng-show="stanjeAdd">  Dodavanje  </li>
+		<li style="color: #33ccff;" ng-show="stanjeSearch">  Pretraga  </li>
+		<li style="color: white;" ng-show="stanjePregled">  Pregled  </li>
+		<li style="color: yellow;" ng-show="stanjeIzmena">  Izmena  </li>
+	</ul>
+</div>
+<div id="main">
+	<div class="main_body">
+		<div id="tableContainer-1">
+			<div id="tableContainer-2">
+				<table id="myTable">
+					<tr>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjePretrage()">
+								<img src="css/images/search2.gif" height="30" />
+						</button></td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="refreshState()">
+								<img src="css/images/refresh.png" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="levoDoKraja()">
+								<img src="css/images/left.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanLevo()">
+								<img src="css/images/left22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanDesno()">
+								<img src="css/images/right22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="desnoDoKraja()">
+								<img src="css/images/right.png" height="35" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjeDodavanje()">
+								<img src="css/images/add.png" height="30" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="deleteState()">
+								<img src="css/images/delete2.ico" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="">
+								<img src="css/images/chain.jpg" height="35" />
+						</button></td>
+					</tr>
+				</table>
+				
+				<br/>
+				<hr/>
+				<br/>
+				
+				<table border="1">
+					<tr>
+						<th> Redni broj kursa </th>
+						<th> Kurs se primenjuje od </th>
+						<th> Naziv osnovne valute</th>
+						<th> Naziv prema valuti </th>
+						<th> Kupovni</th>
+						<th> Srednji </th>
+						<th> Prodajni </th>
+					</tr>
+					<tr ng-repeat="list in listaKursa" ng-click="setSelected(list.redniBroj, list.idKursneListe, list.primenjujeSeOd, list.idOsnovneValute, list.nazivOsnovneValute, list.idPremaValuti, list.nazivPremaValuti, list.kupovni, list.srednji, list.prodajni)" ng-class="{selected: list.redniBroj === sifraSelected}">
+						<td> {{list.redniBroj}}</td>
+						<td> {{list.primenjujeSeOd | date:'dd.MM.yyyy.'}}</td>
+						<td> {{list.nazivOsnovneValute}}</td>
+						<td> {{list.nazivPremaValuti}}</td>
+						<td> {{list.kupovni}}</td>
+						<td> {{list.srednji}}</td>
+						<td> {{list.prodajni}}</td>
+					</tr>
+				</table>
+			
+			</div>
+		</div>
+		
+		<br/>
+		<hr/>
+		<br/>
+		
+		<div ng-show="!stanjePregled">
+			 <div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> Redni broj kursa: </td>
+							<td>
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled> 
+							 	 <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>  Sifra kursne liste: </td>
+							<td>
+								<input type="text" ng-model=idKursneListe ng-change="searchKursnaLista()" ng-show="stanjePregled || stanjeIzmena" disabled>
+								  <input type="text" ng-model="idKursneListe" ng-change="searchKursnaLista()" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+							<td>
+								 <button type="button" title="Izbor drzave" style="background-color: transparent; border-color: transparent;" ng-click="zoomKursneListe()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="40" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>   Kurs se primenjuje od:  </td>
+							<td>
+								  <input type="date" ng-model="primenjujeSeOd" disabled>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td> Sifra osnovne valute: </td>
+							<td>
+								  <input type="text" ng-model="idOsnovneValute" ng-change="searchValute()" ng-show="stanjePregled || stanjeIzmena" disabled>
+								  <input type="text" ng-model="idOsnovneValute" ng-change="searchValute()" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+							<td>
+								 <button type="button" title="Izbor drzave" style="background-color: transparent; border-color: transparent;" ng-click="zoomValute()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="40" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>  Naziv osnovne valute:  </td>
+							<td>
+								  <input type="text" ng-model="nazivOsnovneValute" disabled>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td> Sifra prema valuti: </td>
+							<td>
+								  <input type="text" ng-model="idPremaValute" ng-change="searchValute()" ng-show="stanjePregled || stanjeIzmena" disabled>
+								  <input type="text" ng-model="idPremaValute" ng-change="searchValute()" ng-show="stanjeSearch || stanjeAdd">
+							</td>
+							<td>
+								 <button type="button" title="Izbor drzave" style="background-color: transparent; border-color: transparent;" ng-click="zoomValute()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="40" />
+								 </button>
+							</td>
+						</tr>
+						<tr ng-show="zoomIcon">
+							<td>  Naziv prema valuti:  </td>
+							<td>
+								  <input type="text" ng-model="nazivPremaValute" disabled>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>  Kupovni:  </td>
+							<td>
+								  <input type="text" ng-model="kupovni">
+							</td>
+						</tr>
+						<tr>
+							<td>  Srednji:  </td>
+							<td>
+								  <input type="text" ng-model="srednji">
+							</td>
+						</tr>
+						<tr>
+							<td>  Prodajni:  </td>
+							<td>
+								  <input type="text" ng-model="prodajni">
+							</td>
+						</tr>
+					</table>
+				</div>
+			 </div>
+			   
+			<div style="text-align: center;">
+				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+										<img src="css/images/commit.png" height="30" />
+					</button> &nbsp
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+										<img src="css/images/delete2.ico" height="30" />
+					</button>
+			</div>
+		</div>
+				
+	</div>
+</div>
