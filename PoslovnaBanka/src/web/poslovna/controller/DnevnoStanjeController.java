@@ -1,6 +1,7 @@
 package web.poslovna.controller;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class DnevnoStanjeController {
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<DnevnoStanje>> searchState(@RequestBody String reqBody) throws SQLException
+	public @ResponseBody ResponseEntity<List<DnevnoStanje>> searchState(@RequestBody String reqBody) throws SQLException, ParseException
 	{
 		
 		return new ResponseEntity<List<DnevnoStanje>>(dnevnoSer.pretraga(reqBody), HttpStatus.OK);	

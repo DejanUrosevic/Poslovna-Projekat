@@ -27,7 +27,7 @@
 			$scope.naTeret = zoomStanjeLice.getNaTeret();
 			$scope.uKorist = zoomStanjeLice.getUKorist();
 			$scope.novoStanje = zoomStanjeLice.getNovoStanje();
-			$scope.datum = new Date(zoomStanjeLice.getDatum());
+			$scope.datum = zoomStanjeLice.getDatum();
 			zoomStanjeLice.setZoom(false);
 		}
 		
