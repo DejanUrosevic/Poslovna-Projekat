@@ -74,5 +74,9 @@
 			templateUrl: 'kursUValuti/kursUValuti.html',
 			controller: 'kursUValutiCtrl'
 		})
+		.state('dnevno_stanje', {url: '/dnevno_stanje',
+			templateUrl: 'dnevno_stanje/dnevno_stanje.html',
+			controller: 'stanjeCtrl'
+		})
 	});
 })(angular)

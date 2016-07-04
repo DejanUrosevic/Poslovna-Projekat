@@ -86,6 +86,17 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 		stmt.setBoolean(8, object.isVazeci());
 		stmt.executeUpdate();
 	    stmt.close();
+	    
+	    PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
+	    stmt2.setInt(1, object.getId());
+	    stmt2.setDate(2, object.getDatumOtvaranja());
+	    stmt2.setDouble(3, 0.0);
+	    stmt2.setDouble(4, 0.0);
+	    stmt2.setDouble(5, 0.0);
+	    stmt2.setDouble(6, 0.0);
+	    stmt2.executeUpdate();
+	    stmt2.close();
+
 	    DBConnection.getConnection().commit();
 	}
 

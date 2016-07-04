@@ -1,9 +1,10 @@
 (function(angular){
 	var racuniModul = angular.module('racuniEntry', []);
 	
-	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje){
+	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje, zoomStanjeLice){
 		$scope.stanjePregled = true;
 		$scope.zoomUkidanje = zoomServiceUkidanje.getZoom();
+		$scope.zoomStanje = zoomStanjeLice.getZoom();
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
 		.success(function(data, status, header){
@@ -763,6 +764,18 @@
 				}
 				
 				$state.go('ukidanje');
+			}else if(zoomStanjeLice.getZoom()){
+				zoomStanjeLice.setRacun($scope.brRacuna);
+				zoomStanjeLice.setIdRacuna($scope.sifraSelected);
+				
+				if($scope.imeKlijenta != '' && $scope.imeKlijenta != null && $scope.imeKlijenta != undefined){
+					zoomStanjeLice.setVlasnik($scope.imeKlijenta + " " + $scope.prezimeKlijenta);
+				}else if($scope.nazivKlijenta != '' && $scope.nazivKlijenta != null && $scope.nazivKlijenta != undefined){
+					zoomStanjeLice.setVlasnik($scope.nazivKlijenta);
+				}
+				
+				zoomStanjeLice.setBanka($scope.banka);
+				$state.go('dnevno_stanje');
 			}
 		}
 		
