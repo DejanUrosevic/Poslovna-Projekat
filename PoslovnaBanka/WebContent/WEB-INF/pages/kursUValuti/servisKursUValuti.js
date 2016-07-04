@@ -7,6 +7,8 @@
 		var izmena = false;
 		var osnovna = false;
 		var prema = false;
+		var izDrugogZooma = false;
+		var url = 'http://localhost:8080/PoslovnaBanka/pages/index.html#/kursna_lista/33/kursevi_u_valuti';
 		
 		var redniBroj = '';
 		var kupovni = '';
@@ -117,6 +119,18 @@
 			setPrema : function(value)
 			{
 				prema = value;
+			},
+			getIzZooma : function()
+			{
+				return izDrugogZooma;
+			},
+			setIzZooma : function(value)
+			{
+				izDrugogZooma = value;
+			},
+			getUrl : function()
+			{
+				return url;
 			}
 		};
 	});

@@ -7,6 +7,7 @@
 		
 		$scope.stanjePregled = true;
 		
+		
 		if(zoomKursUValutiService.getZoom())
 		{
 			$scope.zoom = zoomKursUValutiService.getZoom();
@@ -510,6 +511,14 @@
 				zoomKursUValutiService.setPrimenjujeSeOd($scope.primenjujeSeOd);
 				
 				$state.go('kurs_u_valuti');
+			}
+		}
+		
+		$scope.findKursUValuti = function()
+		{
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined)
+			{
+				$state.go('kursna_lista_kursa_u_valuti', {id: $scope.sifraSelected});
 			}
 		}
 		
