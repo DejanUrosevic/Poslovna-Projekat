@@ -142,23 +142,39 @@
 						</tr>
 						<tr>
 							<td> Staro stanje: </td>
-							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > <input type="text" ng-model="staroStanje" disabled></td>
-							<td ng-show="stanjeSearch"> <input type="text" ng-model="staroStanje" ></td>
+							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > 
+								<input type="text" maxlength="16" ng-model="staroStanje" disabled>
+							</td>
+							<td ng-show="stanjeSearch"> 
+								<input type="text" maxlength="16" ng-model="staroStanje" >
+							</td>
 						</tr>
 						<tr>
 							<td> Na teret: </td>
-							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > <input type="text" ng-model="naTeret" disabled></td>
-							<td ng-show="stanjeSearch"> <input type="text" ng-model="naTeret" ></td>
+							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > 
+								<input type="text" maxlength="16" ng-model="naTeret" disabled>
+							</td>
+							<td ng-show="stanjeSearch"> 
+								<input type="text" maxlength="16" ng-model="naTeret" >
+							</td>
 						</tr>
 						<tr>
 							<td> U korist: </td>
-							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > <input type="text" ng-model="uKorist" disabled></td>
-							<td ng-show="stanjeSearch"> <input type="text" ng-model="uKorist" ></td>
+							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > 
+								<input type="text" maxlength="16" ng-model="uKorist" disabled>
+							</td>
+							<td ng-show="stanjeSearch"> 
+								<input type="text" maxlength="16" ng-model="uKorist" >
+							</td>
 						</tr>
 						<tr>
 							<td> Novo stanje: </td>
-							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > <input type="text" ng-model="novoStanje" disabled></td>
-							<td ng-show="stanjeSearch"> <input type="text" ng-model="novoStanje" ></td>
+							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > 
+								<input type="text" maxlength="16" ng-model="novoStanje" disabled>
+							</td>
+							<td ng-show="stanjeSearch"> 
+								<input type="text" maxlength="16" ng-model="novoStanje" >
+							</td>
 						</tr>
 						<tr>
 							<td> Datum izvoda: </td>
