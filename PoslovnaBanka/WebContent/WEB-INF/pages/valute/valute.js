@@ -571,6 +571,18 @@
 			}
 		}
 		
+		$scope.findKursUValuti = function()
+		{
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined)
+			{
+				$state.go('valuta_kursa_u_valuti', {id: $scope.sifraSelected});
+			}
+			else
+			{
+				alert('Selektujte neku od valuta za nastavak.');
+			}
+		}
+		
 		
 	});
 	

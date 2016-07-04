@@ -78,5 +78,9 @@
 			templateUrl: 'kursUValuti/kursUValuti.html',
 			controller: 'kursUValutiCtrl'
 		})
+		.state('valuta_kursa_u_valuti', {url: '/valuta/:id/kursevi_u_valuti',
+			templateUrl: 'kursUValuti/kursUValuti.html',
+			controller: 'kursUValutiCtrl'
+		})
 	});
 })(angular)
