@@ -16,17 +16,30 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import web.poslovna.db.DBConnection;
+import web.poslovna.model.Drzava;
+import web.poslovna.model.KursUValuti;
 import web.poslovna.model.KursnaLista;
 import web.poslovna.model.NaseljenoMesto;
+import web.poslovna.model.Valute;
 import web.poslovna.service.KursnaListaService;
 
 @Service
 public class KursnaListaServiceImpl implements KursnaListaService{
 
 	@Override
-	public KursnaLista findOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public KursnaLista findOne(String id) throws SQLException 
+	{
+		
+		KursnaLista kl = null;
+		
+		Statement sql = DBConnection.getConnection().createStatement();
+		ResultSet rs = sql.executeQuery("SELECT ID_KURSNE_LISTE, KL_DATUM, KURSNA_LISTA.PR_PIB, PR_NAZIV, KL_BROJ, KL_DATPR FROM KURSNA_LISTA"
+				+ " JOIN BANKA ON KURSNA_LISTA.PR_PIB = BANKA.PR_PIB WHERE ID_KURSNE_LISTE = '" + Integer.parseInt(id) + "' ORDER BY KL_DATUM");
+		while(rs.next())
+		{
+			kl = new KursnaLista(rs.getInt("ID_KURSNE_LISTE"), rs.getDate("KL_DATUM"), rs.getBigDecimal("KL_BROJ"), rs.getDate("KL_DATPR"), rs.getString("PR_PIB"), rs.getString("PR_NAZIV"));
+		}
+		return kl;
 	}
 
 	@Override
@@ -156,6 +169,20 @@ public class KursnaListaServiceImpl implements KursnaListaService{
 			lista.add(new KursnaLista(rs.getInt("ID_KURSNE_LISTE"), rs.getDate("KL_DATUM"), rs.getBigDecimal("KL_BROJ"), rs.getDate("KL_DATPR"), rs.getString("PR_PIB"), rs.getString("PR_NAZIV")));
 		}
 		
+		return lista;
+	}
+
+	@Override
+	public List<KursUValuti> findKurseveUValuti(String id) throws SQLException 
+	{
+		Statement stmt = DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT kuv.KLS_RBR, valOsnovno.ID_VALUTE, valPrema.ID_VALUTE, kl.ID_KURSNE_LISTE, kuv.KLS_KUPOVNI, kuv.KLS_SREDNJI, kuv.KLS_PRODAJNI, kl.KL_DATPR, valOsnovno.VA_NAZIV, valPrema.VA_NAZIV FROM KURS_U_VALUTI kuv"
+				+ " JOIN VALUTE valPrema ON kuv.VAL_ID_VALUTE = valPrema.ID_VALUTE JOIN VALUTE valOsnovno ON kuv.ID_VALUTE = valOsnovno.ID_VALUTE JOIN KURSNA_LISTA kl ON kuv.ID_KURSNE_LISTE = kl.ID_KURSNE_LISTE WHERE kl.ID_KURSNE_LISTE = '" + Integer.parseInt(id) + "'  ORDER BY kuv.KLS_RBR" );
+		
+		List<KursUValuti> lista = new ArrayList<KursUValuti>();
+		while(rs.next()){
+			lista.add(new KursUValuti(rs.getBigDecimal(1), rs.getBigDecimal(5), rs.getBigDecimal(6), rs.getBigDecimal(7), rs.getInt(4), rs.getDate(8), rs.getInt(2), rs.getString(9), rs.getInt(3), rs.getString(10)));
+		}
 		return lista;
 	}
 

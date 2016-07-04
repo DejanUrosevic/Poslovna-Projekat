@@ -1,14 +1,21 @@
 (function(angular){
 	var kursUValutiModul = angular.module('kursUValutiEntry',[]);
 	
-	kursUValutiModul.controller('kursUValutiCtrl', function($scope, $http, $state, $stateParams, zoomKursUValutiService)
+	kursUValutiModul.controller('kursUValutiCtrl', function($scope, $http, $state, $stateParams, $location, zoomKursUValutiService)
 	{
 		
 		$scope.stanjePregled = true;
+		$scope.zoomIcon = true;
+		//ovo sluzi da se lakse odredi iz koje tabele se doslo na ovu stranicu
+		var url = $location.absUrl().split('?')[0]
+		
 		
 		if(!angular.equals({}, $stateParams))
 		{
-			$scope.zoomIcon = false;
+			if(url.indexOf('kursna_lista') !== -1)
+			{
+				$scope.zoomIcon = false;
+			}
 		}
 		else
 		{
@@ -51,11 +58,24 @@
 		//
 		
 		if(!angular.equals({}, $stateParams)){
-			var drzavaId = $stateParams.id;
-			$http.get('http://localhost:8080/PoslovnaBanka/drzava/' + drzavaId + '/naseljeno_mesto')
-			.success(function(data, status, header){
-				$scope.listaKursa = data;
-			});
+
+			if(url.indexOf('kursna_lista') !== -1)
+			{
+				var drzavaId = $stateParams.id;
+				$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/' + drzavaId + '/kursevi_u_valuti')
+				.success(function(data, status, header){
+					$scope.listaKursa = data;
+				});
+			}
+			else if(url.indexOf('valuta') !== -1)
+			{
+				var drzavaId = $stateParams.id;
+				$http.get('http://localhost:8080/PoslovnaBanka/valute/' + drzavaId + '/kursevi_u_valuti')
+				.success(function(data, status, header){
+					$scope.listaKursa = data;
+				});
+			}
+			
 		}else{
 			$http.get('http://localhost:8080/PoslovnaBanka/kurs_u_valuti/findAll')
 			.success(function(data, status, header){
@@ -261,14 +281,18 @@
 			$scope.srednji = null;
 			$scope.prodajni = null;
 			//obratiti paznju ovde, bice problema!!!
-			if(!angular.equals({}, $stateParams)){
-				var drzavaId = $stateParams.id;
-				$scope.oznakaDrzava = drzavaId;
-				$http.post('http://localhost:8080/PoslovnaBanka/drzava/findOne',
-				{sifra: drzavaId})
-				.success(function(data, status, header){
-					$scope.nazivDrzava = data[0].naziv;
-				});
+			if(!angular.equals({}, $stateParams))
+			{
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					var drzavaId = $stateParams.id;
+					$scope.idKursneListe = drzavaId;
+					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/findOne',
+					{sifra: drzavaId})
+					.success(function(data, status, header){
+						$scope.primenjujeSeOd = data[0].primenjujeSeOd;
+					});
+				}
 			}
 			
 		}
@@ -281,8 +305,20 @@
 			$scope.stanjeIzmena = false;
 		
 			$scope.sifraSelected = null;
-			$scope.idKursneListe = null;
-			$scope.primenjujeSeOd = null;
+			if(!angular.equals({}, $stateParams))
+			{
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					var drzavaId = $stateParams.id;
+					$scope.idKursneListe = drzavaId;
+					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/findOne',
+					{sifra: drzavaId})
+					.success(function(data, status, header){
+						$scope.primenjujeSeOd = data[0].primenjujeSeOd;
+					});
+				}
+				
+			}
 			$scope.idOsnovneValute = null;
 			$scope.nazivOsnovneValute = null;
 			$scope.idPremaValute = null;
@@ -301,21 +337,42 @@
 				.success(function(data, status, header)
 				{
 					if(!angular.equals({}, $stateParams)){
-						var drzavaId = $stateParams.id;
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
-						.success(function(data, status, header)
+						if(url.indexOf('kursna_lista') !== -1)
 						{
-							$scope.listaNaselja = data;
-							for(var i=0; i<$scope.listaNaselja.length; i++)
+							var drzavaId = $stateParams.id;
+							$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
 							{
-								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								$scope.listaKursa = data;
+								for(var i=0; i<$scope.listaKursa.length; i++)
 								{
-									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
-									break;
+									if($scope.sifraSelected == $scope.listaKursa[i].redniBroj)
+									{
+										$scope.sifraSelected = $scope.listaKursa[i].redniBroj;
+										break;
+									}
 								}
-							}
-							$state.go('drzava_naselje', {id: drzavaId});
-						});
+								$state.go('kursna_lista_kursa_u_valuti', {id: drzavaId});
+							});
+						}
+						else if(url.indexOf('valuta') !== -1)
+						{
+							var drzavaId = $stateParams.id;
+							$http.get('http://localhost:8080/PoslovnaBanka/valute/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
+							{
+								$scope.listaKursa = data;
+								for(var i=0; i<$scope.listaKursa.length; i++)
+								{
+									if($scope.sifraSelected == $scope.listaKursa[i].redniBroj)
+									{
+										$scope.sifraSelected = $scope.listaKursa[i].redniBroj;
+										break;
+									}
+								}
+								$state.go('valuta_kursa_u_valuti', {id: drzavaId});
+							});
+						}						
 					}else{
 						$http.get('http://localhost:8080/PoslovnaBanka/kurs_u_valuti/findAll')
 						.success(function(data, status, header){
@@ -340,8 +397,21 @@
 					
 					if(!angular.equals({}, $stateParams))
 					{
-						$scope.listaKursa = data;
-						$state.go('drzava_naselje');
+						if(url.indexOf('kursna_lista') !== -1)
+						{
+							var drzavaId = $stateParams.id;
+							$scope.listaKursa = data;
+							
+							$state.go('kursna_lista_kursa_u_valuti', {id: drzavaId});
+						}
+						else if(url.indexOf('valuta') !== -1)
+						{
+							var drzavaId = $stateParams.id;
+							$scope.listaKursa = data;
+							
+							$state.go('valuta_kursa_u_valuti', {id: drzavaId});
+						}
+
 					}
 					else
 					{
@@ -354,18 +424,37 @@
 			{
 				if(!angular.equals({}, $stateParams))
 				{
-					var drzavaId = $stateParams.id;
-					
-					$http.post('http://localhost:8080/PoslovnaBanka/kurs_u_valuti/update',
-							{redniBroj: $scope.sifraSelected, idKursneListe: $scope.idKursneListe, primenjuje: $scope.primenjujeSeOd, idOsnovneValute: $scope.idOsnovneValute, nazivOsnovneValute: $scope.nazivOsnovneValute, idPremaValute: $scope.idPremaValute, nazivPremaValute: $scope.nazivPremaValute, kupovni: $scope.kupovni, srednji: $scope.srednji, prodajni: $scope.prodajni})
-					.success(function(data, status, header){
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
-						.success(function(data, status, header)
-						{
-							$scope.listaKursa = data;
-							$state.go('drzava_naselje');
+					if(url.indexOf('kursna_lista') !== -1)
+					{
+						var drzavaId = $stateParams.id;
+						
+						$http.post('http://localhost:8080/PoslovnaBanka/kurs_u_valuti/update',
+								{redniBroj: $scope.sifraSelected, idKursneListe: $scope.idKursneListe, primenjuje: $scope.primenjujeSeOd, idOsnovneValute: $scope.idOsnovneValute, nazivOsnovneValute: $scope.nazivOsnovneValute, idPremaValute: $scope.idPremaValute, nazivPremaValute: $scope.nazivPremaValute, kupovni: $scope.kupovni, srednji: $scope.srednji, prodajni: $scope.prodajni})
+						.success(function(data, status, header){
+							$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
+							{
+								$scope.listaKursa = data;
+								$state.go('kursna_lista_kursa_u_valuti', {id: drzavaId});
+							});
 						});
-					});
+					}
+					else if(url.indexOf('valuta') !== -1)
+					{
+						var drzavaId = $stateParams.id;
+						$http.post('http://localhost:8080/PoslovnaBanka/kurs_u_valuti/update',
+								{redniBroj: $scope.sifraSelected, idKursneListe: $scope.idKursneListe, primenjuje: $scope.primenjujeSeOd, idOsnovneValute: $scope.idOsnovneValute, nazivOsnovneValute: $scope.nazivOsnovneValute, idPremaValute: $scope.idPremaValute, nazivPremaValute: $scope.nazivPremaValute, kupovni: $scope.kupovni, srednji: $scope.srednji, prodajni: $scope.prodajni})
+						.success(function(data, status, header){
+							$http.get('http://localhost:8080/PoslovnaBanka/valute/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
+							{
+								$scope.listaKursa = data;
+								$state.go('valuta_kursa_u_valuti', {id: drzavaId});
+							});
+						});
+						
+					}			
+				
 				}
 				else
 				{
@@ -393,24 +482,63 @@
 				.success(function(data, status, header){
 					if(!angular.equals({}, $stateParams))
 					{
-						var drzavaId = $stateParams.id;
-						
-						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
-						.success(function(data, status, header)
+						if(url.indexOf('kursna_lista') !== -1)
 						{
-							$scope.listaKursa = data;
+							var drzavaId = $stateParams.id;
 							
-							$scope.sifraSelected = null;
-							$scope.nazivNaselje = null;
-							$scope.pttOznaka = null;
-							
-							$scope.stanjeAdd = false;
-							$scope.stanjeSearch = false;
-							$scope.stanjePregled = true;
-							$scope.stanjeIzmena = false;
-							
-							$state.go('drzava_naselje');
-						});
+							$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
+							{
+								$scope.listaKursa = data;
+								
+								$scope.sifraSelected = null;
+								$scope.idKursneListe = null;
+								$scope.primenjujeSeOd = null;
+								$scope.idOsnovneValute = null;
+								$scope.nazivOsnovneValute = null;
+								$scope.idPremaValute = null;
+								$scope.nazivPremaValute = null;
+								$scope.kupovni = null;
+								$scope.srednji = null;
+								$scope.prodajni = null;
+								
+								$scope.stanjeAdd = false;
+								$scope.stanjeSearch = false;
+								$scope.stanjePregled = true;
+								$scope.stanjeIzmena = false;
+								
+								$state.go('kursna_lista_kursa_u_valuti', {id: drzavaId});
+							});
+						}
+						else if(url.indexOf('valuta') !== -1)
+						{
+							var drzavaId = $stateParams.id;
+							$http.get('http://localhost:8080/PoslovnaBanka/valute/' + drzavaId + '/kursevi_u_valuti')
+							.success(function(data, status, header)
+							{
+								$scope.listaKursa = data;
+								
+								$scope.sifraSelected = null;
+								$scope.idKursneListe = null;
+								$scope.primenjujeSeOd = null;
+								$scope.idOsnovneValute = null;
+								$scope.nazivOsnovneValute = null;
+								$scope.idPremaValute = null;
+								$scope.nazivPremaValute = null;
+								$scope.kupovni = null;
+								$scope.srednji = null;
+								$scope.prodajni = null;
+								
+								$scope.stanjeAdd = false;
+								$scope.stanjeSearch = false;
+								$scope.stanjePregled = true;
+								$scope.stanjeIzmena = false;
+								
+								$state.go('valuta_kursa_u_valuti', {id: drzavaId});
+							});
+						}
+						
+					
 					}
 					else
 					{
@@ -450,24 +578,62 @@
 			if(!angular.equals({}, $stateParams))
 			{
 				var drzavaId = $stateParams.id;
-				$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
-				.success(function(data, status, header)
-				{
-					$scope.listaKursa = data;
-					
-					$scope.stanjeAdd = false;
-					$scope.stanjePregled = true;
-					$scope.stanjeSearch = false;
-					$scope.stanjeIzmena = false;
-					
-					$scope.sifraSelected = null;
-					$scope.nazivNaselje = null;
-					$scope.pttOznaka = null;
-					$scope.oznakaDrzava = $scope.listaNaselja[0].drzavaSifra;
-					$scope.nazivDrzava = $scope.listaNaselja[0].drzavaNaziv;
-					
-					$state.go('drzava_naselje', {id: drzavaId});
-				});
+					if(url.indexOf('kursna_lista') !== -1)
+					{
+						
+						$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/' + drzavaId + '/kursevi_u_valuti')
+						.success(function(data, status, header)
+						{
+							$scope.listaKursa = data;
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeSearch = false;
+							$scope.stanjeIzmena = false;
+							
+							$scope.sifraSelected = null;
+							$scope.idKursneListe = $scope.listaKursa[0].idKursneListe;
+							$scope.primenjujeSeOd = $scope.listaKursa[0].primenjujeSeOd;
+							$scope.idOsnovneValute = null;
+							$scope.nazivOsnovneValute = null;
+							$scope.idPremaValute = null;
+							$scope.nazivPremaValute = null;
+							$scope.kupovni = null;
+							$scope.srednji = null;
+							$scope.prodajni = null;
+							
+							$state.go('kursna_lista_kursa_u_valuti', {id: drzavaId});
+						});
+						
+					}
+					else if(url.indexOf('valuta') !== -1)
+					{
+						$http.get('http://localhost:8080/PoslovnaBanka/valute/' + drzavaId + '/kursevi_u_valuti')
+						.success(function(data, status, header)
+						{
+							var drzavaId = $stateParams.id;
+							$scope.listaKursa = data;
+							
+							$scope.sifraSelected = null;
+							$scope.idKursneListe = null;
+							$scope.primenjujeSeOd = null;
+							$scope.idOsnovneValute = null;
+							$scope.nazivOsnovneValute = null;
+							$scope.idPremaValute = null;
+							$scope.nazivPremaValute = null;
+							$scope.kupovni = null;
+							$scope.srednji = null;
+							$scope.prodajni = null;
+							
+							$scope.stanjeAdd = false;
+							$scope.stanjeSearch = false;
+							$scope.stanjePregled = true;
+							$scope.stanjeIzmena = false;
+							
+							$state.go('valuta_kursa_u_valuti', {id: drzavaId});
+						});
+					}
+
 			}
 			else
 			{
@@ -518,10 +684,18 @@
 			if($scope.stanjeSearch)
 			{
 				zoomKursUValutiService.setPretraga(true);
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					zoomKursUValutiService.setIzZooma(true);
+				}
 			}
 			else if($scope.stanjeAdd)
 			{
 				zoomKursUValutiService.setPretraga(false);
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					zoomKursUValutiService.setIzZooma(true);
+				}
 			}
 			
 			$state.go('valute');
@@ -549,10 +723,18 @@
 			if($scope.stanjeSearch)
 			{
 				zoomKursUValutiService.setPretraga(true);
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					zoomKursUValutiService.setIzZooma(true);
+				}
 			}
 			else if($scope.stanjeAdd)
 			{
 				zoomKursUValutiService.setPretraga(false);
+				if(url.indexOf('kursna_lista') !== -1)
+				{
+					zoomKursUValutiService.setIzZooma(true);
+				}
 			}
 			
 			$state.go('valute');
@@ -590,6 +772,25 @@
 			$state.go('kursna_lista');
 		}
 		
+		$scope.nazad = function()
+		{
+			if(!angular.equals({}, $stateParams))
+			{
+				if(url.indexOf('valuta') !== -1)
+				{
+					$state.go('valute');
+				}
+				else if(url.indexOf('kursna_lista') !== -1)
+				{
+					$state.go('kursna_lista');
+				}
+				
+			}
+			else
+			{
+				$state.go('main');
+			}
+		}
 		
 	});
 		

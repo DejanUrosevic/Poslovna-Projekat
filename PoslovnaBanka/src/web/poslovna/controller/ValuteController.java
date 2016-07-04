@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import web.poslovna.model.Drzava;
+import web.poslovna.model.KursUValuti;
 import web.poslovna.model.Valute;
 import web.poslovna.service.DrzavaService;
 import web.poslovna.service.ValuteService;
@@ -61,5 +62,11 @@ public class ValuteController
 		
 		valSer.remove(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{idValute}/kursevi_u_valuti", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<KursUValuti>> findKurseviUValuti(@PathVariable(value="idValute") String id) throws SQLException{
+		
+		return new ResponseEntity<List<KursUValuti>>(valSer.findKurseveUValuti(id), HttpStatus.OK);
 	}
 }

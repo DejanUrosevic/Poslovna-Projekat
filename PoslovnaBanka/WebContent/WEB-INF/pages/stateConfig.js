@@ -78,5 +78,13 @@
 			templateUrl: 'dnevno_stanje/dnevno_stanje.html',
 			controller: 'stanjeCtrl'
 		})
+		.state('kursna_lista_kursa_u_valuti', {url: '/kursna_lista/:id/kursevi_u_valuti',
+			templateUrl: 'kursUValuti/kursUValuti.html',
+			controller: 'kursUValutiCtrl'
+		})
+		.state('valuta_kursa_u_valuti', {url: '/valuta/:id/kursevi_u_valuti',
+			templateUrl: 'kursUValuti/kursUValuti.html',
+			controller: 'kursUValutiCtrl'
+		})
 	});
 })(angular)

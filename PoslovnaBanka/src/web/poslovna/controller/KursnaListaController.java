@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -22,7 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import web.poslovna.model.Drzava;
+import web.poslovna.model.KursUValuti;
 import web.poslovna.model.KursnaLista;
+import web.poslovna.model.NaseljenoMesto;
 import web.poslovna.service.KursnaListaService;
 
 @Controller
@@ -82,6 +85,22 @@ public class KursnaListaController {
 	public @ResponseBody ResponseEntity<KursnaLista> deleteKursnaLista(@PathVariable(value="id") String id) throws SQLException{
 		kurSer.remove(id);
 		return new ResponseEntity<KursnaLista>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{idKursneListe}/kursevi_u_valuti", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<KursUValuti>> findKurseviUValuti(@PathVariable(value="idKursneListe") String id) throws SQLException{
+		
+		return new ResponseEntity<List<KursUValuti>>(kurSer.findKurseveUValuti(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/findOne", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<KursnaLista>> getOneState(@RequestBody String reqBody) throws SQLException
+	{
+		JSONObject json = new JSONObject(reqBody);
+		List<KursnaLista> kursnaLista = new ArrayList<KursnaLista>();
+		kursnaLista.add(kurSer.findOne(json.getString("sifra")));
+		
+		return new ResponseEntity<List<KursnaLista>>(kursnaLista, HttpStatus.OK);
 	}
 
 }

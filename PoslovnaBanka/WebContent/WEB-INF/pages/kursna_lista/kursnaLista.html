@@ -1,5 +1,5 @@
 <div id="header">
-	<h1>Drzava</h1>
+	<h1>Kursna Lista</h1>
 	<ul>
 		<li><a ui-sref="main">Nazad</a></li>
 		<li><a href="#">Products</a></li>
@@ -64,16 +64,9 @@
 						<td>&nbsp</td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="findNaselja()">
+								style="background-color: transparent; border-color: transparent;" ng-click="findKursUValuti()">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
-						<td ng-show="klikZaZoom">
-							<select ng-model="izborNext" ng-change="findNaselja()">
-								<option value=""> * Izaberite tabelu *</option>
-								<option value="drzava_naselje"> Naseljena mesta</option>
-								<option value="valute_drzava"> Valute</option>
-							</select>
-						</td>
 					</tr>
 				</table>
 				

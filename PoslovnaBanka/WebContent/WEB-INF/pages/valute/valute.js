@@ -3,7 +3,7 @@
 	var valuteModul = angular.module('valuteEntry', []);
 	
 	
-	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, zoomValuteService, zoomRacunValutaService, zoomKursUValutiService)
+	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, $location, zoomValuteService, zoomRacunValutaService, zoomKursUValutiService)
 	{
 		$scope.stanjePregled = true;
 		$scope.zoomRacuni = zoomRacunValutaService.getZoom();
@@ -535,7 +535,26 @@
 			}
 			else if(zoomKursUValutiService.getZoom())
 			{
-				if(zoomKursUValutiService.getOsnovna())
+				if(zoomKursUValutiService.getIzZooma())
+				{
+					if(zoomKursUValutiService.getOsnovna())
+					{
+						zoomKursUValutiService.setIdOsnovneValute($scope.sifraSelected);
+						zoomKursUValutiService.setNazivOsnovneValute($scope.naziv);
+						
+						$state.go('kursna_lista_kursa_u_valuti', {id: zoomKursUValutiService.getIdKursneListe()});
+						
+					}
+					else if(zoomKursUValutiService.getPrema())
+					{
+						zoomKursUValutiService.setIdPremaValuti($scope.sifraSelected);
+						zoomKursUValutiService.setNazivPremaValuti($scope.naziv);
+						
+						$state.go('kursna_lista_kursa_u_valuti', {id: zoomKursUValutiService.getIdKursneListe()});
+						
+					}
+				}
+				else if(zoomKursUValutiService.getOsnovna())
 				{
 					zoomKursUValutiService.setIdOsnovneValute($scope.sifraSelected);
 					zoomKursUValutiService.setNazivOsnovneValute($scope.naziv);
@@ -549,6 +568,18 @@
 					
 					$state.go('kurs_u_valuti');
 				}
+			}
+		}
+		
+		$scope.findKursUValuti = function()
+		{
+			if($scope.sifraSelected != null || $scope.sifraSelected != undefined)
+			{
+				$state.go('valuta_kursa_u_valuti', {id: $scope.sifraSelected});
+			}
+			else
+			{
+				alert('Selektujte neku od valuta za nastavak.');
 			}
 		}
 		
