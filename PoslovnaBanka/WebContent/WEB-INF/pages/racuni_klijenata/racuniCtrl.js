@@ -785,6 +785,7 @@
 						zoomServiceAnalitikaRacun.setDuznik($scope.nazivKlijenta);
 					}	
 					zoomServiceAnalitikaRacun.setRacunDuznika($scope.brRacuna);
+					zoomServiceAnalitikaRacun.setIdRacunaDuznika($scope.sifraSelected);
 					$state.go('analitike');
 				}else{
 					if($scope.imeKlijenta != '' && $scope.imeKlijenta != null && $scope.imeKlijenta != undefined){
@@ -793,6 +794,7 @@
 						zoomServiceAnalitikaRacun.setPoverilac($scope.nazivKlijenta);
 					}	
 					zoomServiceAnalitikaRacun.setRacunPoverioca($scope.brRacuna);
+					zoomServiceAnalitikaRacun.setIdRacunaPoverioca($scope.sifraSelected);
 					$state.go('analitike');
 				}
 			}

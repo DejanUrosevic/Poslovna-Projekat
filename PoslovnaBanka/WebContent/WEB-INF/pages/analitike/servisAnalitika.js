@@ -28,6 +28,10 @@
 		var idValute = '';
 		var valuta = '';
 		var idIzvoda = '';
+		var idRacunaDuznika = '';
+		var idRacunaPoverioca = '';
+		var uplatnica = false;
+		
 				
 		return {
 			getZoom : function(){
@@ -185,6 +189,24 @@
 			},
 			setIdIzvoda: function(value){
 				idIzvoda = value;
+			},
+			getIdRacunaDuznika: function(){
+				return idRacunaDuznika;
+			},
+			setIdRacunaDuznika: function(value){
+				idRacunaDuznika = value;
+			},
+			getIdRacunaPoverioca: function(){
+				return idRacunaPoverioca;
+			},
+			setIdRacunaPoverioca: function(value){
+				idRacunaPoverioca = value;
+			},
+			getUplatnica: function(){
+				return uplatnica;
+			},
+			setUplatnica: function(value){
+				uplatnica = value;
 			}
 		};
 	});

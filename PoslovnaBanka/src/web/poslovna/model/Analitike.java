@@ -28,6 +28,8 @@ public class Analitike {
 	private String naselje;
 	private Integer idValute;
 	private String valuta;
+	private Integer idRacunaPoverioca;
+	private Integer idRacunaDuznika;
 	
 	private Integer idIzvoda;
 
@@ -253,5 +255,22 @@ public class Analitike {
 	public void setIdIzvoda(Integer idIzvoda) {
 		this.idIzvoda = idIzvoda;
 	}
+
+	public Integer getIdRacunaPoverioca() {
+		return idRacunaPoverioca;
+	}
+
+	public void setIdRacunaPoverioca(Integer idRacunaPoverioca) {
+		this.idRacunaPoverioca = idRacunaPoverioca;
+	}
+
+	public Integer getIdRacunaDuznika() {
+		return idRacunaDuznika;
+	}
+
+	public void setIdRacunaDuznika(Integer idRacunaDuznika) {
+		this.idRacunaDuznika = idRacunaDuznika;
+	}
+	
 	
 }

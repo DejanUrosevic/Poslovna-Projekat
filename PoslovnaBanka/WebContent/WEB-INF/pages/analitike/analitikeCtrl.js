@@ -12,10 +12,17 @@
 		});
 		
 		if(zoomServiceAnalitikaRacun.getZoom()){
-			if(zoomServiceAnalitikaRacun.getPretraga){
+			if(zoomServiceAnalitikaRacun.getPretraga()){
 				$scope.stanjeSearch = true;
 				$scope.stanjeIzmene = false;
 				$scope.stanjeAdd = false;
+				$scope.stanjePregled = false;
+			}
+			else
+			{
+				$scope.stanjeSearch = false;
+				$scope.stanjeIzmene = false;
+				$scope.stanjeAdd = true;
 				$scope.stanjePregled = false;
 			}
 			
@@ -45,7 +52,7 @@
 			$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
 			.success(function(data, status, header)
 			{
-				$scope.listaLica = data;
+				$scope.lista = data;
 				
 				$scope.stanjeAdd = false;
 				$scope.stanjePregled = true;
@@ -71,6 +78,7 @@
 				$scope.datumPrijema = null;
 				$scope.hitno = null;
 				$scope.tipGreske = null;
+				
 				$state.go('analitike');
 			});
 		}
@@ -377,8 +385,123 @@
 			$scope.tipGreske = null;
 		}
 		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeAdd)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/analitike/save',
+						{sifra: $scope.sifraSelected, duznik: $scope.duznik, svrha: $scope.svrha, poverilac: $scope.poverilac, valuta: $scope.valuta, 
+						 datumValute: $scope.datumValute, iznos: $scope.iznos, racunDuznika: $scope.racunDuznika, modelZaduzenja: $scope.modelZaduzenja, 
+						 pbZaduzenje: $scope.pbZaduzenje, racunPoverioca: $scope.racunPoverioca, modelOdobrenja: $scope.modelOdobrenja, pbOdobrenja: $scope.pbOdobrenja,
+						 nazivPlacanja: $scope.nazivPlacanja, naselje: $scope.naselje, datumPrijema: $scope.datumPrijema, hitno: $scope.hitno,
+						 idRacunaPoverioca: zoomServiceAnalitikaRacun.getIdRacunaPoverioca(), idRacunaDuznika: zoomServiceAnalitikaRacun.getIdRacunaDuznika(),
+						 idVrstaPlacanja: zoomServiceAnalitikaRacun.getIdVrstePlacanja(), idNaselje: zoomServiceAnalitikaRacun.getIdNaselje(),
+						 idValute: zoomServiceAnalitikaRacun.getIdValute(), idIzvoda: zoomServiceAnalitikaRacun.getIdIzvoda()})
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams)){
+						var drzavaId = $stateParams.id;
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							for(var i=0; i<$scope.listaNaselja.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								{
+									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
+									break;
+								}
+							}
+							$state.go('drzava_naselje', {id: drzavaId});
+						});
+					}else{
+						$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
+						.success(function(data, status, header){
+							
+							$scope.lista = data;
+							for(var i=0; i<$scope.lista.length; i++)
+							{
+								if($scope.sifraSelected == $scope.lista[i].id)
+								{
+									$scope.sifraSelected = $scope.lista[i].id;
+									break;
+								}
+							}
+						});
+					}
+				});
+			}
+			else if($scope.stanjeSearch){
+				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/search',
+						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+				.success(function(data, status, header){
+					
+					if(!angular.equals({}, $stateParams))
+					{
+						$scope.listaNaselja = data;
+						$state.go('drzava_naselje');
+					}
+					else
+					{
+						$scope.listaNaselja = data;
+						$state.go('naseljeno_mesto');
+					}
+				});
+			}
+			else if($scope.stanjeIzmena)
+			{
+				if(!angular.equals({}, $stateParams))
+				{
+					var drzavaId = $stateParams.id;
+					
+					$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/update',
+							{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+					.success(function(data, status, header){
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							$state.go('drzava_naselje');
+						});
+					});
+				}
+				else
+				{
+					$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/update',
+							{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
+					.success(function(data, status, header){
+						$http.get('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							$state.go('naseljeno_mesto');
+						});
+					});
+				}
+			}
+			else
+			{
+				alert('Morate selektovati stanje.');
+			}	
+		}
+		
+		
+		
+		
+		
 		$scope.zoomDuznik = function(){
 			zoomServiceAnalitikaRacun.setZoom(true);
+			
+			if($scope.stanjeSearch)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(false);
+			}
+			
 			zoomServiceAnalitikaRacun.setDuznikBoolean(true);
 			zoomServiceAnalitikaRacun.setId($scope.sifraSelected);
 			zoomServiceAnalitikaRacun.setSvrha($scope.svrha);
@@ -406,6 +529,15 @@
 		
 		$scope.zoomPoverilac = function(){
 			zoomServiceAnalitikaRacun.setZoom(true);
+			if($scope.stanjeSearch)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(false);
+			}
+			
 			zoomServiceAnalitikaRacun.setDuznikBoolean(false);
 			zoomServiceAnalitikaRacun.setId($scope.sifraSelected);
 			zoomServiceAnalitikaRacun.setSvrha($scope.svrha);
@@ -433,6 +565,15 @@
 		
 		$scope.zoomValute = function(){
 			zoomServiceAnalitikaRacun.setZoom(true);
+			
+			if($scope.stanjeSearch)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(false);
+			}
 			zoomServiceAnalitikaRacun.setDuznikBoolean(false);
 			zoomServiceAnalitikaRacun.setId($scope.sifraSelected);
 			zoomServiceAnalitikaRacun.setSvrha($scope.svrha);
@@ -460,6 +601,15 @@
 		
 		$scope.zoomVrstaPlacanja = function(){
 			zoomServiceAnalitikaRacun.setZoom(true);
+			
+			if($scope.stanjeSearch)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(false);
+			}
 			zoomServiceAnalitikaRacun.setDuznikBoolean(false);
 			zoomServiceAnalitikaRacun.setId($scope.sifraSelected);
 			zoomServiceAnalitikaRacun.setSvrha($scope.svrha);
@@ -487,6 +637,15 @@
 		
 		$scope.zoomNaselje = function(){
 			zoomServiceAnalitikaRacun.setZoom(true);
+			
+			if($scope.stanjeSearch)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(true);
+			}
+			else if($scope.stanjeAdd)
+			{
+				zoomServiceAnalitikaRacun.setPretraga(false);
+			}
 			zoomServiceAnalitikaRacun.setDuznikBoolean(false);
 			zoomServiceAnalitikaRacun.setId($scope.sifraSelected);
 			zoomServiceAnalitikaRacun.setSvrha($scope.svrha);

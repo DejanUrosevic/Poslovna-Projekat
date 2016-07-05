@@ -68,8 +68,9 @@ public class DnevnoStanjeServiceImpl implements DnevnoStanjeService{
 	}
 
 	@Override
-	public void save(DnevnoStanje object) throws SQLException {
-		// TODO Auto-generated method stub
+	public void save(DnevnoStanje object) throws SQLException 
+	{
+		
 		
 	}
 
