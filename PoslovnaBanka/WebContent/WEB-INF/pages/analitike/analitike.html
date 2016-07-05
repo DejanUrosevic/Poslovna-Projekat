@@ -1,0 +1,218 @@
+<div id="header">
+	<h1>Drzava</h1>
+	<ul>
+		<li><a ui-sref="main">Nazad</a></li>
+		<li><a href="#">Products</a></li>
+		<li><a href="#">Services</a></li>
+		<li>Stanje: </li>
+		<li style="color: #00ff00;" ng-show="stanjeAdd">  Dodavanje  </li>
+		<li style="color: #33ccff;" ng-show="stanjeSearch">  Pretraga  </li>
+		<li style="color: white;" ng-show="stanjePregled">  Pregled  </li>
+		<li style="color: yellow;" ng-show="stanjeIzmena">  Izmena  </li>
+	</ul>
+</div>
+<div id="main">
+	<div class="main_body">
+		<div id="tableContainer-1">
+			<div id="tableContainer-2">
+				<table id="myTable">
+					<tr>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjePretrage()">
+								<img src="css/images/search2.gif" height="30" />
+						</button></td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="refreshState()">
+								<img src="css/images/refresh.png" height="30" />
+						</button></td>
+						<td ng-show="zoom"><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()">
+								<img src="css/images/export.jpg" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="levoDoKraja()">
+								<img src="css/images/left.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanLevo()">
+								<img src="css/images/left22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="jedanDesno()">
+								<img src="css/images/right22.png" height="35" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="desnoDoKraja()">
+								<img src="css/images/right.png" height="35" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="stanjeDodavanje()">
+								<img src="css/images/add.png" height="30" />
+						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="deleteState()">
+								<img src="css/images/delete2.ico" height="30" />
+						</button></td>
+						
+						<td>&nbsp</td>
+						
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="findNaselja()">
+								<img src="css/images/chain.jpg" height="35" />
+						</button></td>
+						<td ng-show="klikZaZoom">
+							<select ng-model="izborNext" ng-change="findNaselja()">
+								<option value=""> * Izaberite tabelu *</option>
+								<option value="drzava_naselje"> Naseljena mesta</option>
+								<option value="valute_drzava"> Valute</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				
+				<br/>
+				<hr/>
+				<br/>
+				
+				<table border="1">
+					<tr>
+						<th> ID	</th>
+						<th> Duznik </th>
+						<th> Svrha uplate </th>
+						<th> Poverilac </th>
+						<th> Valuta </th>
+						<th> Iznos </th>
+						<th> Racun duznika </th>
+						<th> Poziv na broj zaduzenja </th>
+						<th> Racun odobrenja </th>
+						<th> Poziv na broj odobrenja</th>
+						<th> Mesto prijema </th>
+						<th> Datum prijema </th>
+						<th> Hitno </th>
+						<th> Tip greske </th>
+					</tr>
+					<tr ng-repeat="list in lista" ng-click="setSelected(list.id, list.duznik, list.svrha, list.poverilac, list.valuta, list.datumValute, list.iznos, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunPoverioca, list.modelOdobrenja, list.pbOdobrenja, list.nazivPlacanja, list.naselje, list.datumPrijema, list.hitno, list.tipGreske)" ng-class="{selected: list.id === sifraSelected}">
+						<td> {{list.id}}</td>
+						<td> {{list.duznik}}</td>
+						<td> {{list.svrha}}</td>
+						<td> {{list.poverilac}}</td>
+						<td> {{list.valuta}}</td>
+						<td> {{list.iznos}}</td>
+						<td> {{list.racunDuznika}}</td>
+						<td> {{list.pbZaduzenja}}</td>
+						<td> {{list.racunPoverioca}}</td>
+						<td> {{list.pbOdobrenja}}</td>
+						<td> {{list.naselje}}</td>
+						<td> {{list.datumPrijema}}</td>
+						<td> {{list.hitno}}</td>
+						<td> {{list.tipGreske}}</td>
+					</tr>
+				</table>
+			
+			</div>
+		</div>
+		
+		<br/>
+		<hr/>
+		<br/>
+		
+		<div>
+			<div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td> ID: </td>
+							<td> <input type="text" ng-model="sifraSelected" disabled> </td>
+						</tr>
+						<tr>
+							<td> Duznik: </td>
+							<td> <input type="text" ng-model="duznik"> </td>
+						</tr>
+						<tr>
+							<td> Svrha uplate: </td>
+							<td> <input type="text" ng-model="svrha"> </td>
+						</tr>
+						<tr>
+							<td> Poverilac: </td>
+							<td> <input type="text" ng-model="poverilac"> </td>
+						</tr>
+						<tr>
+							<td> Valuta: </td>
+							<td> <input type="text" ng-model="valuta"> </td>
+						</tr>
+						<tr>
+							<td> Datum valute: </td>
+							<td> <input type="date" ng-model="datumValute"></td>
+						</tr>
+						<tr>
+							<td> Iznos: </td>
+							<td> <input type="text" ng-model="iznos"> </td>
+						</tr>
+						<tr>
+							<td> Racun duznika: </td>
+							<td> <input type="text" ng-model="racunDuznika"> </td>
+						</tr>
+						<tr>
+							<td> Model zaduzenja: </td>
+							<td> <input type="text" ng-model="modelZaduzenja"> </td>
+						</tr>
+						<tr>
+							<td> Poziv na broj zaduzenja: </td>
+							<td> <input type="text" ng-model="pbZaduzenje"> </td>
+						</tr>
+						<tr>
+							<td> Racun poverioca: </td>
+							<td> <input type="text" ng-model="racunPoverioca"> </td>
+						</tr>
+						<tr>
+							<td> Model odobrenja: </td>
+							<td> <input type="text" ng-model="modelOdobrenja"> </td>
+						</tr>
+						<tr>
+							<td> Poziv na broj odobrenja: </td>
+							<td> <input type="text" ng-model="pbOdobrenja"> </td>
+						</tr>
+						<tr>
+							<td> Vrsta placanja: </td>
+							<td> <input type="text" ng-model="nazivPlacanja"></td>
+						</tr>
+						<tr>
+							<td> Naselj: </td>
+							<td> <input type="text" ng-model="naselje"> </td>
+						</tr>
+						<tr>
+							<td> Datum prijema: </td>
+							<td> <input type="date" ng-model="datumPrijema"> </td>
+						</tr>
+						<tr>
+							<td> Hitno: </td>
+							<td> <input type="text" ng-model="hitno"> </td>
+						</tr>
+						<tr>
+							<td> Tip greske:</td>
+							<td> <input type="text" ng-model="tipGreske"> </td>
+						</tr>
+					</table>
+					
+				</div>
+			</div>
+			<br/>
+			<div style="text-align: center;">
+			   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
+									<img src="css/images/commit.png" height="30" />
+				</button> &nbsp
+				<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+									<img src="css/images/delete2.ico" height="30" />
+				</button>
+			</div>
+		</div>
+				
+	</div>
+</div>

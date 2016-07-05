@@ -86,5 +86,9 @@
 			templateUrl: 'kursUValuti/kursUValuti.html',
 			controller: 'kursUValutiCtrl'
 		})
+		.state('analitike', {url: '/analitike',
+			templateUrl: 'analitike/analitike.html',
+			controller: 'analitikeCtrl'
+		})
 	});
 })(angular)
