@@ -3,10 +3,13 @@
 	var valuteModul = angular.module('valuteEntry', []);
 	
 	
-	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, $location, zoomValuteService, zoomRacunValutaService, zoomKursUValutiService)
+	valuteModul.controller('valuteCtrl', function($scope, $http, $state, $stateParams, $location, zoomValuteService, zoomRacunValutaService, zoomKursUValutiService, zoomServiceAnalitikaRacun)
 	{
 		$scope.stanjePregled = true;
 		$scope.zoomRacuni = zoomRacunValutaService.getZoom();
+		$scope.zoomAnalitike = zoomServiceAnalitikaRacun.getZoom();
+			
+		
 		if(zoomKursUValutiService.getZoom())
 		{
 			$scope.zoom = zoomKursUValutiService.getZoom();
@@ -568,6 +571,11 @@
 					
 					$state.go('kurs_u_valuti');
 				}
+			}else if(zoomServiceAnalitikaRacun.getZoom()){
+				zoomServiceAnalitikaRacun.setIdValute($scope.sifraSelected);
+				zoomServiceAnalitikaRacun.setValuta($scope.naziv);
+				
+				$state.go('analitike');
 			}
 		}
 		

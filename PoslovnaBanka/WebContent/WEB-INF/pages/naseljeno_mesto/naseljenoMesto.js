@@ -2,9 +2,12 @@
 	var naseljenoMestoModul = angular.module('naseljeEntry',[]);
 	
 	
-	naseljenoMestoModul.controller('naseljenoMestoCtrl', function($scope, $http, $state, $stateParams, zoomService){
+	naseljenoMestoModul.controller('naseljenoMestoCtrl', function($scope, $http, $state, $stateParams, zoomService, zoomServiceAnalitikaRacun){
 		
 		$scope.stanjePregled = true;
+		
+		$scope.zoom = zoomServiceAnalitikaRacun.getZoom();
+			
 	
 		if(!angular.equals({}, $stateParams))
 		{
@@ -467,6 +470,15 @@
 				{
 					$scope.nazivDrzava = data[0].naziv;
 				});
+			}
+			
+		}
+		
+		$scope.zoomPickup = function(){
+			if(zoomServiceAnalitikaRacun.getZoom()){
+				zoomServiceAnalitikaRacun.setIdNaselje($scope.sifraSelected);
+				zoomServiceAnalitikaRacun.setNaselje($scope.nazivNaselje);
+				$state.go('analitike');
 			}
 			
 		}

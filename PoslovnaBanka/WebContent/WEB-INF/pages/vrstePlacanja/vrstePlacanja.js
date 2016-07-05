@@ -2,9 +2,11 @@
 	
 	var vrstePlacanjaModul = angular.module('vrstePlacanjaEntry', []);
 	
-	vrstePlacanjaModul.controller('vrstePlacanjaCtrl', function($scope, $http, $state, $stateParams)
+	vrstePlacanjaModul.controller('vrstePlacanjaCtrl', function($scope, $http, $state, $stateParams, zoomServiceAnalitikaRacun)
 	{
 		$scope.stanjePregled = true;
+		$scope.zoom = zoomServiceAnalitikaRacun.getZoom();
+		
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/vrstePlacanja/findAll')
 		.success(function(data, status, header)
@@ -239,6 +241,12 @@
 			{
 				alert('Morate izabrati vrstu placanja za brisanje.');
 			}
+		}
+		
+		$scope.zoomPickup = function(){
+			zoomServiceAnalitikaRacun.setIdVrstePlacanja($scope.sifraSelected);
+			zoomServiceAnalitikaRacun.setNazivPlacanja($scope.nazivPlacanja);
+			$state.go('analitike');
 		}
 		
 	});

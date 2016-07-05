@@ -1,10 +1,11 @@
 (function(angular){
 	var racuniModul = angular.module('racuniEntry', []);
 	
-	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje, zoomStanjeLice){
+	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje, zoomStanjeLice, zoomServiceAnalitikaRacun){
 		$scope.stanjePregled = true;
 		$scope.zoomUkidanje = zoomServiceUkidanje.getZoom();
 		$scope.zoomStanje = zoomStanjeLice.getZoom();
+		$scope.zoomAnalitike = zoomServiceAnalitikaRacun.getZoom();
 		
 		$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
 		.success(function(data, status, header){
@@ -776,6 +777,24 @@
 				
 				zoomStanjeLice.setBanka($scope.banka);
 				$state.go('dnevno_stanje');
+			}else if(zoomServiceAnalitikaRacun.getZoom()){
+				if(zoomServiceAnalitikaRacun.getDuznikBoolean()){
+					if($scope.imeKlijenta != '' && $scope.imeKlijenta != null && $scope.imeKlijenta != undefined){
+						zoomServiceAnalitikaRacun.setDuznik($scope.imeKlijenta + " " + $scope.prezimeKlijenta);
+					}else if($scope.nazivKlijenta != '' && $scope.nazivKlijenta != null && $scope.nazivKlijenta != undefined){
+						zoomServiceAnalitikaRacun.setDuznik($scope.nazivKlijenta);
+					}	
+					zoomServiceAnalitikaRacun.setRacunDuznika($scope.brRacuna);
+					$state.go('analitike');
+				}else{
+					if($scope.imeKlijenta != '' && $scope.imeKlijenta != null && $scope.imeKlijenta != undefined){
+						zoomServiceAnalitikaRacun.setPoverilac($scope.imeKlijenta + " " + $scope.prezimeKlijenta);
+					}else if($scope.nazivKlijenta != '' && $scope.nazivKlijenta != null && $scope.nazivKlijenta != undefined){
+						zoomServiceAnalitikaRacun.setPoverilac($scope.nazivKlijenta);
+					}	
+					zoomServiceAnalitikaRacun.setRacunPoverioca($scope.brRacuna);
+					$state.go('analitike');
+				}
 			}
 		}
 		

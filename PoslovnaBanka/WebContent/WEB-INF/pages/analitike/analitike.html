@@ -23,7 +23,7 @@
 						</button></td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="refreshState()">
+								style="background-color: transparent; border-color: transparent;" ng-click="refresh()">
 								<img src="css/images/refresh.png" height="30" />
 						</button></td>
 						<td ng-show="zoom"><button type="button"
@@ -134,6 +134,11 @@
 						<tr>
 							<td> Duznik: </td>
 							<td> <input type="text" ng-model="duznik"> </td>
+							<td>
+								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomDuznik()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
 						</tr>
 						<tr>
 							<td> Svrha uplate: </td>
@@ -142,10 +147,20 @@
 						<tr>
 							<td> Poverilac: </td>
 							<td> <input type="text" ng-model="poverilac"> </td>
+							<td>
+								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPoverilac()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
 						</tr>
 						<tr>
 							<td> Valuta: </td>
 							<td> <input type="text" ng-model="valuta"> </td>
+							<td>
+								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValute()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
 						</tr>
 						<tr>
 							<td> Datum valute: </td>
@@ -182,10 +197,20 @@
 						<tr>
 							<td> Vrsta placanja: </td>
 							<td> <input type="text" ng-model="nazivPlacanja"></td>
+							<td>
+								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomVrstaPlacanja()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
 						</tr>
 						<tr>
-							<td> Naselj: </td>
+							<td> Naselje: </td>
 							<td> <input type="text" ng-model="naselje"> </td>
+							<td>
+								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomNaselje()" ng-show="stanjeSearch || stanjeAdd">
+									<img src="css/images/zoom.png" height="30" />
+								 </button>
+							</td>
 						</tr>
 						<tr>
 							<td> Datum prijema: </td>
