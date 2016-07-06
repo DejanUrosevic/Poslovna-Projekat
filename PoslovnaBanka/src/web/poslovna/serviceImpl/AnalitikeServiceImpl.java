@@ -65,7 +65,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 		Integer dnevnoStanjeID = null;
 		Double proveraStanja = null;
 		Double tipGreske = 1.0;
-		
+	
 		//deo za izvlacenje iz racuna klijenata
 		
 		
@@ -92,7 +92,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 			rs5.beforeFirst();
 		}
 		
-		if(tipGreske == 1)
+		if(tipGreske == 1 && object.getHitno())
 		{
 				if(rs2.last())
 				{
@@ -132,6 +132,10 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 						tipGreske = 2.0;
 					}
 				}
+		}
+		else
+		{
+			//za kliring
 		}
 		
 		
@@ -178,9 +182,10 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 	    
 	    DBConnection.getConnection().commit();  
 		
+	    
 	    if(object.getHitno()){
 			PreparedStatement rtgs = DBConnection.getConnection().prepareStatement("INSERT INTO KLIRING (KRI_ID, KRI_DATUM_VALUTE, KRI_DATUM, KRI_SIFRA, ID_RACUNA, RAC_ID_RACUNA, KRI_UKUPNO) VALUES (?, ?, ?, ?, ?, ?, ?);");
-			rtgs.setInt(1, 33);
+			rtgs.setInt(1, 89);
 			rtgs.setDate(2, new Date(new java.util.Date().getTime()));
 			rtgs.setDate(3, new Date(new java.util.Date().getTime()));
 			rtgs.setString(4, "MT-103");
@@ -191,7 +196,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 			DBConnection.getConnection().commit();
 			
 			PreparedStatement analitikaRtgs = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_ID, KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?, ?);");
-			analitikaRtgs.setInt(1, 33);
+			analitikaRtgs.setInt(1, 89);
 			analitikaRtgs.setString(2, "MT-103");
 			analitikaRtgs.setInt(3, object.getId());
 			analitikaRtgs.executeUpdate();
