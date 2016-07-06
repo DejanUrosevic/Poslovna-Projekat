@@ -90,5 +90,9 @@
 			templateUrl: 'analitike/analitike.html',
 			controller: 'analitikeCtrl'
 		})
+		.state('kliring', {url:'/kliring_rtgs',
+			templateUrl: 'kliring/kliring.html',
+			controller: 'kliringCtrl'
+		})
 	});
 })(angular)

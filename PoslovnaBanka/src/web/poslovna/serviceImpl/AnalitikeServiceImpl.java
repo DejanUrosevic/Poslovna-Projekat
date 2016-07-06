@@ -99,7 +99,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 					dnevnoStanjeID = rs2.getInt(1);
 					proveraStanja = rs2.getDouble("DSR_NOVOSTANJE") - object.getIznos();
 					
-					if(proveraStanja > 0)
+					if(proveraStanja >= 0)
 					{
 						PreparedStatement stmt3 = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
 						stmt3.setInt(1, object.getIdRacunaDuznika());
@@ -151,6 +151,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 	    }
 
 		
+		
 		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKA_IZVODA (ASI_BROJSTAVKE, VPL_OZNAKA, NM_SIFRA, ID_VALUTE, DSR_IZVOD, ASI_DUZNIK, ASI_SVRHA, ASI_POVERILAC, ASI_DATPRI, ASI_DATVAL, ASI_RACDUZ, ASI_MODZAD, ASI_PBZAD, ASI_RACPOV, ASI_MODODOB, ASI_PBODO, ASI_HITNO, ASI_IZNOS, ASI_TIPGRESKE, ASI_STATUS) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		stmt.setInt(1, object.getId());
 		stmt.setDouble(2, object.getIdVrstePlacanja());
@@ -177,6 +178,25 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 	    
 	    DBConnection.getConnection().commit();  
 		
+	    if(object.getHitno()){
+			PreparedStatement rtgs = DBConnection.getConnection().prepareStatement("INSERT INTO KLIRING (KRI_ID, KRI_DATUM_VALUTE, KRI_DATUM, KRI_SIFRA, ID_RACUNA, RAC_ID_RACUNA, KRI_UKUPNO) VALUES (?, ?, ?, ?, ?, ?, ?);");
+			rtgs.setInt(1, 33);
+			rtgs.setDate(2, new Date(new java.util.Date().getTime()));
+			rtgs.setDate(3, new Date(new java.util.Date().getTime()));
+			rtgs.setString(4, "MT-103");
+			rtgs.setInt(5, object.getIdRacunaDuznika());
+			rtgs.setInt(6, object.getIdRacunaPoverioca());
+			rtgs.setDouble(7, object.getIznos());
+			rtgs.executeUpdate();
+			DBConnection.getConnection().commit();
+			
+			PreparedStatement analitikaRtgs = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_ID, KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?, ?);");
+			analitikaRtgs.setInt(1, 33);
+			analitikaRtgs.setString(2, "MT-103");
+			analitikaRtgs.setInt(3, object.getId());
+			analitikaRtgs.executeUpdate();
+			DBConnection.getConnection().commit();
+		}
 	}
 
 	@Override
