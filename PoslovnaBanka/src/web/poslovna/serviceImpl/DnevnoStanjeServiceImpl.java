@@ -31,7 +31,7 @@ public class DnevnoStanjeServiceImpl implements DnevnoStanjeService{
 		// TODO Auto-generated method stub
 		List<DnevnoStanje> lista = new ArrayList<DnevnoStanje>();
 		//																									1				2			3				4			5			6						7								8				9						10						11							12
-		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("SELECT dnevno_stanje_racuna.ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE, racuni_pravnih_lica.JMBG_KLIJENTA, banka.PR_NAZIV, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA, racuni_pravnih_lica.BAR_RACUN, DSR_IZVOD FROM DNEVNO_STANJE_RACUNA JOIN RACUNI_PRAVNIH_LICA ON dnevno_stanje_racuna.ID_RACUNA = racuni_pravnih_lica.ID_RACUNA JOIN BANKA ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB JOIN KLIJENT ON racuni_pravnih_lica.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA ORDER BY dnevno_stanje_racuna.ID_RACUNA;");
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("SELECT dnevno_stanje_racuna.ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE, racuni_pravnih_lica.JMBG_KLIJENTA, banka.PR_NAZIV, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA, racuni_pravnih_lica.BAR_RACUN, DSR_IZVOD FROM DNEVNO_STANJE_RACUNA JOIN RACUNI_PRAVNIH_LICA ON dnevno_stanje_racuna.ID_RACUNA = racuni_pravnih_lica.ID_RACUNA JOIN BANKA ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB JOIN KLIJENT ON racuni_pravnih_lica.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA ORDER BY DSR_IZVOD;");
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()){
 			lista.add(new DnevnoStanje(rs.getInt(12),
@@ -48,7 +48,7 @@ public class DnevnoStanjeServiceImpl implements DnevnoStanjeService{
 		stmt.close();
 		
 		//																								1					2			3				4			5				6				7				8							9							
-		PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT dnevno_stanje_racuna.ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE, banka.PR_NAZIV, banka2.PR_NAZIV, racuni_pravnih_lica.BAR_RACUN, DSR_IZVOD FROM DNEVNO_STANJE_RACUNA JOIN RACUNI_PRAVNIH_LICA ON dnevno_stanje_racuna.ID_RACUNA = racuni_pravnih_lica.ID_RACUNA JOIN BANKA ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB JOIN BANKA AS banka2 ON racuni_pravnih_lica.PR_PIB = banka2.PR_PIB ORDER BY dnevno_stanje_racuna.ID_RACUNA;");
+		PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT dnevno_stanje_racuna.ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE, banka.PR_NAZIV, banka2.PR_NAZIV, racuni_pravnih_lica.BAR_RACUN, DSR_IZVOD FROM DNEVNO_STANJE_RACUNA JOIN RACUNI_PRAVNIH_LICA ON dnevno_stanje_racuna.ID_RACUNA = racuni_pravnih_lica.ID_RACUNA JOIN BANKA ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB JOIN BANKA AS banka2 ON racuni_pravnih_lica.PR_PIB = banka2.PR_PIB ORDER BY DSR_IZVOD;");
 		ResultSet rs2 = stmt2.executeQuery();
 		while(rs2.next()){
 			lista.add(new DnevnoStanje(rs2.getInt(10),

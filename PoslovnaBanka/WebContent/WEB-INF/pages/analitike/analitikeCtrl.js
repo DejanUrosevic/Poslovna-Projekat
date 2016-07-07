@@ -11,6 +11,11 @@
 			
 		});
 		
+		$scope.hitnoType = [
+		       { name: 'Da', value: 'true' }, 
+		       { name: 'Ne', value: 'false' }                  
+		];
+		
 		if(zoomServiceAnalitikaRacun.getZoom()){
 			if(zoomServiceAnalitikaRacun.getPretraga()){
 				$scope.stanjeSearch = true;
@@ -85,7 +90,7 @@
 		
 		$scope.setSelected = function(id, duznik, svrha, poverilac, valuta, datumValute, iznos, racunDuznika, 
 				modelZaduzenja, pbZaduzenja, racunDuznika, modelZaduzenja, pbZaduzenje, racunPoverioca, 
-				modelOdobrenja, pbOdobrenja, nazivPlacanja, naselje, datumPrijema, hitno, tipGreske)
+				modelOdobrenja, pbOdobrenja, nazivPlacanja, naselje, datumPrijema, hitno, tipGreske, status)
 		{
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = false;
@@ -110,13 +115,14 @@
 			$scope.datumPrijema = new Date(datumPrijema);
 			$scope.hitno = hitno;
 			$scope.tipGreske = tipGreske;
+			$scope.status = status;
 		}
 		
 		$scope.levoDoKraja = function(){
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.lista[0].id;
 			$scope.duznik = $scope.lista[0].duznik;
@@ -136,6 +142,7 @@
 			$scope.datumPrijema = new Date($scope.lista[0].datumPrijema);
 			$scope.hitno = $scope.lista[0].hitno;
 			$scope.tipGreske = $scope.lista[0].tipGreske;
+			$scope.status = $scope.lista[0].status;
 		}
 		
 		$scope.desnoDoKraja = function()
@@ -143,7 +150,7 @@
 			$scope.stanjeAdd = false;
 			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.lista[$scope.lista.length-1].id;
 			$scope.duznik = $scope.lista[$scope.lista.length-1].duznik;
@@ -163,14 +170,15 @@
 			$scope.datumPrijema = new Date($scope.lista[$scope.lista.length-1].datumPrijema);
 			$scope.hitno = $scope.lista[$scope.lista.length-1].hitno;
 			$scope.tipGreske = $scope.lista[$scope.lista.length-1].tipGreske;
+			$scope.status = $scope.lista[$scope.lista.length-1].status;
 		}
 		
 		$scope.jedanLevo = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -192,6 +200,7 @@
 				$scope.datumPrijema = new Date($scope.lista[$scope.lista.length-1].datumPrijema);
 				$scope.hitno = $scope.lista[$scope.lista.length-1].hitno;
 				$scope.tipGreske = $scope.lista[$scope.lista.length-1].tipGreske; 
+				$scope.status = $scope.lista[$scope.lista.length-1].status;
 			}
 			else
 			{
@@ -219,6 +228,7 @@
 							$scope.datumPrijema = new Date($scope.lista[$scope.lista.length-1].datumPrijema);
 							$scope.hitno = $scope.lista[$scope.lista.length-1].hitno;
 							$scope.tipGreske = $scope.lista[$scope.lista.length-1].tipGreske;
+							$scope.status = $scope.lista[$scope.lista.length-1].status;
 							break;
 						}
 						else
@@ -241,6 +251,7 @@
 							$scope.datumPrijema = new Date($scope.lista[i-1].datumPrijema);
 							$scope.hitno = $scope.lista[i-1].hitno;
 							$scope.tipGreske = $scope.lista[i-1].tipGreske;
+							$scope.status = $scope.lista[i-1].status;
 							break;
 						}
 						
@@ -252,9 +263,9 @@
 		$scope.jedanDesno = function()
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined)
 			{
@@ -276,6 +287,7 @@
 				$scope.datumPrijema = new Date($scope.lista[0].datumPrijema);
 				$scope.hitno = $scope.lista[0].hitno;
 				$scope.tipGreske = $scope.lista[0].tipGreske;
+				$scope.status = $scope.lista[0].status;
 			}
 			else
 			{
@@ -303,6 +315,7 @@
 							$scope.datumPrijema = new Date($scope.lista[0].datumPrijema);
 							$scope.hitno = $scope.lista[0].hitno;
 							$scope.tipGreske = $scope.lista[0].tipGreske;
+							$scope.status = $scope.lista[0].status;
 							break;
 						}
 						else
@@ -325,6 +338,7 @@
 							$scope.datumPrijema = new Date($scope.lista[i+1].datumPrijema);
 							$scope.hitno = $scope.lista[i+1].hitno;
 							$scope.tipGreske = $scope.lista[i+1].tipGreske;
+							$scope.status = $scope.lista[i+1].status;
 							break;	
 						}
 					}
@@ -669,6 +683,48 @@
 			zoomServiceAnalitikaRacun.setIdVrstePlacanja(zoomServiceAnalitikaRacun.getIdVrstePlacanja());
 			zoomServiceAnalitikaRacun.setNazivPlacanja($scope.nazivPlacanja);
 			$state.go('naseljeno_mesto');
+		}
+		
+		$scope.doKliring = function()
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/analitike/doClearing')
+			.success(function(data, status, header)
+			{
+				alert('Kliring uspesno odradjen.');
+				$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
+				.success(function(data, status, header)
+				{
+					$scope.lista = data;
+					
+					$scope.stanjeAdd = false;
+					$scope.stanjePregled = true;
+					$scope.stanjeSearch = false;
+					$scope.stanjeIzmena = false;
+					
+					
+					$scope.sifraSelected = null;
+					$scope.duznik = null;
+					$scope.svrha = null;
+					$scope.poverilac = null;
+					$scope.valuta = null;
+					$scope.datumValute = null;
+					$scope.iznos = null;
+					$scope.racunDuznika = null;
+					$scope.modelZaduzenja =  null;
+					$scope.pbZaduzenje = null;
+					$scope.racunPoverioca = null;
+					$scope.modelOdobrenja = null;
+					$scope.pbOdobrenja = null;
+					$scope.nazivPlacanja = null;
+					$scope.naselje = null;
+					$scope.datumPrijema = null;
+					$scope.hitno = null;
+					$scope.tipGreske = null;
+					
+					$state.go('analitike');
+				});
+				
+			});
 		}
 		
 	});

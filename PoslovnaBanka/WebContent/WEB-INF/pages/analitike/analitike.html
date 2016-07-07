@@ -1,5 +1,5 @@
 <div id="header">
-	<h1>Drzava</h1>
+	<h1>Analitike izvoda</h1>
 	<ul>
 		<li><a ui-sref="main">Nazad</a></li>
 		<li><a href="#">Products</a></li>
@@ -74,6 +74,10 @@
 								<option value="valute_drzava"> Valute</option>
 							</select>
 						</td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="doKliring()">
+								<img src="css/images/kliring.png" height="35" />
+						</button></td>
 					</tr>
 				</table>
 				
@@ -96,9 +100,9 @@
 						<th> Mesto prijema </th>
 						<th> Datum prijema </th>
 						<th> Hitno </th>
-						<th> Tip greske </th>
+						<th> Status </th>
 					</tr>
-					<tr ng-repeat="list in lista" ng-click="setSelected(list.id, list.duznik, list.svrha, list.poverilac, list.valuta, list.datumValute, list.iznos, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunPoverioca, list.modelOdobrenja, list.pbOdobrenja, list.nazivPlacanja, list.naselje, list.datumPrijema, list.hitno, list.tipGreske)" ng-class="{selected: list.id === sifraSelected}">
+					<tr ng-repeat="list in lista" ng-click="setSelected(list.id, list.duznik, list.svrha, list.poverilac, list.valuta, list.datumValute, list.iznos, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunDuznika, list.modelZaduzenja, list.pbZaduzenja, list.racunPoverioca, list.modelOdobrenja, list.pbOdobrenja, list.nazivPlacanja, list.naselje, list.datumPrijema, list.hitno, list.tipGreske, list.status)" ng-class="{selected: list.id === sifraSelected}">
 						<td> {{list.id}}</td>
 						<td> {{list.duznik}}</td>
 						<td> {{list.svrha}}</td>
@@ -111,8 +115,10 @@
 						<td> {{list.pbOdobrenja}}</td>
 						<td> {{list.naselje}}</td>
 						<td> {{list.datumPrijema}}</td>
-						<td> {{list.hitno}}</td>
-						<td> {{list.tipGreske}}</td>
+						<td ng-show="list.hitno"> Da</td>
+						<td ng-show="!list.hitno"> Ne</td>
+						<td ng-show="list.status === 'p'"> Poslat</td>
+						<td ng-show="list.status === 'e'"> Evidentiran</td>
 					</tr>
 				</table>
 			
@@ -123,17 +129,19 @@
 		<hr/>
 		<br/>
 		
-		<div>
+		<div ng-show="!stanjePregled">
 			<div id="tableContainer-1">
 				<div id="tableContainer-2">
 					<table id="myTable">
 						<tr>
 							<td> ID: </td>
-							<td> <input type="text" ng-model="sifraSelected"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="sifraSelected"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="sifraSelected" disabled> </td>
 						</tr>
 						<tr>
 							<td> Duznik: </td>
-							<td> <input type="text" ng-model="duznik"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="duznik"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="duznik" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomDuznik()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -142,11 +150,13 @@
 						</tr>
 						<tr>
 							<td> Svrha uplate: </td>
-							<td> <input type="text" ng-model="svrha"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="svrha"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="svrha" disabled> </td>
 						</tr>
 						<tr>
 							<td> Poverilac: </td>
-							<td> <input type="text" ng-model="poverilac"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="poverilac"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="poverilac" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPoverilac()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -155,7 +165,8 @@
 						</tr>
 						<tr>
 							<td> Valuta: </td>
-							<td> <input type="text" ng-model="valuta"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="valuta"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="valuta" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValute()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -164,39 +175,48 @@
 						</tr>
 						<tr>
 							<td> Datum valute: </td>
-							<td> <input type="date" ng-model="datumValute"></td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="date" ng-model="datumValute"></td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="date" ng-model="datumValute" disabled></td>
 						</tr>
 						<tr>
 							<td> Iznos: </td>
-							<td> <input type="text" ng-model="iznos"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="iznos"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="iznos" disabled> </td>
 						</tr>
 						<tr>
 							<td> Racun duznika: </td>
-							<td> <input type="text" ng-model="racunDuznika"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="racunDuznika"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="racunDuznika" disabled> </td>
 						</tr>
 						<tr>
 							<td> Model zaduzenja: </td>
-							<td> <input type="text" ng-model="modelZaduzenja"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="modelZaduzenja"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="modelZaduzenja" disabled> </td>
 						</tr>
 						<tr>
 							<td> Poziv na broj zaduzenja: </td>
-							<td> <input type="text" ng-model="pbZaduzenje"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="pbZaduzenje"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="pbZaduzenje" disabled> </td>
 						</tr>
 						<tr>
 							<td> Racun poverioca: </td>
-							<td> <input type="text" ng-model="racunPoverioca"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="racunPoverioca"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="racunPoverioca" disabled> </td>
 						</tr>
 						<tr>
 							<td> Model odobrenja: </td>
-							<td> <input type="text" ng-model="modelOdobrenja"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="modelOdobrenja"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="modelOdobrenja" disabled> </td>
 						</tr>
 						<tr>
 							<td> Poziv na broj odobrenja: </td>
-							<td> <input type="text" ng-model="pbOdobrenja"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="pbOdobrenja"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="pbOdobrenja" disabled> </td>
 						</tr>
 						<tr>
 							<td> Vrsta placanja: </td>
-							<td> <input type="text" ng-model="nazivPlacanja"></td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="nazivPlacanja"></td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="nazivPlacanja" disabled></td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomVrstaPlacanja()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -205,7 +225,8 @@
 						</tr>
 						<tr>
 							<td> Naselje: </td>
-							<td> <input type="text" ng-model="naselje"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="naselje"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="naselje" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomNaselje()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -214,18 +235,53 @@
 						</tr>
 						<tr>
 							<td> Datum prijema: </td>
-							<td> <input type="date" ng-model="datumPrijema"> </td>
+							<td ng-show="stanjeSearch || stanjeAdd"> <input type="date" ng-model="datumPrijema"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled"> <input type="date" ng-model="datumPrijema" disabled> </td>
+						</tr>
+						<tr>
+							<td ng-show="stanjeIzmena || stanjeSearch" > Status: </td>
+							<td ng-show="stanjeSearch">
+								  <select ng-model="status" >
+									  	<option value="p">Poslat</option>
+									  	<option value="e">Evidentiran</option>								  	
+								  </select>
+							 </td>
+							 <td ng-show="status === 'p' && stanjeIzmena">
+							 	 <input type="text" value="Poslat" disabled>
+							 </td>
+							 <td ng-show="status === 'e' && stanjeIzmena">
+							 	 <input type="text" value="Evidentiran" disabled>
+							 </td>
 						</tr>
 						<tr>
 							<td> Hitno: </td>
-							<td> <input type="text" ng-model="hitno"> </td>
+							<td ng-show="hitno && stanjeIzmena">
+								<input type="text" value="Da" disabled>
+							</td>
+							<td ng-show="!hitno && stanjeIzmena">
+								<input type="text" value="Ne" disabled>
+							</td>
+							<td ng-show="stanjePregled">
+								<input type="text" disabled>
+							</td>
+							<td ng-show="stanjeSearch || stanjeAdd">
+								<select ng-model="hitno">
+									<option value="true">
+										Da
+									</option>
+									<option value="false">
+										Ne
+									</option>
+								</select>
+							</td>
 						</tr>
 						<tr>
-							<td> Tip greske:</td>
-							<td> <input type="text" ng-model="tipGreske"> </td>
+							<td ng-show="stanjeIzmena && status !== 'p'"> Tip greske: </td>
+							<td ng-show="tipGreske === 1.0 && stanjeIzmena && status !== 'p'"> <input type="text" value="Izvrsen nalog" disabled> </td>
+							<td ng-show="tipGreske === 2.0 && stanjeIzmena && status !== 'p'"> <input type="text" value="Nema dovoljno novacnih sredstava." disabled> </td>
+							<td ng-show="tipGreske === 8.0 && stanjeIzmena && status !== 'p'"> <input type="text" value="Ne postoji poslati racun." disabled> </td>
 						</tr>
 					</table>
-					
 				</div>
 			</div>
 			<br/>

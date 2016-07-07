@@ -55,4 +55,11 @@ public class AnalitikeController {
 		
 		return new ResponseEntity<Analitike>(HttpStatus.OK);	
 	}
+	
+	@RequestMapping(value = "/doClearing", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<Analitike>> doClearing() throws SQLException
+	{	
+		analitikeSer.doClearing();
+		return new ResponseEntity<List<Analitike>>(HttpStatus.OK);
+	}
 }
