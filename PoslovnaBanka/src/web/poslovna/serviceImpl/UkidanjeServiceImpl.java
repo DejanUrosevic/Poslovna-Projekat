@@ -183,7 +183,7 @@ public class UkidanjeServiceImpl implements UkidanjeService{
 		Statement sql = DBConnection.getConnection().createStatement();
 		//											1				2					3			4						5						6						7						8					9							10						
 		ResultSet rs = sql.executeQuery("SELECT ID_UKIDANJA, UKIDANJE.ID_RACUNA, UK_DATUKIDANJA, UK_NARACUN, RACUNI_PRAVNIH_LICA.BAR_RACUN, KLIJENT.NAZIV_KLIJENTA, KLIJENT.PREZIME_KLIJENTA, BANKA.PR_NAZIV, KLIJENT2.NAZIV_KLIJENTA, KLIJENT2.PREZIME_KLIJENTA FROM UKIDANJE JOIN RACUNI_PRAVNIH_LICA ON UKIDANJE.ID_RACUNA = RACUNI_PRAVNIH_LICA.ID_RACUNA JOIN KLIJENT ON RACUNI_PRAVNIH_LICA.JMBG_KLIJENTA = KLIJENT.JMBG_KLIJENTA JOIN BANKA ON RACUNI_PRAVNIH_LICA.BAN_PR_PIB = BANKA.PR_PIB JOIN RACUNI_PRAVNIH_LICA AS RACUNI_PRAVNIH_LICA2 ON UKIDANJE.UK_NARACUN = RACUNI_PRAVNIH_LICA2.BAR_RACUN JOIN KLIJENT AS KLIJENT2 ON RACUNI_PRAVNIH_LICA2.JMBG_KLIJENTA = KLIJENT2.JMBG_KLIJENTA WHERE "
-				+ " ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR UK_DATUKIDANJA <= " + date + " OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
+				+ " ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR convert(date, UK_DATUKIDANJA) = convert(date,'"+ date+ "',120) OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
 		//fizicko lice prebacuje fizickom licu
 		while(rs.next()){
 			lista.add(new Ukidanje(rs.getInt(1),
@@ -198,7 +198,7 @@ public class UkidanjeServiceImpl implements UkidanjeService{
 
 		//																					1				2				3				4						5							6					7						8				9			
 		PreparedStatement sql2 = DBConnection.getConnection().prepareStatement("SELECT ID_UKIDANJA, UKIDANJE.ID_RACUNA, UK_DATUKIDANJA, UK_NARACUN, RACUNI_PRAVNIH_LICA.BAR_RACUN, KLIJENT.NAZIV_KLIJENTA, KLIJENT.PREZIME_KLIJENTA, BANKA.PR_NAZIV, BANKA2.PR_NAZIV FROM UKIDANJE JOIN RACUNI_PRAVNIH_LICA ON UKIDANJE.ID_RACUNA = RACUNI_PRAVNIH_LICA.ID_RACUNA JOIN KLIJENT ON RACUNI_PRAVNIH_LICA.JMBG_KLIJENTA = KLIJENT.JMBG_KLIJENTA JOIN BANKA ON RACUNI_PRAVNIH_LICA.BAN_PR_PIB = BANKA.PR_PIB JOIN RACUNI_PRAVNIH_LICA AS RACUNI_PRAVNIH_LICA2 ON UKIDANJE.UK_NARACUN = RACUNI_PRAVNIH_LICA2.BAR_RACUN JOIN BANKA AS BANKA2 ON RACUNI_PRAVNIH_LICA2.PR_PIB = BANKA2.PR_PIB WHERE "
-				+" ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR UK_DATUKIDANJA <= " + date + " OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
+				+" ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR convert(date, UK_DATUKIDANJA) = convert(date,'"+ date+ "',120) OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
 		ResultSet rs2 = sql2.executeQuery();
 		//fizicko lice prebacuje pravnom licu
 		while(rs2.next()){
@@ -216,7 +216,7 @@ public class UkidanjeServiceImpl implements UkidanjeService{
 		
 		//																					1				2					3			4						5					6					7				8		
 		PreparedStatement sql3 = DBConnection.getConnection().prepareStatement("SELECT ID_UKIDANJA, UKIDANJE.ID_RACUNA, UK_DATUKIDANJA, UK_NARACUN, RACUNI_PRAVNIH_LICA.BAR_RACUN, BANKA3.PR_NAZIV, BANKA.PR_NAZIV, BANKA2.PR_NAZIV FROM UKIDANJE JOIN RACUNI_PRAVNIH_LICA ON UKIDANJE.ID_RACUNA = RACUNI_PRAVNIH_LICA.ID_RACUNA JOIN BANKA AS BANKA3 ON RACUNI_PRAVNIH_LICA.PR_PIB = BANKA3.PR_PIB JOIN BANKA ON RACUNI_PRAVNIH_LICA.BAN_PR_PIB = BANKA.PR_PIB JOIN RACUNI_PRAVNIH_LICA AS RACUNI_PRAVNIH_LICA2 ON UKIDANJE.UK_NARACUN = RACUNI_PRAVNIH_LICA2.BAR_RACUN JOIN BANKA AS BANKA2 ON RACUNI_PRAVNIH_LICA2.PR_PIB = BANKA2.PR_PIB WHERE "
-				+" ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR UK_DATUKIDANJA <= " + date + " OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
+				+" ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR convert(date, UK_DATUKIDANJA) = convert(date,'"+ date+ "',120) OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
 		ResultSet rs3 = sql3.executeQuery();
 		//pravno lice prebacuje pravnom licu
 		while(rs3.next()){
@@ -234,7 +234,7 @@ public class UkidanjeServiceImpl implements UkidanjeService{
 		
 		//																					1				2					3			4						5					6					7					8						9				
 		PreparedStatement sql4 = DBConnection.getConnection().prepareStatement("SELECT ID_UKIDANJA, UKIDANJE.ID_RACUNA, UK_DATUKIDANJA, UK_NARACUN, RACUNI_PRAVNIH_LICA.BAR_RACUN, BANKA3.PR_NAZIV, BANKA.PR_NAZIV, KLIJENT.NAZIV_KLIJENTA, KLIJENT.PREZIME_KLIJENTA FROM UKIDANJE JOIN RACUNI_PRAVNIH_LICA ON UKIDANJE.ID_RACUNA = RACUNI_PRAVNIH_LICA.ID_RACUNA JOIN BANKA AS BANKA3 ON RACUNI_PRAVNIH_LICA.PR_PIB = BANKA3.PR_PIB JOIN BANKA ON RACUNI_PRAVNIH_LICA.BAN_PR_PIB = BANKA.PR_PIB JOIN RACUNI_PRAVNIH_LICA AS RACUNI_PRAVNIH_LICA2 ON UKIDANJE.UK_NARACUN = RACUNI_PRAVNIH_LICA2.BAR_RACUN JOIN KLIJENT ON RACUNI_PRAVNIH_LICA2.JMBG_KLIJENTA = KLIJENT.JMBG_KLIJENTA WHERE "
-				+ " ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR UK_DATUKIDANJA <= " + date + " OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
+				+ " ID_UKIDANJA = '" + id + "' OR UKIDANJE.ID_RACUNA = '" + idRacuna + "' OR convert(date, UK_DATUKIDANJA) = convert(date,'"+ date+ "',120) OR UK_NARACUN = '" + brRacunaPrimaoca + "'" );
 		ResultSet rs4 = sql4.executeQuery();
 		//pravno lice prebacuje fizickom licu
 		while(rs4.next()){

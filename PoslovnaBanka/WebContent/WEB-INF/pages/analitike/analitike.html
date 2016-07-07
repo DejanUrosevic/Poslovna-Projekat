@@ -97,7 +97,6 @@
 						<th> Poziv na broj zaduzenja </th>
 						<th> Racun odobrenja </th>
 						<th> Poziv na broj odobrenja</th>
-						<th> Mesto prijema </th>
 						<th> Datum prijema </th>
 						<th> Hitno </th>
 						<th> Status </th>
@@ -108,13 +107,12 @@
 						<td> {{list.svrha}}</td>
 						<td> {{list.poverilac}}</td>
 						<td> {{list.valuta}}</td>
-						<td> {{list.iznos}}</td>
+						<td> <b>{{list.iznos}} </b></td>
 						<td> {{list.racunDuznika}}</td>
 						<td> {{list.pbZaduzenja}}</td>
 						<td> {{list.racunPoverioca}}</td>
 						<td> {{list.pbOdobrenja}}</td>
-						<td> {{list.naselje}}</td>
-						<td> {{list.datumPrijema}}</td>
+						<td> {{list.datumPrijema | date:'dd.MM.yyyy.'}}</td>
 						<td ng-show="list.hitno"> Da</td>
 						<td ng-show="!list.hitno"> Ne</td>
 						<td ng-show="list.status === 'p'"> Poslat</td>
@@ -140,8 +138,8 @@
 						</tr>
 						<tr>
 							<td> Duznik: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="duznik"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="duznik" disabled> </td>
+							<td ng-show="stanjeSearch"> <input type="text" ng-model="duznik"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled  || stanjeAdd"> <input type="text" ng-model="duznik" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomDuznik()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -155,8 +153,8 @@
 						</tr>
 						<tr>
 							<td> Poverilac: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="poverilac"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="poverilac" disabled> </td>
+							<td ng-show="stanjeSearch"> <input type="text" ng-model="poverilac"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled || stanjeAdd""> <input type="text" ng-model="poverilac" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPoverilac()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -165,8 +163,8 @@
 						</tr>
 						<tr>
 							<td> Valuta: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="valuta"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="valuta" disabled> </td>
+							<td ng-show="stanjeSearch"> <input type="text" ng-model="valuta"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled || stanjeAdd"> <input type="text" ng-model="valuta" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomValute()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -185,8 +183,8 @@
 						</tr>
 						<tr>
 							<td> Racun duznika: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="racunDuznika"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="racunDuznika" disabled> </td>
+							<td ng-show="stanjeSearch"> <input type="text" ng-model="racunDuznika"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled  || stanjeAdd"> <input type="text" ng-model="racunDuznika" disabled> </td>
 						</tr>
 						<tr>
 							<td> Model zaduzenja: </td>
@@ -200,8 +198,8 @@
 						</tr>
 						<tr>
 							<td> Racun poverioca: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="racunPoverioca"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="racunPoverioca" disabled> </td>
+							<td ng-show="stanjeSearch "> <input type="text" ng-model="racunPoverioca"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled || stanjeAdd"> <input type="text" ng-model="racunPoverioca" disabled> </td>
 						</tr>
 						<tr>
 							<td> Model odobrenja: </td>
@@ -215,8 +213,8 @@
 						</tr>
 						<tr>
 							<td> Vrsta placanja: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="nazivPlacanja"></td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="nazivPlacanja" disabled></td>
+							<td ng-show="stanjeSearch "> <input type="text" ng-model="nazivPlacanja"></td>
+							<td ng-show="stanjeIzmena || stanjePregled || stanjeAdd"> <input type="text" ng-model="nazivPlacanja" disabled></td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomVrstaPlacanja()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />
@@ -225,8 +223,8 @@
 						</tr>
 						<tr>
 							<td> Naselje: </td>
-							<td ng-show="stanjeSearch || stanjeAdd"> <input type="text" ng-model="naselje"> </td>
-							<td ng-show="stanjeIzmena || stanjePregled"> <input type="text" ng-model="naselje" disabled> </td>
+							<td ng-show="stanjeSearch"> <input type="text" ng-model="naselje"> </td>
+							<td ng-show="stanjeIzmena || stanjePregled || stanjeAdd"> <input type="text" ng-model="naselje" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomNaselje()" ng-show="stanjeSearch || stanjeAdd">
 									<img src="css/images/zoom.png" height="30" />

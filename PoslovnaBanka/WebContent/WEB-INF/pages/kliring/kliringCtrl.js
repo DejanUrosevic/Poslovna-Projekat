@@ -190,7 +190,7 @@
 				}
 			}
 		}
-		
+		/*
 		$scope.stanjeDodavanje = function()
 		{
 			$scope.stanjeAdd = true;
@@ -208,7 +208,7 @@
 			$scope.sifra = null;
 			$scope.ukupno = null;
 		}
-		
+		*/
 		$scope.stanjePretrage = function(){
 			$scope.stanjeAdd = false;
 			$scope.stanjeSearch = true;
@@ -225,5 +225,20 @@
 			$scope.sifra = null;
 			$scope.ukupno = null;
 		}
+		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeSearch)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/kliring/search',
+						{sifra: $scope.sifraSelected, nazivBankeDuznika: $scope.nazivBankeDuznika, racunBankeDuznika: $scope.racunBankeDuznika, nazivBankePoverioca: $scope.nazivBankePoverioca, racunBankePoverioca: $scope.racunBankePoverioca, datum: $scope.datum, datumValute: $scope.datumValute, sifraPoruke: $scope.sifra, ukupno: $scope.ukupno})
+				.success(function(data, status, header)
+				{
+						$scope.lista = data;
+						$state.go('kliring');
+				});
+			}
+		}
+	
 	});
 })(angular)

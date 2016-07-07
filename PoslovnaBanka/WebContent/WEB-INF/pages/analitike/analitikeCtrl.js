@@ -83,6 +83,7 @@
 				$scope.datumPrijema = null;
 				$scope.hitno = null;
 				$scope.tipGreske = null;
+				$scope.status = null;
 				
 				$state.go('analitike');
 			});
@@ -683,6 +684,71 @@
 			zoomServiceAnalitikaRacun.setIdVrstePlacanja(zoomServiceAnalitikaRacun.getIdVrstePlacanja());
 			zoomServiceAnalitikaRacun.setNazivPlacanja($scope.nazivPlacanja);
 			$state.go('naseljeno_mesto');
+		}
+		
+		
+		$scope.commitAction = function()
+		{
+			if($scope.stanjeAdd)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/analitike/save',
+						{sifra: $scope.sifraSelected, duznik: $scope.duznik, svrha: $scope.svrha, poverilac: $scope.poverilac, valuta: $scope.valuta, 
+						 datumValute: $scope.datumValute, iznos: $scope.iznos, racunDuznika: $scope.racunDuznika, modelZaduzenja: $scope.modelZaduzenja, 
+						 pbZaduzenje: $scope.pbZaduzenje, racunPoverioca: $scope.racunPoverioca, modelOdobrenja: $scope.modelOdobrenja, pbOdobrenja: $scope.pbOdobrenja,
+						 nazivPlacanja: $scope.nazivPlacanja, naselje: $scope.naselje, datumPrijema: $scope.datumPrijema, hitno: $scope.hitno,
+						 idRacunaPoverioca: zoomServiceAnalitikaRacun.getIdRacunaPoverioca(), idRacunaDuznika: zoomServiceAnalitikaRacun.getIdRacunaDuznika(),
+						 idVrstaPlacanja: zoomServiceAnalitikaRacun.getIdVrstePlacanja(), idNaselje: zoomServiceAnalitikaRacun.getIdNaselje(),
+						 idValute: zoomServiceAnalitikaRacun.getIdValute(), idIzvoda: zoomServiceAnalitikaRacun.getIdIzvoda()})
+				.success(function(data, status, header)
+				{
+					if(!angular.equals({}, $stateParams)){
+						var drzavaId = $stateParams.id;
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
+						.success(function(data, status, header)
+						{
+							$scope.listaNaselja = data;
+							for(var i=0; i<$scope.listaNaselja.length; i++)
+							{
+								if($scope.sifraSelected == $scope.listaNaselja[i].sifra)
+								{
+									$scope.sifraSelected = $scope.listaNaselja[i].sifra;
+									break;
+								}
+							}
+							$state.go('drzava_naselje', {id: drzavaId});
+						});
+					}else{
+						$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
+						.success(function(data, status, header){
+							
+							$scope.lista = data;
+							for(var i=0; i<$scope.lista.length; i++)
+							{
+								if($scope.sifraSelected == $scope.lista[i].id)
+								{
+									$scope.sifraSelected = $scope.lista[i].id;
+									break;
+								}
+							}
+						});
+					}
+				});
+			}
+			else if($scope.stanjeSearch)
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/analitike/search',
+						{sifra: $scope.sifraSelected, duznik: $scope.duznik, svrha: $scope.svrha, poverilac: $scope.poverilac, valuta: $scope.valuta, 
+					     datumValute: $scope.datumValute, iznos: $scope.iznos, racunDuznika: $scope.racunDuznika, modelZaduzenja: $scope.modelZaduzenja, 
+					     pbZaduzenje: $scope.pbZaduzenje, racunPoverioca: $scope.racunPoverioca, modelOdobrenja: $scope.modelOdobrenja, pbOdobrenja: $scope.pbOdobrenja,
+					     nazivPlacanja: $scope.nazivPlacanja, naselje: $scope.naselje, datumPrijema: $scope.datumPrijema, hitno: $scope.hitno, tipGreske: $scope.tipGreske,
+					     status: $scope.status})
+				.success(function(data, status, header)
+				{
+					$scope.lista = data;
+					$state.go('analitike');
+					
+				});
+			}
 		}
 		
 		$scope.doKliring = function()

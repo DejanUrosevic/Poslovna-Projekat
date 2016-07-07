@@ -1,5 +1,5 @@
 <div id="header">
-	<h1>Naseljeno mesto</h1>
+	<h1>Ukidanje racuna</h1>
 	<ul>
 		<li><a ui-sref="main">Nazad</a></li>
 		<li><a href="#">Products</a></li>
@@ -87,7 +87,7 @@
 						<td> {{list.banka}}</td>
 						<td> {{list.racunZaPrebacivanje}}</td>
 						<td> {{list.vlasnikRacunaZaPrebacivanje}}</td>
-						<td> {{list.datum}}</td>
+						<td> {{list.datum | date:'dd.MM.yyyy.'}}</td>
 					</tr>
 				</table>
 			
@@ -114,7 +114,7 @@
 						<tr>
 							<td>  Vlasnik racuna: </td>
 							<td>
-								<input type="text" ng-model="nazivVlasnika">
+								<input type="text" ng-model="nazivVlasnika"  disabled>
 							</td>
 						</tr>
 						<tr>
@@ -154,7 +154,8 @@
 						<tr>
 							<td>  Datum ukidanja </td>
 							<td>
-								<input type="date" ng-model="datum">
+								<input type="date" ng-model="datum" ng-show="stanjeIzmena || stanjePregled" disabled>
+								<input type="date" ng-model="datum" ng-show="stanjeSearch || stanjeAdd">
 							</td>
 						</tr>
 					</table>

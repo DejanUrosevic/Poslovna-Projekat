@@ -3,6 +3,7 @@ package web.poslovna.controller;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -61,5 +62,12 @@ public class AnalitikeController {
 	{	
 		analitikeSer.doClearing();
 		return new ResponseEntity<List<Analitike>>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<Analitike>> searchAnalitike(@RequestBody String reqBody) throws SQLException, ParseException
+	{
+		
+		return new ResponseEntity<List<Analitike>>(analitikeSer.pretraga(reqBody), HttpStatus.OK);	
 	}
 }

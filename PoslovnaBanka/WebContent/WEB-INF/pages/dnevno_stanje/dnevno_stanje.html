@@ -102,7 +102,7 @@
 						<td> {{list.naTeret}}</td>
 						<td> {{list.uKorist}}</td>
 						<td> {{list.novoStanje}}</td>
-						<td> {{list.datum}}</td>
+						<td> {{list.datum | date:'dd.MM.yyyy'}}</td>
 					</tr>
 				</table>
 			
@@ -124,8 +124,7 @@
 						<tr>
 						<tr>
 							<td> Broj racuna: </td>
-							<td ng-show="stanjeAdd || stanjeIzmene || stanjePregled" > <input type="text" ng-model="racuna" disabled> </td>
-							<td ng-show="stanjeSearch"> <input type="text" ng-model="racuna" > </td>
+							<td> <input type="text" ng-model="racuna" disabled> </td>
 							<td>
 								<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="zoomPickup()" ng-show="stanjeSearch">
 									<img src="css/images/zoom.png" height="30" />

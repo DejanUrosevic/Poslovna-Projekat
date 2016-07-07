@@ -1,5 +1,5 @@
 <div id="header">
-	<h1>Naseljeno mesto</h1>
+	<h1>Kliring / RTGS</h1>
 	<ul>
 		<li><a ui-sref="main">Nazad</a></li>
 		<li><a href="#">Products</a></li>
@@ -99,8 +99,8 @@
 						<td> {{list.racunBankeDuznika}}</td>
 						<td> {{list.nazivBankePoverioca}}</td>
 						<td> {{list.racunBankePoverioca}}</td>
-						<td> {{list.datum}}</td>
-						<td> {{list.datumValute}}</td>
+						<td> {{list.datum | date:'dd.MM.yyyy.'}}</td>
+						<td> {{list.datumValute | date:'dd.MM.yyyy.'}}</td>
 						<td> {{list.sifra}}</td>
 						<td> {{list.ukupno}}</td>
 					</tr>
@@ -120,56 +120,64 @@
 						<tr>
 							<td> ID: </td>
 							<td>
-								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled" disabled>
-							     <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch || stanjeAdd">
+								 <input type="text" ng-model="sifraSelected" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+							     <input type="text" ng-model="sifraSelected" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td>  Naziv banke duznika: </td>
 							<td>
-								<input type="text" maxlength="120" ng-model="nazivBankeDuznika">
+								<input type="text" maxlength="120" ng-model="nazivBankeDuznika" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								<input type="text" maxlength="120" ng-model="nazivBankeDuznika" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td>   Racun banke duznika:  </td>
 							<td>
-								  <input type="text" maxlength="120" ng-model="racunBankeDuznika">
+								  <input type="text" maxlength="120" ng-model="racunBankeDuznika" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								  <input type="text" maxlength="120" ng-model="racunBankeDuznika" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td>    Naziv banke poverioca:  </td>
 							<td>
-								  <input type="text" maxlength="120" ng-model="nazivBankePoverioca">
+								  <input type="text" maxlength="120" ng-model="nazivBankePoverioca" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								  <input type="text" maxlength="120" ng-model="nazivBankePoverioca" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td>    Racun banke poverioca:  </td>
 							<td>
-								  <input type="text" maxlength="120" ng-model="racunBankePoverioca">
+								  <input type="text" maxlength="120" ng-model="racunBankePoverioca" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								  <input type="text" maxlength="120" ng-model="racunBankePoverioca" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td>   Datum:  </td>
 							<td>
-								  <input type="date" ng-model="datum">
+								  <input type="date" ng-model="datum" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								  <input type="date" ng-model="datum" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td> Datum valute: </td>
 							<td>
-								<input type="date" ng-model="datumValute">
+								<input type="date" ng-model="datumValute" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								<input type="date" ng-model="datumValute" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td> Sifra: </td>
 							<td>
-								<input type="text" ng-model="sifra">
+								<input type="text" ng-model="sifra" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								<input type="text" ng-model="sifra" ng-show="stanjeSearch">
 							</td>
 						</tr>
 						<tr>
 							<td> Ukupno: </td>
 							<td>
-								<input type="text" ng-model="ukupno">
+								<input type="text" ng-model="ukupno" ng-show="stanjeIzmena || stanjePregled || stanjeAdd" disabled>
+								<input type="text" ng-model="ukupno" ng-show="stanjeSearch">
 							</td>
 						</tr>
 					</table>
