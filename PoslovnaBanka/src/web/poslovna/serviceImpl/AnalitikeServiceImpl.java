@@ -9,7 +9,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -206,13 +208,22 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 			rtgs.executeUpdate();
 			DBConnection.getConnection().commit();
 			
-			PreparedStatement analitikaRtgs = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?);");
-			analitikaRtgs.setString(1, "MT-103");
-			analitikaRtgs.setInt(2, object.getId());
-			analitikaRtgs.executeUpdate();
-			DBConnection.getConnection().commit();
+			PreparedStatement rtgsId = DBConnection.getConnection().prepareStatement("select kri_id from kliring", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rsIdKliring = rtgsId.executeQuery();
+			
+			rsIdKliring.afterLast();
+			while(rsIdKliring.previous()){
+				PreparedStatement analitikaRtgs = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_ID, KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?, ?);");
+				analitikaRtgs.setInt(1, rsIdKliring.getInt(1));
+				analitikaRtgs.setString(2, "MT-103");
+				analitikaRtgs.setInt(3, object.getId());
+				analitikaRtgs.executeUpdate();
+				DBConnection.getConnection().commit();
+			}
+			
+			
 		}
-	    else
+	    /*else
 	    {
 	    	//ovde cemo za kliring
 	    	PreparedStatement kliring = DBConnection.getConnection().prepareStatement("INSERT INTO KLIRING (KRI_DATUM_VALUTE, KRI_DATUM, KRI_SIFRA, ID_RACUNA, RAC_ID_RACUNA, KRI_UKUPNO) VALUES (?, ?, ?, ?, ?, ?);");
@@ -232,7 +243,7 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 			analitikaKliring.executeUpdate();
 			
 			DBConnection.getConnection().commit();
-	    }
+	    }*/
 	}
 
 	@Override
@@ -472,89 +483,95 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 	@Override
 	public void doClearing() throws SQLException 
 	{
-		Double proveraStanja = null;
-		Double tipGreske = 1.0;
 		
-		PreparedStatement stKliring = DBConnection.getConnection()
-				.prepareStatement("SELECT ai.ASI_BROJSTAVKE, kli.ID_RACUNA, kli.RAC_ID_RACUNA, kli.KRI_UKUPNO, dsr.DSR_NOVOSTANJE FROM ANALITIKE_ZA_KLIRING azk"
-			    + " LEFT OUTER JOIN KLIRING kli ON azk.KRI_ID = kli.KRI_ID "
-			    + " LEFT OUTER JOIN ANALITIKA_IZVODA ai ON ai.ASI_BROJSTAVKE = azk.ASI_BROJSTAVKE "
-			    + " LEFT OUTER JOIN DNEVNO_STANJE_RACUNA dsr ON dsr.DSR_IZVOD = ai.DSR_IZVOD"
-			    + " WHERE kli.KRI_SIFRA = 'MT-102' AND ai.ASI_STATUS='p';"
-				, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
-		ResultSet rsKliring = stKliring.executeQuery();
 		
-		while(rsKliring.next())
-		{
+		PreparedStatement kliring = DBConnection.getConnection().prepareStatement("INSERT INTO KLIRING (KRI_DATUM_VALUTE, KRI_DATUM, KRI_SIFRA, ID_RACUNA, RAC_ID_RACUNA, KRI_UKUPNO) VALUES (?, ?, ?, ?, ?, ?);");
+    	kliring.setDate(1, new Date(new java.util.Date().getTime()));
+    	kliring.setDate(2, new Date(new java.util.Date().getTime()));
+    	kliring.setString(3, "MT-102");
+    	kliring.setInt(4, 1);
+    	kliring.setInt(5, 1);
+    	kliring.setDouble(6, 0.0);
+    	kliring.executeUpdate();
+    	
+		DBConnection.getConnection().commit();
+		
+		PreparedStatement idKliring = DBConnection.getConnection().prepareStatement("SELECT KRI_ID FROM KLIRING", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		ResultSet rsIDKliringa = idKliring.executeQuery();
+		
+		@SuppressWarnings("unused")
+		int idKliringa = 0;
+		rsIDKliringa.afterLast();
+		while(rsIDKliringa.previous()){
+			idKliringa = rsIDKliringa.getInt(1);
+			break;
+		}
+		
+		PreparedStatement analitikeZaKliring = DBConnection.getConnection().prepareStatement("SELECT ASI_BROJSTAVKE, ASI_RACDUZ, ASI_IZNOS, ASI_RACPOV FROM ANALITIKA_IZVODA WHERE ASI_STATUS='p'", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		ResultSet rsAnalitike = analitikeZaKliring.executeQuery();
+		Double ukupanIznos = 0.0;
+		
+		while(rsAnalitike.next()){
+			ukupanIznos += rsAnalitike.getDouble(3);
+			PreparedStatement insertAnalitike = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_ID, KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?, ?)");
+			insertAnalitike.setInt(1, idKliringa);
+			insertAnalitike.setString(2, "MT-102");
+			insertAnalitike.setInt(3, rsAnalitike.getInt(1));
+			insertAnalitike.executeUpdate();
+			DBConnection.getConnection().commit();
 			
-			PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE FROM DNEVNO_STANJE_RACUNA WHERE " +
-					"dnevno_stanje_racuna.ID_RACUNA = '" + rsKliring.getInt(2) + "'", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
+			PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("select dsr_novostanje, DNEVNO_STANJE_RACUNA.ID_RACUNA from DNEVNO_STANJE_RACUNA join RACUNI_PRAVNIH_LICA on DNEVNO_STANJE_RACUNA.ID_RACUNA=RACUNI_PRAVNIH_LICA.ID_RACUNA where RACUNI_PRAVNIH_LICA.BAR_RACUN = '"+ rsAnalitike.getString(2) +"'", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
 			ResultSet rs2 = stmt2.executeQuery();
-			
-			
 			if(rs2.last())
 			{
-				proveraStanja = rs2.getDouble("DSR_NOVOSTANJE") - rsKliring.getDouble(4);
-			}
-			rs2.beforeFirst();
-			if(proveraStanja >= 0)
-			{
-				if(rs2.last())
-				{
-					//za duznika
-					PreparedStatement stmtKliringDuznik = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
-					stmtKliringDuznik.setInt(1, rsKliring.getInt(2));
-					stmtKliringDuznik.setDate(2, new Date(new java.util.Date().getTime()));
-					stmtKliringDuznik.setDouble(3, rs2.getDouble(6));
-					stmtKliringDuznik.setDouble(4, 0.0);
-					stmtKliringDuznik.setDouble(5, rsKliring.getDouble(4));
-					stmtKliringDuznik.setDouble(6, proveraStanja);
-					stmtKliringDuznik.executeUpdate();
-					stmtKliringDuznik.close();
-					
-					DBConnection.getConnection().commit();
-				}
+				//za duznika
+				PreparedStatement stmtKliringDuznik = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
+				stmtKliringDuznik.setInt(1, rs2.getInt(2));
+				stmtKliringDuznik.setDate(2, new Date(new java.util.Date().getTime()));
+				stmtKliringDuznik.setDouble(3, rs2.getDouble(1));
+				stmtKliringDuznik.setDouble(4, 0.0);
+				stmtKliringDuznik.setDouble(5, rsAnalitike.getDouble(3));
+				stmtKliringDuznik.setDouble(6, rs2.getDouble(1) - rsAnalitike.getDouble(3));
+				stmtKliringDuznik.executeUpdate();
+				stmtKliringDuznik.close();
 				
-				
-				
-				//za poverioca
-				
-				PreparedStatement pomocZaKliring = DBConnection.getConnection().prepareStatement("SELECT dnevno_stanje_racuna.ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE FROM DNEVNO_STANJE_RACUNA WHERE " +
-						"dnevno_stanje_racuna.ID_RACUNA = '" + rsKliring.getInt(3) + "'", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-				ResultSet rsPomocZaKliring = pomocZaKliring.executeQuery();
-				
-				if(rsPomocZaKliring.last())
-				{
-					PreparedStatement stmtKliringPoverioc = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
-					stmtKliringPoverioc.setInt(1, rsKliring.getInt(3));
-					stmtKliringPoverioc.setDate(2, new Date(new java.util.Date().getTime()));
-					stmtKliringPoverioc.setDouble(3, rsPomocZaKliring.getDouble("DSR_NOVOSTANJE"));
-					stmtKliringPoverioc.setDouble(4, rsKliring.getDouble(4));
-					stmtKliringPoverioc.setDouble(5, 0.0);
-					stmtKliringPoverioc.setDouble(6, rsKliring.getDouble(4) + rsPomocZaKliring.getDouble("DSR_NOVOSTANJE"));
-					stmtKliringPoverioc.executeUpdate();
-					stmtKliringPoverioc.close();
-					
-					DBConnection.getConnection().commit();
-				}
-				
-				
-			}
-			else
-			{
-				tipGreske = 2.0;
+				DBConnection.getConnection().commit();
 			}
 			
-			PreparedStatement updateAnalitike = DBConnection.getConnection().prepareStatement("UPDATE ANALITIKA_IZVODA SET ASI_STATUS=?, ASI_TIPGRESKE=? WHERE ASI_BROJSTAVKE=?"); 
+			PreparedStatement stmt3 = DBConnection.getConnection().prepareStatement("select dsr_novostanje, DNEVNO_STANJE_RACUNA.ID_RACUNA from DNEVNO_STANJE_RACUNA join RACUNI_PRAVNIH_LICA on DNEVNO_STANJE_RACUNA.ID_RACUNA=RACUNI_PRAVNIH_LICA.ID_RACUNA where RACUNI_PRAVNIH_LICA.BAR_RACUN = '"+ rsAnalitike.getString(4) +"'", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
+			ResultSet rs3 = stmt3.executeQuery();
+			if(rs3.last())
+			{
+				//za duznika
+				PreparedStatement stmtKliringDuznik = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
+				stmtKliringDuznik.setInt(1, rs3.getInt(2));
+				stmtKliringDuznik.setDate(2, new Date(new java.util.Date().getTime()));
+				stmtKliringDuznik.setDouble(3, rs3.getDouble(1));
+				stmtKliringDuznik.setDouble(4, rsAnalitike.getDouble(3));
+				stmtKliringDuznik.setDouble(5, 0.0);
+				stmtKliringDuznik.setDouble(6, rs3.getDouble(1) + rsAnalitike.getDouble(3));
+				stmtKliringDuznik.executeUpdate();
+				stmtKliringDuznik.close();
+				
+				DBConnection.getConnection().commit();
+			}
+			
+			PreparedStatement updateAnalitike = DBConnection.getConnection().prepareStatement("UPDATE ANALITIKA_IZVODA SET ASI_STATUS=? WHERE ASI_BROJSTAVKE=?"); 
 			updateAnalitike.setString(1, "e");
-			updateAnalitike.setDouble(2, tipGreske);
-			updateAnalitike.setInt(3, rsKliring.getInt(1));
+			updateAnalitike.setInt(2, rsAnalitike.getInt(1));
 			
 			updateAnalitike.executeUpdate();
 			updateAnalitike.close();
 			
 			DBConnection.getConnection().commit();
 		}
+		
+		PreparedStatement updateKliring = DBConnection.getConnection().prepareStatement("UPDATE KLIRING SET KRI_UKUPNO=? WHERE KRI_ID=?");
+		updateKliring.setDouble(1, ukupanIznos);
+		updateKliring.setInt(2, idKliringa);
+		updateKliring.executeUpdate();
+		updateKliring.close();
+		DBConnection.getConnection().commit();
 	}
 
 }
