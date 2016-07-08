@@ -15,7 +15,7 @@ public class Kliring {
 	private String racunBankePoverioca;
 	private String nazivBankeDuznika;
 	private String nazivBankePoverioca;
-	
+		
 	public Kliring() {
 		super();
 		// TODO Auto-generated constructor stub

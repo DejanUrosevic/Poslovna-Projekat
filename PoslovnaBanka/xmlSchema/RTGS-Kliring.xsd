@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="http://www.poslovna-banka.com/rtgs"
+    xmlns:rtgs="http://www.poslovna-banka.com/rtgs">
+
+    <xs:element name="RTGS_Kliring">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1">
+                <xs:element name="id" type="xs:int"/>
+                <xs:element name="Datum_valute" type="xs:date"/>
+                <xs:element name="datum" type="xs:date"/>
+                <xs:element name="sifra">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="50"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Id_racun_banke_duznika" type="xs:int"/>
+                <xs:element name="id_racun_banke_poverioca" type="xs:int"/>
+                <xs:element name="naziv_banke_poverioca" type="xs:string"/>
+                <xs:element name="naziv_banke_duznika" type="xs:string"/>
+                <xs:element name="racun_banke_poverioca" type="xs:string"/>
+                <xs:element name="racun_banke_duznika" type="xs:string"/>
+                <xs:element name="ukupno" type="xs:double"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

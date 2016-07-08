@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RTGS_Kliring xmlns="http://www.poslovna-banka.com/rtgs">
+    <id>1</id>
+    <Datum_valute>2016-07-08+02:00</Datum_valute>
+    <datum>2016-07-08+02:00</datum>
+    <sifra>MT-103                                            </sifra>
+    <Id_racun_banke_duznika>1</Id_racun_banke_duznika>
+    <id_racun_banke_poverioca>2</id_racun_banke_poverioca>
+    <naziv_banke_poverioca>UniCredit</naziv_banke_poverioca>
+    <naziv_banke_duznika>UniCredit</naziv_banke_duznika>
+    <racun_banke_poverioca>34324</racun_banke_poverioca>
+    <racun_banke_duznika>543543</racun_banke_duznika>
+    <ukupno>31.0</ukupno>
+</RTGS_Kliring>

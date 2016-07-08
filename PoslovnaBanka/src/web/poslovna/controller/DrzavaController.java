@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,7 +37,7 @@ public class DrzavaController
 	DrzavaService drzSer;
 	
 	@RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<Drzava>> getAllStates() throws SQLException
+	public @ResponseBody ResponseEntity<List<Drzava>> getAllStates() throws SQLException, DatatypeConfigurationException
 	{	
 		return new ResponseEntity<List<Drzava>>(drzSer.findAll(), HttpStatus.OK);
 	}

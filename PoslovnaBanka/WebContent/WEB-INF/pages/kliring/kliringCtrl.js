@@ -239,6 +239,32 @@
 				});
 			}
 		}
+		
+		$scope.toXml = function()
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/kliring/toXml/' + $scope.sifraSelected)
+			.success(function(data, status, header)
+			{
+				var text = 'Your ' + data.id + '.xml is succesfully downloaded.'
+				alert(text);
+							
+				downloadPdf($http, data.id);
+			});
+		}
+		
+		function downloadPdf(http, fileName) {
+			http.get('http://localhost:8080/PoslovnaBanka/kliring/downloadXml/'+fileName, {responseType: 'arraybuffer'})
+				.success(function(data) {
+					 var blobFile = new Blob([data], {type: 'application/xml'});
+					 
+					 var fileURL = window.URL.createObjectURL(blobFile);
+					 
+					 var a = document.createElement('a');
+					 a.href = fileURL;
+					 a.download = fileName + '.xml';
+					 a.click();
+				 });
+		};
 	
 	});
 })(angular)

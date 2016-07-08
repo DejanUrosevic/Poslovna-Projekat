@@ -211,8 +211,8 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 			PreparedStatement rtgsId = DBConnection.getConnection().prepareStatement("select kri_id from kliring", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet rsIdKliring = rtgsId.executeQuery();
 			
-			rsIdKliring.afterLast();
-			while(rsIdKliring.previous()){
+			if(rsIdKliring.last())
+			{
 				PreparedStatement analitikaRtgs = DBConnection.getConnection().prepareStatement("INSERT INTO ANALITIKE_ZA_KLIRING (KRI_ID, KRI_SIFRA, ASI_BROJSTAVKE) VALUES (?, ?, ?);");
 				analitikaRtgs.setInt(1, rsIdKliring.getInt(1));
 				analitikaRtgs.setString(2, "MT-103");

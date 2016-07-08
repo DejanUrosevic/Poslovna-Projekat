@@ -839,5 +839,31 @@
 			}
 		}
 		
+		$scope.toXml = function()
+		{
+			$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/toXml/' + $scope.brRacuna)
+			.success(function(data, status, header)
+			{
+				var text = 'Your ' + $scope.brRacuna + '.xml is succesfully downloaded.'
+				alert(text);
+							
+				downloadPdf($http, $scope.brRacuna);
+			});
+		}
+		
+		function downloadPdf(http, fileName) {
+			http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/downloadXml/'+fileName, {responseType: 'arraybuffer'})
+				.success(function(data) {
+					 var blobFile = new Blob([data], {type: 'application/xml'});
+					 
+					 var fileURL = window.URL.createObjectURL(blobFile);
+					 
+					 var a = document.createElement('a');
+					 a.href = fileURL;
+					 a.download = fileName + '.xml';
+					 a.click();
+				 });
+		};
+		
 	});
 })(angular)

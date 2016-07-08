@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +38,7 @@ public class KursnaListaController {
 	KursnaListaService kurSer;
 	
 	@RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<KursnaLista>> getAllKurseListe() throws SQLException
+	public @ResponseBody ResponseEntity<List<KursnaLista>> getAllKurseListe() throws SQLException, DatatypeConfigurationException
 	{	
 		return new ResponseEntity<List<KursnaLista>>(kurSer.findAll(), HttpStatus.OK);
 	}

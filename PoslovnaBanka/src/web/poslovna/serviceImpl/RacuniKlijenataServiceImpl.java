@@ -1,5 +1,7 @@
 package web.poslovna.serviceImpl;
 
+import java.io.File;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,14 +11,26 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.jdbc.Sql;
 
 import web.poslovna.db.DBConnection;
+import web.poslovna.model.Analitike;
 import web.poslovna.model.RacuniKlijenata;
+import web.poslovna.model.xml.ListaAnalitika;
+import web.poslovna.model.xml.ListaAnalitika.AnalitikaIzvoda;
+import web.poslovna.model.xml.RTGSKliring;
 import web.poslovna.service.RacuniKlijenataService;
 
 @Service
@@ -267,6 +281,63 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 					rs2.getBoolean(8)));
 		}
 		return lista;
+	}
+
+	@Override
+	public void toXml(String brRacuna) throws SQLException, DatatypeConfigurationException, JAXBException 
+	{
+		ListaAnalitika la = new ListaAnalitika();
+		PreparedStatement stmt = DBConnection.getConnection().prepareStatement("SELECT ANALITIKA_IZVODA.ASI_BROJSTAVKE, ANALITIKA_IZVODA.VPL_OZNAKA, ANALITIKA_IZVODA.NM_SIFRA, ANALITIKA_IZVODA.ID_VALUTE, ANALITIKA_IZVODA.DSR_IZVOD, ANALITIKA_IZVODA.ASI_DUZNIK, ANALITIKA_IZVODA.ASI_SVRHA, ANALITIKA_IZVODA.ASI_POVERILAC, ANALITIKA_IZVODA.ASI_DATPRI, ANALITIKA_IZVODA.ASI_DATVAL, ANALITIKA_IZVODA.ASI_RACDUZ, ANALITIKA_IZVODA.ASI_MODZAD, ANALITIKA_IZVODA.ASI_PBZAD, ANALITIKA_IZVODA.ASI_RACPOV, ANALITIKA_IZVODA.ASI_MODODOB, ANALITIKA_IZVODA.ASI_PBODO, ANALITIKA_IZVODA.ASI_HITNO, ANALITIKA_IZVODA.ASI_IZNOS, ANALITIKA_IZVODA.ASI_TIPGRESKE, ANALITIKA_IZVODA.ASI_STATUS, NASELJENO_MESTO.NM_NAZIV, VALUTE.VA_NAZIV, VRSTE_PLACANJA.VPL_NAZIV  FROM ANALITIKA_IZVODA LEFT OUTER JOIN NASELJENO_MESTO ON ANALITIKA_IZVODA.NM_SIFRA = NASELJENO_MESTO.NM_SIFRA LEFT OUTER JOIN VALUTE ON ANALITIKA_IZVODA.ID_VALUTE = VALUTE.ID_VALUTE LEFT OUTER JOIN VRSTE_PLACANJA ON VRSTE_PLACANJA.VPL_OZNAKA = ANALITIKA_IZVODA.VPL_OZNAKA WHERE ANALITIKA_IZVODA.ASI_RACDUZ = '" + brRacuna +"' OR ANALITIKA_IZVODA.ASI_RACPOV = '"+brRacuna+"' AND ANALITIKA_IZVODA.ASI_TIPGRESKE = 1 AND ANALITIKA_IZVODA.ASI_STATUS = 'e';");
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next())
+		{
+			GregorianCalendar c1 = new GregorianCalendar();
+			c1.setTime(rs.getDate(10));
+			XMLGregorianCalendar date1 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c1);
+			
+			GregorianCalendar c2 = new GregorianCalendar();
+			c2.setTime(rs.getDate(9));
+			XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c2);
+			
+			la.getAnalitikaIzvoda().add(new AnalitikaIzvoda(
+					rs.getInt(1), 
+					rs.getString(6), 
+					rs.getString(7), 
+					rs.getString(8), 
+					date1, 
+					date2, 
+					rs.getString(11), 
+					rs.getDouble(12), 
+					rs.getString(13), 
+					rs.getString(14), 
+					rs.getDouble(15), 
+					rs.getDouble(2), 
+					rs.getString(23), 
+					rs.getInt(3), 
+					rs.getString(21), 
+					BigInteger.valueOf(rs.getInt(4)), 
+					rs.getString(22),  
+					rs.getBoolean(17), 
+					rs.getString(20), 
+					rs.getDouble(19), 
+					rs.getDouble(18), 
+					rs.getString(16)));
+		}
+		exportToXml(la, brRacuna);
+		
+	}
+
+	@Override
+	public void exportToXml(ListaAnalitika la, String brojRacuna) throws JAXBException 
+	{
+		JAXBContext jaxbContext = JAXBContext.newInstance(ListaAnalitika.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		String file = "xml\\" + brojRacuna + ".xml";
+		// output pretty printed
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		jaxbMarshaller.marshal(la, new File(file));
+		
 	}
 
 }

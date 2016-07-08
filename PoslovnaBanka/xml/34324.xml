@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ListaAnalitika xmlns="http://www.poslovna-banka.com/rtgs">
+    <Analitika_izvoda>
+        <id>1</id>
+        <duznik>Pera Peric</duznik>
+        <svrha>rewrewr</svrha>
+        <poverliac>Ivan Ivanovic</poverliac>
+        <datumValute>2016-07-08+02:00</datumValute>
+        <datumPrijema>2016-07-08+02:00</datumPrijema>
+        <racunDuznika>543543</racunDuznika>
+        <modelZaduzenja>97.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>43253245</pozivNaBrojZaduzenja>
+        <racunPoverioca>34324</racunPoverioca>
+        <modelOdobrenja>97.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>true</hitno>
+        <status>e</status>
+        <tipGreske>1.0</tipGreske>
+        <iznos>31.0</iznos>
+        <pozivNaBrojOdobrenja>432423</pozivNaBrojOdobrenja>
+    </Analitika_izvoda>
+    <Analitika_izvoda>
+        <id>22</id>
+        <duznik>Ivan Ivanovic</duznik>
+        <svrha>rewre rer we</svrha>
+        <poverliac>Pera Peric</poverliac>
+        <datumValute>2016-07-08+02:00</datumValute>
+        <datumPrijema>2016-07-08+02:00</datumPrijema>
+        <racunDuznika>34324</racunDuznika>
+        <modelZaduzenja>97.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>32776</pozivNaBrojZaduzenja>
+        <racunPoverioca>543543</racunPoverioca>
+        <modelOdobrenja>97.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>false</hitno>
+        <status>e</status>
+        <tipGreske>1.0</tipGreske>
+        <iznos>990.0</iznos>
+        <pozivNaBrojOdobrenja>54335</pozivNaBrojOdobrenja>
+    </Analitika_izvoda>
+    <Analitika_izvoda>
+        <id>31</id>
+        <duznik>Pera Peric</duznik>
+        <svrha>wetwet</svrha>
+        <poverliac>Ivan Ivanovic</poverliac>
+        <datumValute>2016-07-08+02:00</datumValute>
+        <datumPrijema>2016-07-08+02:00</datumPrijema>
+        <racunDuznika>543543</racunDuznika>
+        <modelZaduzenja>97.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>43543</pozivNaBrojZaduzenja>
+        <racunPoverioca>34324</racunPoverioca>
+        <modelOdobrenja>89.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>false</hitno>
+        <status>e</status>
+        <tipGreske>1.0</tipGreske>
+        <iznos>678.0</iznos>
+        <pozivNaBrojOdobrenja>5435435</pozivNaBrojOdobrenja>
+    </Analitika_izvoda>
+    <Analitika_izvoda>
+        <id>7</id>
+        <duznik>Pera Peric</duznik>
+        <svrha>wer we r</svrha>
+        <poverliac>Ivan Ivanovic</poverliac>
+        <datumValute>2016-07-08+02:00</datumValute>
+        <datumPrijema>2016-07-08+02:00</datumPrijema>
+        <racunDuznika>543543</racunDuznika>
+        <modelZaduzenja>98.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>5435</pozivNaBrojZaduzenja>
+        <racunPoverioca>34324</racunPoverioca>
+        <modelOdobrenja>87.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>true</hitno>
+        <status>e</status>
+        <tipGreske>1.0</tipGreske>
+        <iznos>432.0</iznos>
+        <pozivNaBrojOdobrenja>54354</pozivNaBrojOdobrenja>
+    </Analitika_izvoda>
+</ListaAnalitika>

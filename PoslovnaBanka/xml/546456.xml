@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ListaAnalitika xmlns="http://www.poslovna-banka.com/rtgs">
+    <Analitika_izvoda>
+        <id>5</id>
+        <duznik>Levi9</duznik>
+        <svrha>Plata za mesec juli</svrha>
+        <poverliac>Pera Peric</poverliac>
+        <datumValute>2016-07-08+02:00</datumValute>
+        <datumPrijema>2016-07-08+02:00</datumPrijema>
+        <racunDuznika>546456</racunDuznika>
+        <modelZaduzenja>97.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>432423</pozivNaBrojZaduzenja>
+        <racunPoverioca>543543</racunPoverioca>
+        <modelOdobrenja>97.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>true</hitno>
+        <status>e</status>
+        <tipGreske>2.0</tipGreske>
+        <iznos>90000.0</iznos>
+        <pozivNaBrojOdobrenja>42343</pozivNaBrojOdobrenja>
+    </Analitika_izvoda>
+</ListaAnalitika>

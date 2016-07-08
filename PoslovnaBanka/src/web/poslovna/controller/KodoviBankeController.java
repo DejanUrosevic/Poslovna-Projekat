@@ -3,6 +3,8 @@ package web.poslovna.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class KodoviBankeController {
 	KodoviBankeService kodSer;
 	
 	@RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<KodoviBanke>> getAllKodoviBanke() throws SQLException
+	public @ResponseBody ResponseEntity<List<KodoviBanke>> getAllKodoviBanke() throws SQLException, DatatypeConfigurationException
 	{	
 		return new ResponseEntity<List<KodoviBanke>>(kodSer.findAll(), HttpStatus.OK);
 	}

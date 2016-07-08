@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 /**
  * CRUD (Create/Read/Update/Delete) service.
  * 
@@ -29,7 +31,7 @@ public interface CrudService<T> {
 	 * @throws SQLException 
 	 * @throws JAXBException
 	 */
-	List<T> findAll() throws SQLException; 
+	List<T> findAll() throws SQLException, DatatypeConfigurationException; 
 
 	/**
 	 * Save entity and return saved instance (with id set).
