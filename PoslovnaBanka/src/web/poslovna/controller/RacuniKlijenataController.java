@@ -9,10 +9,16 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -28,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import web.poslovna.db.DBConnection;
 import web.poslovna.model.Analitike;
 import web.poslovna.model.FizickoLice;
 import web.poslovna.model.PravnoLice;
@@ -241,5 +248,37 @@ public class RacuniKlijenataController {
 		}
 		
 		return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/izvestaj1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> genIzvestaj1(@RequestBody String reqBody) throws SQLException, DatatypeConfigurationException
+	{	
+		try 
+		{
+	         JSONObject json = new JSONObject(reqBody);
+
+	  		 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	  		 String[] datum = (json.getString("datumOd")).split("T");
+	  		 Date datumOd = new Date((dateFormat.parse(datum[0])).getTime());
+	  		 String[] datum2 = (json.getString("datumDo")).split("T");
+	  		 Date datumDo = new Date((dateFormat.parse(datum2[0])).getTime());	
+	          
+	          
+	          
+			 Map params = new HashMap(3);
+			 params.put("datumOd", new java.util.Date(datumOd.getTime()));
+			 params.put("datumDo", new java.util.Date(datumDo.getTime()));
+			 params.put("idRacuna", json.getString("racun"));
+			 
+			 System.out.println(getClass().getResource("/izvestaj/Report1.jasper"));
+			 JasperPrint jp = JasperFillManager.fillReport(
+			 getClass().getResource("/izvestaj/Report1.jasper").openStream(),
+			 params, DBConnection.getConnection());
+			 JasperViewer.viewReport(jp, false);
+
+		} catch (Exception ex) {
+		  ex.printStackTrace();
+		}
+		return new ResponseEntity<List<RacuniKlijenata>>(HttpStatus.OK);
 	}
 }

@@ -1,10 +1,19 @@
 package web.poslovna.controller;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import web.poslovna.db.DBConnection;
 import web.poslovna.model.Drzava;
 import web.poslovna.model.FizickoLice;
 import web.poslovna.model.KodoviBanke;
 import web.poslovna.model.KursnaLista;
 import web.poslovna.model.NaseljenoMesto;
 import web.poslovna.model.PravnoLice;
+import web.poslovna.model.RacuniKlijenata;
 import web.poslovna.service.PravnoLiceService;
 
 @Controller
@@ -88,5 +99,27 @@ public class PravnoLiceController {
 	public @ResponseBody ResponseEntity<List<KodoviBanke>> findKodoviBanke(@PathVariable(value="idPravnoLice") String id) throws SQLException{
 		
 		return new ResponseEntity<List<KodoviBanke>>(liceSer.findKodoviBanke(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/izvestaj2", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> genIzvestaj2(@RequestBody String reqBody) throws SQLException, DatatypeConfigurationException
+	{	
+		try 
+		{
+	         JSONObject json = new JSONObject(reqBody);
+	                
+			 Map params = new HashMap(1);
+			 params.put("sifra", json.getString("pib").replaceAll("\\s",""));
+			 
+			 System.out.println(getClass().getResource("/izvestaj/report2.jasper"));
+			 JasperPrint jp = JasperFillManager.fillReport(
+			 getClass().getResource("/izvestaj/report2.jasper").openStream(), 
+			 params, DBConnection.getConnection());
+			 JasperViewer.viewReport(jp, false);
+
+		} catch (Exception ex) {
+		  ex.printStackTrace();
+		}
+		return new ResponseEntity<List<RacuniKlijenata>>(HttpStatus.OK);
 	}
 }

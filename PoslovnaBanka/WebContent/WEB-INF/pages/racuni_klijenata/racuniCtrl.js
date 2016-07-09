@@ -3,6 +3,7 @@
 	
 	racuniModul.controller('racuniCtrl', function($scope, $http, $state, $stateParams, zoomRacunFizickoService, zoomRacunPravnoService, zoomRacunValutaService, zoomServiceUkidanje, zoomStanjeLice, zoomServiceAnalitikaRacun){
 		$scope.stanjePregled = true;
+		$scope.izvestaj = false;
 		$scope.zoomUkidanje = zoomServiceUkidanje.getZoom();
 		$scope.zoomStanje = zoomStanjeLice.getZoom();
 		$scope.zoomAnalitike = zoomServiceAnalitikaRacun.getZoom();
@@ -864,6 +865,30 @@
 					 a.click();
 				 });
 		};
+		
+		$scope.genIzvestaj = function()
+		{
+			$scope.izvestaj = true;
+		}
+		
+		$scope.startGenIzvestaj = function()
+		{
+			if($scope.brRacuna == undefined || $scope.brRacuna == null)
+			{
+				alert('Izaberite racun.');
+			}
+			else
+			{
+				$http.post('http://localhost:8080/PoslovnaBanka/racuni_klijenata/izvestaj1',
+						{racun: $scope.brRacuna, datumOd: $scope.datumOd, datumDo: $scope.datumDo})
+				.success(function(data, status, header)
+				{
+					alert('Napravljen je izvestaj.');
+				});
+			}
+			
+		}
+		
 		
 	});
 })(angular)

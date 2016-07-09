@@ -632,5 +632,25 @@
 			}	
 		}
 		
+		$scope.izvestajBanke = function()
+		{
+			if($scope.sifraSelected == undefined || $scope.sifraSelected == null)
+			{
+				alert('Izaberite banku.');
+			}
+			if($scope.banka == false)
+			{
+				alert('Morate izabrati banku.');
+			}
+			
+			$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/izvestaj2',
+					{pib: $scope.sifraSelected})
+			.success(function(data, status, header)
+			{
+				alert('Napravljen je izvestaj.');
+			});
+			
+		}
+		
 	});
 })(angular)

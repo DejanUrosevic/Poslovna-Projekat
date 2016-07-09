@@ -71,6 +71,10 @@
 								style="background-color: transparent; border-color: transparent;" ng-click="toXml()">
 								<img src="css/images/toXml.png" height="35" />
 						</button></td>
+						<td><button type="button"
+								style="background-color: transparent; border-color: transparent;" ng-click="genIzvestaj()">
+								<img src="css/images/reportJasper.gif" height="35" />
+						</button></td>
 					</tr>
 				</table>
 				
@@ -108,7 +112,7 @@
 		<hr/>
 		<br/>
 		
-		<!-- <div ng-show="!stanjePregled"> -->
+		<div ng-show="!stanjePregled && !izvestaj">
 		<div>
 			 <div id="tableContainer-1">
 				<div id="tableContainer-2">
@@ -250,5 +254,30 @@
 			 </div>
 		</div>
 				
+	</div>
+	<div ng-show="izvestaj">
+		<div id="tableContainer-1">
+				<div id="tableContainer-2">
+					<table id="myTable">
+						<tr>
+							<td>  Datum od: </td>
+							<td>
+								  <input type="date" ng-model="datumOd">
+							</td>
+						</tr>
+						<tr>
+							<td>  Datum do: </td>
+							<td>
+								  <input type="date" ng-model="datumDo">
+							</td>
+						</tr>
+					</table>
+					<div style="text-align: center;">
+					   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="startGenIzvestaj()">
+											<img src="css/images/commit.png" height="30" />
+						</button>
+			 		</div>
+				</div>
+		</div>
 	</div>
 </div>

@@ -25,6 +25,7 @@
         <tipGreske>1.0</tipGreske>
         <iznos>31.0</iznos>
         <pozivNaBrojOdobrenja>432423</pozivNaBrojOdobrenja>
+        <idIzvoda>3</idIzvoda>
     </Analitika_izvoda>
     <Analitika_izvoda>
         <id>22</id>
@@ -51,6 +52,7 @@
         <tipGreske>1.0</tipGreske>
         <iznos>990.0</iznos>
         <pozivNaBrojOdobrenja>54335</pozivNaBrojOdobrenja>
+        <idIzvoda>4</idIzvoda>
     </Analitika_izvoda>
     <Analitika_izvoda>
         <id>31</id>
@@ -77,6 +79,7 @@
         <tipGreske>1.0</tipGreske>
         <iznos>678.0</iznos>
         <pozivNaBrojOdobrenja>5435435</pozivNaBrojOdobrenja>
+        <idIzvoda>3</idIzvoda>
     </Analitika_izvoda>
     <Analitika_izvoda>
         <id>7</id>
@@ -103,5 +106,33 @@
         <tipGreske>1.0</tipGreske>
         <iznos>432.0</iznos>
         <pozivNaBrojOdobrenja>54354</pozivNaBrojOdobrenja>
+        <idIzvoda>12</idIzvoda>
+    </Analitika_izvoda>
+    <Analitika_izvoda>
+        <id>88</id>
+        <duznik>Levi9</duznik>
+        <svrha>weqre wr</svrha>
+        <poverliac>Ivana Ivanovic</poverliac>
+        <datumValute>2016-07-09+02:00</datumValute>
+        <datumPrijema>2016-07-09+02:00</datumPrijema>
+        <racunDuznika>546456</racunDuznika>
+        <modelZaduzenja>79.0</modelZaduzenja>
+        <pozivNaBrojZaduzenja>432432</pozivNaBrojZaduzenja>
+        <racunPoverioca>34324</racunPoverioca>
+        <modelOdobrenja>97.0</modelOdobrenja>
+        <idVrstaPlacanja>1.0</idVrstaPlacanja>
+        <nazivPlacanja>Kes</nazivPlacanja>
+        <idNaselje>1</idNaselje>
+        <nazivNaselja>Novi Sad</nazivNaselja>
+        <idValute>1</idValute>
+        <idRacunaPoverioca>0</idRacunaPoverioca>
+        <idRacunaDuznika>0</idRacunaDuznika>
+        <valuta>Dinar</valuta>
+        <hitno>true</hitno>
+        <status>e</status>
+        <tipGreske>1.0</tipGreske>
+        <iznos>89.0</iznos>
+        <pozivNaBrojOdobrenja>4324</pozivNaBrojOdobrenja>
+        <idIzvoda>14</idIzvoda>
     </Analitika_izvoda>
 </ListaAnalitika>
