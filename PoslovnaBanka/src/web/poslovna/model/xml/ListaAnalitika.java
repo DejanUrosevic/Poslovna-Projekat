@@ -180,7 +180,8 @@ public class ListaAnalitika {
         "status",
         "tipGreske",
         "iznos",
-        "pozivNaBrojOdobrenja"
+        "pozivNaBrojOdobrenja",
+        "idIzvoda"
     })
     public static class AnalitikaIzvoda {
 
@@ -224,6 +225,8 @@ public class ListaAnalitika {
         protected double iznos;
         @XmlElement(required = true)
         protected String pozivNaBrojOdobrenja;
+        @XmlElement(required = true)
+        private int idIzvoda;
 
         
         
@@ -236,7 +239,7 @@ public class ListaAnalitika {
 				double idVrstaPlacanja, String nazivPlacanja, int idNaselje,
 				String nazivNaselja, BigInteger idValute, String valuta,
 				boolean hitno, String status, double tipGreske, double iznos,
-				String pozivNaBrojOdobrenja) {
+				String pozivNaBrojOdobrenja, int idIzvoda) {
 			super();
 			this.id = id;
 			this.duznik = duznik;
@@ -260,10 +263,21 @@ public class ListaAnalitika {
 			this.tipGreske = tipGreske;
 			this.iznos = iznos;
 			this.pozivNaBrojOdobrenja = pozivNaBrojOdobrenja;
+			this.idIzvoda = idIzvoda;
 		}
 
 		public AnalitikaIzvoda() {
 			// TODO Auto-generated constructor stub
+		}
+
+		
+		
+		public int getIdIzvoda() {
+			return idIzvoda;
+		}
+
+		public void setIdIzvoda(int idIzvoda) {
+			this.idIzvoda = idIzvoda;
 		}
 
 		/**

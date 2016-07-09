@@ -1,5 +1,6 @@
 package web.poslovna.serviceImpl;
 
+import java.io.StringReader;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,11 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import web.poslovna.db.DBConnection;
 import web.poslovna.model.Analitike;
+import web.poslovna.model.xml.ListaAnalitika;
 import web.poslovna.service.AnalitikeService;
 
 @Service
@@ -572,6 +579,51 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 		updateKliring.executeUpdate();
 		updateKliring.close();
 		DBConnection.getConnection().commit();
+	}
+
+	@Override
+	public List<Analitike> importXml(String xml) throws JAXBException 
+	{
+		JSONObject json = new JSONObject(xml);
+		
+		JAXBContext jaxbContext = JAXBContext.newInstance(ListaAnalitika.class);
+		Marshaller marshaller = jaxbContext.createMarshaller();
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		
+		StringReader reader = new StringReader(json.getString("xml"));
+		ListaAnalitika la = (ListaAnalitika) unmarshaller.unmarshal(reader);
+		
+		List<Analitike> listaAnalitike = new ArrayList<Analitike>();
+		for(int i=0; i<la.getAnalitikaIzvoda().size(); i++)
+		{
+			Date datumPrijema = new Date(la.getAnalitikaIzvoda().get(i).getDatumPrijema().toGregorianCalendar().getTime().getTime());
+			Date datumValute = new Date(la.getAnalitikaIzvoda().get(i).getDatumValute().toGregorianCalendar().getTime().getTime());
+			listaAnalitike.add(new Analitike(la.getAnalitikaIzvoda().get(i).getId(), 
+					la.getAnalitikaIzvoda().get(i).getDuznik(), 
+					la.getAnalitikaIzvoda().get(i).getSvrha(), 
+					la.getAnalitikaIzvoda().get(i).getPoverliac(), 
+					datumPrijema, 
+					datumValute, 
+					la.getAnalitikaIzvoda().get(i).getRacunDuznika(), 
+					la.getAnalitikaIzvoda().get(i).getModelZaduzenja(), 
+					la.getAnalitikaIzvoda().get(i).getPozivNaBrojZaduzenja(), 
+					la.getAnalitikaIzvoda().get(i).getRacunPoverioca(), 
+					la.getAnalitikaIzvoda().get(i).getModelOdobrenja(),
+					la.getAnalitikaIzvoda().get(i).getPozivNaBrojOdobrenja(), 
+					la.getAnalitikaIzvoda().get(i).isHitno(), 
+					la.getAnalitikaIzvoda().get(i).getIznos(), 
+					la.getAnalitikaIzvoda().get(i).getTipGreske(), 
+					la.getAnalitikaIzvoda().get(i).getStatus(), 
+					la.getAnalitikaIzvoda().get(i).getIdVrstaPlacanja(), 
+					la.getAnalitikaIzvoda().get(i).getNazivPlacanja(), 
+					la.getAnalitikaIzvoda().get(i).getIdNaselje(), 
+					la.getAnalitikaIzvoda().get(i).getNazivNaselja(), 
+					la.getAnalitikaIzvoda().get(i).getIdValute().intValue(), 
+					la.getAnalitikaIzvoda().get(i).getValuta(), 
+					la.getAnalitikaIzvoda().get(i).getIdIzvoda()));
+		}
+		
+		return listaAnalitike;
 	}
 
 }

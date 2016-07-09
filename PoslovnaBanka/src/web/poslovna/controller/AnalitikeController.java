@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.json.JSONObject;
@@ -71,5 +72,12 @@ public class AnalitikeController {
 	{
 		
 		return new ResponseEntity<List<Analitike>>(analitikeSer.pretraga(reqBody), HttpStatus.OK);	
+	}
+	
+	@RequestMapping(value = "/importXml", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<Analitike>> importXml(@RequestBody String reqBody) throws SQLException, ParseException, JAXBException
+	{
+		
+		return new ResponseEntity<List<Analitike>>(analitikeSer.importXml(reqBody), HttpStatus.OK);	
 	}
 }
