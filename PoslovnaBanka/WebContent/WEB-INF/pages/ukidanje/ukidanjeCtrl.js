@@ -294,7 +294,7 @@
 				$http.post('http://localhost:8080/PoslovnaBanka/ukidanje/save',
 						{id: $scope.sifraSelected, idRacuna : zoomServiceUkidanje.getIdRacuna(),
 					brRacuna : $scope.brRacuna, nazivVlasnika : $scope.nazivVlasnika, banka : $scope.banka,
-					datum : $scope.datum, racunZaPrebacivanje : $scope.racunZaPrebacivanje,
+					racunZaPrebacivanje : $scope.racunZaPrebacivanje,
 					vlasnikRacunaZaPrebacivanje : $scope.vlasnikRacunaZaPrebacivanje})
 				.success(function(data, status, header)
 				{

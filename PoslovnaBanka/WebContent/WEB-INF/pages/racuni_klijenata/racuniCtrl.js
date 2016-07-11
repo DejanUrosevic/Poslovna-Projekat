@@ -570,8 +570,7 @@
 					pib: $scope.pibKlijenta, naziv: $scope.nazivKlijenta, 
 					idValute: $scope.idValuta, valuta: $scope.valuta,
 					pibBanke: $scope.pibBanka, nazivBanke: $scope.banka,
-					racun: $scope.brRacuna, datum: $scope.datumOtvaranja, 
-					validan: $scope.validan})
+					racun: $scope.brRacuna})
 				.success(function(data, status, header)
 				{
 					$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')

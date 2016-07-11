@@ -151,11 +151,11 @@
 								<input type="text" ng-model="vlasnikRacunaZaPrebacivanje" disabled>
 							</td>
 						</tr>
-						<tr>
+						<tr ng-show="stanjePregled || stanjeSearch || stanjeIzmena">
 							<td>  Datum ukidanja </td>
 							<td>
 								<input type="date" ng-model="datum" ng-show="stanjeIzmena || stanjePregled" disabled>
-								<input type="date" ng-model="datum" ng-show="stanjeSearch || stanjeAdd">
+								<input type="date" ng-model="datum" ng-show="stanjeSearch">
 							</td>
 						</tr>
 					</table>
@@ -166,7 +166,7 @@
 				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
 										<img src="css/images/commit.png" height="30" />
 					</button> &nbsp
-					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
 										<img src="css/images/delete2.ico" height="30" />
 					</button>
 			 </div>

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import web.poslovna.model.Analitike;
 import web.poslovna.model.Kliring;
 import web.poslovna.model.KursUValuti;
 import web.poslovna.model.NaseljenoMesto;
@@ -80,5 +81,11 @@ public class KliringController {
 		}
 		
 		return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value = "/{idKliring}/analitike", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<Analitike>> getAnalitike(@PathVariable(value="idKliring") String id) throws SQLException, DatatypeConfigurationException
+	{	
+		return new ResponseEntity<List<Analitike>>(kliringSer.findAnalitike(id), HttpStatus.OK);
 	}
 }

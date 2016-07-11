@@ -3,13 +3,24 @@
 	
 	analitikeModul.controller('analitikeCtrl', function($scope, $http, $state, $stateParams, zoomServiceAnalitikaRacun){
 		$scope.stanjePregled = true;
+		$scope.kliring_analitike = false;
 		
-		$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
-		.success(function(data, status, header)
-		{
-			$scope.lista = data;
-			
-		});
+		if(!angular.equals({}, $stateParams)){
+			var kliringId = $stateParams.id;
+			$scope.kliring_analitike = true;
+			$http.get('http://localhost:8080/PoslovnaBanka/kliring/' + kliringId + '/analitike')
+			.success(function(data, status, header){
+				$scope.lista = data;
+			});
+		}else{
+			$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
+			.success(function(data, status, header)
+			{
+				$scope.lista = data;
+				
+			});
+		}
+		
 		
 		$scope.hitnoType = [
 		       { name: 'Da', value: 'true' }, 
@@ -94,9 +105,9 @@
 				modelOdobrenja, pbOdobrenja, nazivPlacanja, naselje, datumPrijema, hitno, tipGreske, status)
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = false;
+			$scope.stanjePregled = true;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = true;
+			$scope.stanjeIzmena = false;
 			
 			$scope.sifraSelected = id;
 			$scope.duznik = duznik;
@@ -406,9 +417,9 @@
 			{
 				$http.post('http://localhost:8080/PoslovnaBanka/analitike/save',
 						{sifra: $scope.sifraSelected, duznik: $scope.duznik, svrha: $scope.svrha, poverilac: $scope.poverilac, valuta: $scope.valuta, 
-						 datumValute: $scope.datumValute, iznos: $scope.iznos, racunDuznika: $scope.racunDuznika, modelZaduzenja: $scope.modelZaduzenja, 
+						 iznos: $scope.iznos, racunDuznika: $scope.racunDuznika, modelZaduzenja: $scope.modelZaduzenja, 
 						 pbZaduzenje: $scope.pbZaduzenje, racunPoverioca: $scope.racunPoverioca, modelOdobrenja: $scope.modelOdobrenja, pbOdobrenja: $scope.pbOdobrenja,
-						 nazivPlacanja: $scope.nazivPlacanja, naselje: $scope.naselje, datumPrijema: $scope.datumPrijema, hitno: $scope.hitno,
+						 nazivPlacanja: $scope.nazivPlacanja, naselje: $scope.naselje, hitno: $scope.hitno,
 						 idRacunaPoverioca: zoomServiceAnalitikaRacun.getIdRacunaPoverioca(), idRacunaDuznika: zoomServiceAnalitikaRacun.getIdRacunaDuznika(),
 						 idVrstaPlacanja: zoomServiceAnalitikaRacun.getIdVrstePlacanja(), idNaselje: zoomServiceAnalitikaRacun.getIdNaselje(),
 						 idValute: zoomServiceAnalitikaRacun.getIdValute(), idIzvoda: zoomServiceAnalitikaRacun.getIdIzvoda()})

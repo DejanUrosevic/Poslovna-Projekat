@@ -67,13 +67,6 @@
 								style="background-color: transparent; border-color: transparent;" ng-click="nextFunction()">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
-						<td ng-show="klikZaZoom">
-							<select ng-model="izborNext" ng-change="nextFunction()">
-								<option value=""> * Izaberite tabelu *</option>
-								<option value="pravno_lice"> Pravno lice </option>
-								<option value="racuni_klijenata"> Racuni klijenta </option>
-							</select>
-						</td>
 						<td><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="toXml()">
 								<img src="css/images/toXml.png" height="35" />
@@ -191,7 +184,7 @@
 				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
 										<img src="css/images/commit.png" height="30" />
 					</button> &nbsp
-					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
 										<img src="css/images/delete2.ico" height="30" />
 					</button>
 			 </div>

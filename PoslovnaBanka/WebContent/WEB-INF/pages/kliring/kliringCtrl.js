@@ -266,5 +266,12 @@
 				 });
 		};
 	
+		$scope.nextFunction = function(){
+			if($scope.sifraSelected == null || $scope.sifraSelected == undefined || $scope.sifraSelected == ''){
+				alert("Morate nesto selektovati.");
+			}else{
+				$state.go('analitike_za_kliring', { id: $scope.sifraSelected });
+			}
+		}
 	});
 })(angular)

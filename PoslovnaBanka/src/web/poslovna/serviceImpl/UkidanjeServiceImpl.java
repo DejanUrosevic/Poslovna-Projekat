@@ -119,6 +119,52 @@ public class UkidanjeServiceImpl implements UkidanjeService{
 		sql2.executeUpdate();
 		sql2.close();
 		DBConnection.getConnection().commit();
+		
+		double iznos = 0.0;
+		
+		//ciscenje racuna za gasenje
+		PreparedStatement sql3 = DBConnection.getConnection().prepareStatement("select ID_RACUNA from RACUNI_PRAVNIH_LICA where BAR_RACUN = '" + object.getBrRacuna() + "';");
+		ResultSet rs3 = sql3.executeQuery();
+		while(rs3.next()){
+			PreparedStatement sql4 = DBConnection.getConnection().prepareStatement("select DSR_NOVOSTANJE from dnevno_stanje_racuna where ID_RACUNA = '" + rs3.getInt(1) + "';", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs4 = sql4.executeQuery();
+			
+			if(rs4.last()){
+				iznos = rs4.getDouble(1);
+				PreparedStatement sql5 = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
+				sql5.setInt(1, rs3.getInt(1));
+				sql5.setDate(2, new Date(new java.util.Date().getTime()));
+				sql5.setDouble(3, rs4.getDouble(1));
+				sql5.setDouble(4, 0.0);
+				sql5.setDouble(5, rs4.getDouble(1));
+				sql5.setDouble(6, 0.0);
+				sql5.executeUpdate();
+				sql5.close();
+				DBConnection.getConnection().commit();
+			}
+		}
+		
+		//prebacivanje para na racun
+		PreparedStatement sql6 = DBConnection.getConnection().prepareStatement("select ID_RACUNA from RACUNI_PRAVNIH_LICA where BAR_RACUN = '" + object.getRacunZaPrebacivanje() + "';");
+		ResultSet rs6 = sql6.executeQuery();
+		while(rs6.next()){
+			PreparedStatement sql7 = DBConnection.getConnection().prepareStatement("select DSR_NOVOSTANJE from dnevno_stanje_racuna where ID_RACUNA = '" + rs6.getInt(1) + "';", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs7 = sql7.executeQuery();
+					
+			if(rs7.last()){
+				PreparedStatement sql8 = DBConnection.getConnection().prepareStatement("INSERT INTO dnevno_stanje_racuna (ID_RACUNA, DSR_DATUM, DSR_PRETHODNO, DSR_UKORIST, DSR_NATERET, DSR_NOVOSTANJE) VALUES (?, ?, ?, ?, ?, ?);");
+				sql8.setInt(1, rs6.getInt(1));
+				sql8.setDate(2, new Date(new java.util.Date().getTime()));
+				sql8.setDouble(3, rs7.getDouble(1));
+				sql8.setDouble(4, iznos);
+				sql8.setDouble(5, 0.0);
+				sql8.setDouble(6, rs7.getDouble(1) + iznos);
+				sql8.executeUpdate();
+				sql8.close();
+				DBConnection.getConnection().commit();
+			}
+		}
+		
 	}
 
 	@Override

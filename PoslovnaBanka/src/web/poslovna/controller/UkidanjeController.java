@@ -44,9 +44,8 @@ public class UkidanjeController {
 	public @ResponseBody ResponseEntity<Ukidanje> saveState(@RequestBody String reqBody) throws SQLException, ParseException
 	{
 		JSONObject json = new JSONObject(reqBody);
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String[] datum = (json.getString("datum")).split("T");
-		Date date = new Date((dateFormat.parse(datum[0])).getTime());
+
+		Date date = new Date(new java.util.Date().getTime());
 		ukidanjeSer.save(new Ukidanje(json.getInt("id"), json.getInt("idRacuna"), json.getString("brRacuna"), json.getString("nazivVlasnika"),
 				json.getString("banka"), date, json.getString("racunZaPrebacivanje"), json.getString("vlasnikRacunaZaPrebacivanje")));
 		return new ResponseEntity<Ukidanje>(HttpStatus.OK);	

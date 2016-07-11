@@ -101,17 +101,9 @@ public class RacuniKlijenataController {
 			pravnoLice = false;
 		}
 		
-		boolean aktivan = false;
+		boolean aktivan = true;
 		
-		if(json.getString("validan").equals("da")){
-			aktivan = true;
-		}else if(json.getString("validan").equals("ne")){
-			aktivan = false;
-		}
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String[] datum = (json.getString("datum")).split("T");
-		Date date = new Date((dateFormat.parse(datum[0])).getTime());
+		Date date = new Date(new java.util.Date().getTime());
 		
 		if(fizickoLice && !pravnoLice){
 			//snimanje racuna fizickih lica

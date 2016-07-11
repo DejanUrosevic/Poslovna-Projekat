@@ -52,17 +52,17 @@
 						
 						<td>&nbsp</td>
 						
-						<td><button type="button"
+						<td ng-hide="kliring_analitike"><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="stanjeDodavanje()">
 								<img src="css/images/add.png" height="30" />
 						</button></td>
-						<td><button type="button"
+						<!-- <td><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="deleteState()">
 								<img src="css/images/delete2.ico" height="30" />
 						</button></td>
 						
 						<td>&nbsp</td>
-						
+						 -->
 						<td><button type="button"
 								style="background-color: transparent; border-color: transparent;" ng-click="findNaselja()">
 								<img src="css/images/chain.jpg" height="35" />
@@ -136,7 +136,7 @@
 		<hr/>
 		<br/>
 		
-		<div ng-show="!stanjePregled">
+		<div >
 			<div id="tableContainer-1">
 				<div id="tableContainer-2">
 					<table id="myTable">
@@ -180,7 +180,7 @@
 								 </button>
 							</td>
 						</tr>
-						<tr>
+						<tr ng-show="stanjePregled || stanjeSearch">
 							<td> Datum valute: </td>
 							<td ng-show="stanjeSearch || stanjeAdd"> <input type="date" ng-model="datumValute"></td>
 							<td ng-show="stanjeIzmena || stanjePregled"> <input type="date" ng-model="datumValute" disabled></td>
@@ -240,7 +240,7 @@
 								 </button>
 							</td>
 						</tr>
-						<tr>
+						<tr ng-show="stanjePregled || stanjeSearch">
 							<td> Datum prijema: </td>
 							<td ng-show="stanjeSearch || stanjeAdd"> <input type="date" ng-model="datumPrijema"> </td>
 							<td ng-show="stanjeIzmena || stanjePregled"> <input type="date" ng-model="datumPrijema" disabled> </td>
@@ -262,14 +262,14 @@
 						</tr>
 						<tr>
 							<td> Hitno: </td>
-							<td ng-show="hitno && stanjeIzmena">
+							<td ng-show="hitno && stanjePregled && sifraSelected != null">
 								<input type="text" value="Da" disabled>
 							</td>
-							<td ng-show="!hitno && stanjeIzmena">
+							<td ng-show="!hitno && stanjePregled && sifraSelected != null">
 								<input type="text" value="Ne" disabled>
 							</td>
-							<td ng-show="stanjePregled">
-								<input type="text" disabled>
+							<td ng-show="sifraSelected == null">
+								<input type="text" value="" disabled>
 							</td>
 							<td ng-show="stanjeSearch || stanjeAdd">
 								<select ng-model="hitno">
@@ -296,7 +296,7 @@
 			   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
 									<img src="css/images/commit.png" height="30" />
 				</button> &nbsp
-				<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+				<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="refresh()">
 									<img src="css/images/delete2.ico" height="30" />
 				</button>
 			</div>

@@ -223,17 +223,20 @@
 								  <input type="text"  maxlength="18" ng-model="brRacuna" ng-show="stanjeSearch || stanjeAdd">
 							</td>
 						</tr>
-						<tr>
+						<tr ng-show="stanjePregled || stanjeSearch || stanjeIzmena">
 							<td>  Datum otvaranja racuna: </td>
-							<td>
+							<td ng-show="stanjeSearch">
 								  <input type="date" ng-model="datumOtvaranja">
 							</td>
+							<td ng-show="stanjePregled || stanjeIzmena">
+								<input type="date" ng-model="datumOtvaranja" disabled>
+							</td>
 						</tr>
-						<tr>
+						<tr ng-show="stanjePregled || stanjeSearch || stanjeIzmena">
 							<td>  Validan: </td>
 							<td>
-								  <input type="text" ng-model="validan" ng-show="stanjePregled" disabled>
-								  <select ng-model="validan" ng-show="stanjeSearch || stanjeAdd || stanjeIzmena">
+								  <input type="text" ng-model="validan" ng-show="stanjePregled || stanjeIzmena" disabled>
+								  <select ng-model="validan" ng-show="stanjeSearch">
 								  	<option value="da">da</option>
 								  	<option value="ne">ne</option>								  	
 								  </select>
@@ -248,7 +251,7 @@
 				   	<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="commitAction()">
 										<img src="css/images/commit.png" height="30" />
 					</button> &nbsp
-					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="">
+					<button type="button" style="background-color: transparent; border-color: transparent;" ng-click="refreshLica()">
 										<img src="css/images/delete2.ico" height="30" />
 					</button>
 			 </div>

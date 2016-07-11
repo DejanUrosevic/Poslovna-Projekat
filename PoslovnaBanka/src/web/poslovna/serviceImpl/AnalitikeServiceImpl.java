@@ -626,4 +626,5 @@ public class AnalitikeServiceImpl implements AnalitikeService{
 		return listaAnalitike;
 	}
 
+
 }
