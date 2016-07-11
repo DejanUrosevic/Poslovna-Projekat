@@ -262,14 +262,11 @@
 						</tr>
 						<tr>
 							<td> Hitno: </td>
-							<td ng-show="hitno && stanjePregled && sifraSelected != null">
+							<td ng-show="hitno && stanjeIzmena && sifraSelected != null">
 								<input type="text" value="Da" disabled>
 							</td>
-							<td ng-show="!hitno && stanjePregled && sifraSelected != null">
+							<td ng-show="!hitno && stanjeIzmena && sifraSelected != null">
 								<input type="text" value="Ne" disabled>
-							</td>
-							<td ng-show="sifraSelected == null">
-								<input type="text" value="" disabled>
 							</td>
 							<td ng-show="stanjeSearch || stanjeAdd">
 								<select ng-model="hitno">

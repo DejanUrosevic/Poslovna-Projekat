@@ -115,9 +115,9 @@
 				modelOdobrenja, pbOdobrenja, nazivPlacanja, naselje, datumPrijema, hitno, tipGreske, status)
 		{
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = id;
 			$scope.duznik = duznik;
