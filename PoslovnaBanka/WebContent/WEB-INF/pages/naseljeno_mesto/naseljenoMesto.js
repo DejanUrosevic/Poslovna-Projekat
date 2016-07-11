@@ -247,10 +247,19 @@
 		{
 			if($scope.stanjeAdd)
 			{
+				if($scope.sifraSelected && $scope.nazivNaselje && $scope.pttOznaka && $scope.oznakaDrzava &&  $scope.nazivDrzava)
+				{
 				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/save',
 						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
 				.success(function(data, status, header)
 				{
+					$scope.sifraSelected = null;
+					$scope.nazivNaselje = null;
+					$scope.pttOznaka = null;
+					$scope.oznakaDrzava = null;
+					$scope.nazivDrzava = null;
+						
+					
 					if(!angular.equals({}, $stateParams)){
 						var drzavaId = $stateParams.id;
 						$http.get('http://localhost:8080/PoslovnaBanka/drzava/'+drzavaId+'/naseljeno_mesto')
@@ -283,11 +292,17 @@
 						});
 					}
 				});
+				}
+				else
+				{
+					alert("Niste uneli neki obavezan podatak.");
+				}
 			}
-			else if($scope.stanjeSearch){
-				$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/search',
+			else 
+				if($scope.stanjeSearch){
+					$http.post('http://localhost:8080/PoslovnaBanka/naseljeno_mesto/search',
 						{sifra: $scope.sifraSelected, naziv: $scope.nazivNaselje, ptt: $scope.pttOznaka, oznakaDrzave: $scope.oznakaDrzava, nazivDrzave: $scope.nazivDrzava})
-				.success(function(data, status, header){
+						.success(function(data, status, header){
 					
 					if(!angular.equals({}, $stateParams))
 					{

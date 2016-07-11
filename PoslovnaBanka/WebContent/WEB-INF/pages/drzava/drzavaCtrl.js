@@ -197,17 +197,28 @@
 		{
 			if($scope.stanjeAdd)
 			{
-				$http.post('http://localhost:8080/PoslovnaBanka/drzava/save',
-						{sifra: $scope.sifraSelected, naziv: $scope.nazivDrzava})
-				.success(function(data, status, header)
+				if($scope.sifraSelected && $scope.nazivDrzava)
 				{
-					$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+					$http.post('http://localhost:8080/PoslovnaBanka/drzava/save',
+							{sifra: $scope.sifraSelected, naziv: $scope.nazivDrzava})
 					.success(function(data, status, header)
 					{
-						$scope.lista = data;
-						$state.go('drzava');
+						$scope.sifraSelected = null;
+						$scope.nazivDrzava = null;
+						$http.get('http://localhost:8080/PoslovnaBanka/drzava/findAll')
+						.success(function(data, status, header)
+						{
+							$scope.lista = data;
+							$state.go('drzava');
+						});
 					});
-				});
+				}
+				else
+				{					
+					alert("Niste uneli neki obavezan podatak.");
+				}
+					
+				
 			}
 			else if($scope.stanjeSearch){
 				$http.post('http://localhost:8080/PoslovnaBanka/drzava/search',

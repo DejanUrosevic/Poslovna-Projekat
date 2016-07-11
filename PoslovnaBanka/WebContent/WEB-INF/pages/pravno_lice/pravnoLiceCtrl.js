@@ -413,65 +413,112 @@
 			$scope.jmbg = null;
 			$scope.imeKlijenta = null;
 			$scope.prezimeKlijenta = null;
+//			 (!$scope.izmenaBanka && $scope.jmbg && $scope.imeKlijenta && $scope.prezimeKlijenta && $scope.adresa && $scope.telefon)
 		}
 		
 		$scope.commitAction = function(){
-			if($scope.stanjeAdd){
-				$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/save',
-						{pib: $scope.sifraSelected, naziv: $scope.naziv, adresa: $scope.adresa, email: $scope.email, 
-					web: $scope.web, telefon: $scope.telefon, fax: $scope.fax, banka: $scope.izmenaBanka,  jmbg: $scope.jmbg, ime: $scope.imeKlijenta, prezime: $scope.prezimeKlijenta})
-				.success(function(data, status, header){
-					
-					if(!angular.equals({}, $stateParams)){
-						
-						var plId = $stateParams.id;
-						$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/'+ plId + '/pravna_lica')
-						.success(function(data, status, header){
-							
-							$scope.listaLica = data;
-							
-							for(var i=0; i<$scope.listaLica.length; i++)
-							{
-								if($scope.sifraSelected == $scope.listaLica[i].pib.replace(/[\s]/g, ''))
-								{
-									$scope.sifraSelected = $scope.listaLica[i].pib;
-									break;
-								}
-							}
-							
-							$scope.stanjeAdd = false;
-							$scope.stanjeSearch = false;
-							$scope.stanjeIzmena = true;
-							$scope.stanjePregled = false;
-							
-							$state.go('ovlasceno_lice', {id: plId});
-						});
-					}
-					else
+			if($scope.stanjeAdd)
+			{
+				if($scope.izmenaBanka && $scope.sifraSelected && $scope.naziv && $scope.adresa && $scope.jmbg)
+				{
+					if($scope.email == null || $scope.email == undefined)
 					{
-						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/findAll')
-						.success(function(data, status, header){
-							
-							$scope.listaLica = data;
-							
-							for(var i=0; i<$scope.listaLica.length; i++)
-							{
-								if($scope.sifraSelected == $scope.listaLica[i].pib.replace(/[\s]/g, ''))
-								{
-									$scope.sifraSelected = $scope.listaLica[i].pib;
-									break;
-								}
-							}
-	
-							$state.go('pravno_lice');
-						});
+						$scope.email = "";
 					}
-				});
-			}else if($scope.stanjeSearch){
-				$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/search',
+					if($scope.fax == null || $scope.fax == undefined)
+					{
+						$scope.fax = "";
+					}
+					if($scope.web == null || $scope.web == undefined)
+					{
+						$scope.web = "";
+					}
+					if($scope.telefon == null || $scope.telefon == undefined)
+					{
+						$scope.telefon = "";
+					}
+					$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/save',
+							{pib: $scope.sifraSelected, 
+						naziv: $scope.naziv, 
+						adresa: $scope.adresa, 
+						email: $scope.email, 
+						web: $scope.web, 
+						telefon: $scope.telefon, 
+						fax: $scope.fax,
+						banka: $scope.izmenaBanka,  
+						jmbg: $scope.jmbg, 
+						ime: $scope.imeKlijenta, 
+						prezime: $scope.prezimeKlijenta})
+					.success(function(data, status, header){
+						$scope.sifraSelected = null;
+						$scope.naziv = null;
+						$scope.adresa = null;
+						$scope.email = null;
+						$scope.web = null;
+						$scope.telefon = null;
+						$scope.fax = null;
+						$scope.izmenaBanka = null;
+						$scope.jmbg = null;
+						$scope.imeKlijenta = null;
+						$scope.prezimeKlijenta = null;
+						if(!angular.equals({}, $stateParams)){
+							
+							var plId = $stateParams.id;
+							$http.get('http://localhost:8080/PoslovnaBanka/fizicko_lice/'+ plId + '/pravna_lica')
+							.success(function(data, status, header){
+								
+								$scope.listaLica = data;
+								
+								for(var i=0; i<$scope.listaLica.length; i++)
+								{
+									if($scope.sifraSelected == $scope.listaLica[i].pib.replace(/[\s]/g, ''))
+									{
+										$scope.sifraSelected = $scope.listaLica[i].pib;
+										break;
+									}
+								}
+								
+								$scope.stanjeAdd = false;
+								$scope.stanjeSearch = false;
+								$scope.stanjeIzmena = true;
+								$scope.stanjePregled = false;
+								
+								$state.go('ovlasceno_lice', {id: plId});
+							});
+						}
+						else
+						{
+							$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/findAll')
+							.success(function(data, status, header){
+								
+								$scope.listaLica = data;
+								
+								for(var i=0; i<$scope.listaLica.length; i++)
+								{
+									if($scope.sifraSelected == $scope.listaLica[i].pib.replace(/[\s]/g, ''))
+									{
+										$scope.sifraSelected = $scope.listaLica[i].pib;
+										break;
+									}
+								}
+		
+								$state.go('pravno_lice');
+							});
+						}
+					});
+				}
+				else
+				{
+					alert("Niste uneli neki obavezan podatak.");
+				}
+			}
+			else
+				if($scope.stanjeSearch)
+				{
+					$http.post('http://localhost:8080/PoslovnaBanka/pravno_lice/search',
 						{pib: $scope.sifraSelected, naziv: $scope.naziv, adresa: $scope.adresa, email: $scope.email, 
 					web: $scope.web, telefon: $scope.telefon, fax: $scope.fax, banka: $scope.izmenaBanka, jmbg: $scope.jmbg, ime: $scope.imeKlijenta, prezime: $scope.prezimeKlijenta})
-				.success(function(data, status, header){
+					.success(function(data, status, header){
 					
 					if(!angular.equals({}, $stateParams))
 					{

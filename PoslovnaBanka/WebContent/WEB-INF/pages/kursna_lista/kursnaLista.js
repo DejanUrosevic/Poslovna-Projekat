@@ -266,97 +266,113 @@
 		{
 			if($scope.stanjeAdd)
 			{
-				$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/save',
-						{sifra: $scope.sifraSelected, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
-				.success(function(data, status, header)
+				if($scope.sifraSelected && $scope.brKursneListe && $scope.primenjujeSeOd && $scope.pibBanka)
 				{
-					if(!angular.equals({}, $stateParams)){
-						var drzavaId = $stateParams.id;
-						
-						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
-						.success(function(data, status, header)
-						{
-							$scope.listaKursa = data;
-							for(var i=0; i<$scope.listaKursa.length; i++)
-							{
-								if($scope.sifraSelected == $scope.listaKursa[i].id)
-								{
-									$scope.sifraSelected = $scope.listaKursa[i].id;
-									break;
-								}
-							}
-							$state.go('pravna_lica_kurs');
-						});
-					}else{
-						$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
-						.success(function(data, status, header){
+					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/save',
+							{sifra: $scope.sifraSelected, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
+					.success(function(data, status, header)
+					{
+						$scope.sifraSelected = null;
+						$scope.danasnjiDatum = null;
+						$scope.brKursneListe = null;
+						$scope.primenjujeSeOd = null;
+						$scope.pibBanka = null;
+						$scope.nazivBanke = null;
+						if(!angular.equals({}, $stateParams)){
+							var drzavaId = $stateParams.id;
 							
-							$scope.listaKursa = data;
-							for(var i=0; i<$scope.listaKursa.length; i++)
+							$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
+							.success(function(data, status, header)
 							{
-								if($scope.sifraSelected == $scope.listaKursa[i].id)
+								$scope.listaKursa = data;
+								for(var i=0; i<$scope.listaKursa.length; i++)
 								{
-									$scope.sifraSelected = $scope.listaKursa[i].id;
-									break;
+									if($scope.sifraSelected == $scope.listaKursa[i].id)
+									{
+										$scope.sifraSelected = $scope.listaKursa[i].id;
+										break;
+									}
 								}
-							}
-						});
-					}
-				});
-			}
-			else if($scope.stanjeSearch){
-				$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/search',
-						{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
-				.success(function(data, status, header){
-					
-					if(!angular.equals({}, $stateParams))
-					{
-						$scope.listaKursa = data;
-						$state.go('pravna_lica_kurs');
-					}
-					else
-					{
-						$scope.listaKursa = data;
-						$state.go('kursna_lista');
-					}
-				});
-			}
-			else if($scope.stanjeIzmena)
-			{
-				if(!angular.equals({}, $stateParams))
-				{
-					var drzavaId = $stateParams.id;
-					
-					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/update',
-							{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
-					.success(function(data, status, header){
-						$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
-						.success(function(data, status, header)
-						{
-							$scope.listaKursa = data;
-							$state.go('pravna_lica_kurs');
-						});
+								$state.go('pravna_lica_kurs');
+							});
+						}else{
+							$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
+							.success(function(data, status, header){
+								
+								$scope.listaKursa = data;
+								for(var i=0; i<$scope.listaKursa.length; i++)
+								{
+									if($scope.sifraSelected == $scope.listaKursa[i].id)
+									{
+										$scope.sifraSelected = $scope.listaKursa[i].id;
+										break;
+									}
+								}
+							});
+						}
 					});
 				}
 				else
 				{
-					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/update',
-							{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
-					.success(function(data, status, header){
-						$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
-						.success(function(data, status, header)
-						{
-							$scope.listaKursa = data;
-							$state.go('kursna_lista');
-						});
-					});
+					alert("Niste uneli neki obavezan podatak.");
 				}
 			}
 			else
-			{
-				alert('Morate selektovati stanje.');
-			}	
-		}
+				if($scope.stanjeSearch)
+				{
+					$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/search',
+							{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
+					.success(function(data, status, header){
+						
+						if(!angular.equals({}, $stateParams))
+						{
+							$scope.listaKursa = data;
+							$state.go('pravna_lica_kurs');
+						}
+						else
+						{
+							$scope.listaKursa = data;
+							$state.go('kursna_lista');
+						}
+					});
+				}
+				else
+					if($scope.stanjeIzmena)
+					{
+						if(!angular.equals({}, $stateParams))
+						{
+							var drzavaId = $stateParams.id;
+							
+							$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/update',
+									{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
+							.success(function(data, status, header){
+								$http.get('http://localhost:8080/PoslovnaBanka/pravno_lice/'+drzavaId+'/kursne_liste')
+								.success(function(data, status, header)
+								{
+									$scope.listaKursa = data;
+									$state.go('pravna_lica_kurs');
+								});
+							});
+						}
+						else
+						{
+							$http.post('http://localhost:8080/PoslovnaBanka/kursna_lista/update',
+									{sifra: $scope.sifraSelected, datum: $scope.danasnjiDatum, brojKursneListe: $scope.brKursneListe, primenjuje: $scope.primenjujeSeOd, pib: $scope.pibBanka, nazivBanke: $scope.nazivBanke})
+							.success(function(data, status, header){
+								$http.get('http://localhost:8080/PoslovnaBanka/kursna_lista/findAll')
+								.success(function(data, status, header)
+								{
+									$scope.listaKursa = data;
+									$state.go('kursna_lista');
+								});
+							});
+						}
+					}
+					else
+					{
+						alert('Morate selektovati stanje.');
+					}	
+		}		
 		
 		$scope.refreshState = function(){
 			if(!angular.equals({}, $stateParams))
