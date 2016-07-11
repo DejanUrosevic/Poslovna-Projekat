@@ -341,4 +341,46 @@ public class RacuniKlijenataServiceImpl implements RacuniKlijenataService{
 		
 	}
 
+	@Override
+	public List<RacuniKlijenata> findRacuni(String idFizicko, String idPravno) throws SQLException {
+		// TODO Auto-generated method stub
+		List<RacuniKlijenata> lista = new ArrayList<RacuniKlijenata>();
+		
+		if(idFizicko != null){
+			Statement stmt = DBConnection.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT ID_RACUNA, racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV, klijent.NAZIV_KLIJENTA, klijent.PREZIME_KLIJENTA, banka.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN klijent ON racuni_pravnih_lica.JMBG_KLIJENTA = klijent.JMBG_KLIJENTA JOIN banka ON racuni_pravnih_lica.BAN_PR_PIB = banka.PR_PIB WHERE racuni_pravnih_lica.JMBG_KLIJENTA = '" + idFizicko + "';");
+			
+			while(rs.next()){
+				lista.add(new RacuniKlijenata(rs.getInt("ID_RACUNA"), rs.getInt("JMBG_KLIJENTA"),
+						rs.getString("NAZIV_KLIJENTA"), rs.getString("PREZIME_KLIJENTA"), 
+						rs.getInt("ID_VALUTE"), rs.getString("VA_NAZIV"), 
+						null, null, rs.getString("BAN_PR_PIB"),
+						rs.getString("PR_NAZIV"), rs.getString("BAR_RACUN"), 
+						rs.getDate("BAR_DATOTV"), rs.getBoolean("BAR_VAZI")));
+			}
+		}else if(idPravno != null){
+			PreparedStatement stmt2 = DBConnection.getConnection().prepareStatement("SELECT ID_RACUNA,racuni_pravnih_lica.JMBG_KLIJENTA, racuni_pravnih_lica.ID_VALUTE, racuni_pravnih_lica.PR_PIB, racuni_pravnih_lica.BAN_PR_PIB, BAR_RACUN, BAR_DATOTV, BAR_VAZI, valute.VA_NAZIV,banka.PR_NAZIV, banka2.PR_NAZIV FROM racuni_pravnih_lica JOIN valute ON racuni_pravnih_lica.ID_VALUTE = valute.ID_VALUTE JOIN banka ON racuni_pravnih_lica.PR_PIB = banka.PR_PIB JOIN banka AS banka2 ON racuni_pravnih_lica.BAN_PR_PIB = banka2.PR_PIB WHERE racuni_pravnih_lica.PR_PIB = '" + idPravno + "';");
+			ResultSet rs2 = stmt2.executeQuery();
+			
+			while(rs2.next()){
+				lista.add(new RacuniKlijenata(
+						rs2.getInt("ID_RACUNA"), 
+						rs2.getInt(2),
+						null,
+						null,
+						rs2.getInt(3),
+						rs2.getString(9),
+						rs2.getString(4), 
+						rs2.getString(10),
+						rs2.getString(5),
+						rs2.getString(11), 
+						rs2.getString(6), 
+						rs2.getDate(7),
+						rs2.getBoolean(8)));
+			}
+		}
+		
+		return lista;
+	}
+
 }

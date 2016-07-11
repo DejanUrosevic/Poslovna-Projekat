@@ -17,5 +17,5 @@ public interface AnalitikeService extends CrudService<Analitike>{
 	
 	public List<Analitike> importXml(String xml) throws JAXBException;
 
-	
+	public List<Analitike> placanjeAnalitike(String id) throws SQLException;
 }

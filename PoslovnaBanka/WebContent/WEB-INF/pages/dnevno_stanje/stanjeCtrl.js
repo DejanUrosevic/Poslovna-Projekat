@@ -4,12 +4,20 @@
 	stanjeModul.controller('stanjeCtrl', function($scope, $http, $state, $stateParams, zoomStanjeLice){
 		$scope.stanjePregled = true;
 		
-		$http.get('http://localhost:8080/PoslovnaBanka/dnevno_stanje/findAll')
-		.success(function(data, status, header)
-		{
-			$scope.lista = data;
-			
-		});
+		if(!angular.equals({}, $stateParams)){
+			var idKlijenta = $stateParams.id;
+			$http.get('http://localhost:8080/PoslovnaBanka/dnevno_stanje/klijent/' + idKlijenta)
+			.success(function(data, status, header){
+				$scope.lista = data;
+			});
+		}else{
+			$http.get('http://localhost:8080/PoslovnaBanka/dnevno_stanje/findAll')
+			.success(function(data, status, header)
+			{
+				$scope.lista = data;
+			});
+		}
+		
 		
 		if(zoomStanjeLice.getZoom()){
 			if(zoomStanjeLice.getPretraga){

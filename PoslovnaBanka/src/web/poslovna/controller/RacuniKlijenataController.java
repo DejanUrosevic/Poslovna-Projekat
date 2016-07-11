@@ -273,4 +273,16 @@ public class RacuniKlijenataController {
 		}
 		return new ResponseEntity<List<RacuniKlijenata>>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/fizicko_lice/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> getFizickiRacuni(@PathVariable(value="id") String id) throws SQLException, DatatypeConfigurationException
+	{	
+		return new ResponseEntity<List<RacuniKlijenata>>(racuniSer.findRacuni(id, null), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/pravno_lice/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<List<RacuniKlijenata>> getPravnoRacuni(@PathVariable(value="id") String id) throws SQLException, DatatypeConfigurationException
+	{	
+		return new ResponseEntity<List<RacuniKlijenata>>(racuniSer.findRacuni(null, id), HttpStatus.OK);
+	}
 }

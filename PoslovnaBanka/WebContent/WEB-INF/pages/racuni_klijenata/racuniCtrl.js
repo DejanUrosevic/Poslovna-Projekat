@@ -8,10 +8,29 @@
 		$scope.zoomStanje = zoomStanjeLice.getZoom();
 		$scope.zoomAnalitike = zoomServiceAnalitikaRacun.getZoom();
 		
-		$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
-		.success(function(data, status, header){
-			$scope.listaRacuna = data;
-		});
+		
+		if(!angular.equals({}, $stateParams)){
+			var fizickoLiceId = $stateParams.id;
+			var pravnoLiceId = $stateParams.id2;
+			if(fizickoLiceId != null && fizickoLiceId != undefined){
+				$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/fizicko_lice/' + fizickoLiceId)
+				.success(function(data, status, header){
+					$scope.listaRacuna = data;
+				});
+			}else if(pravnoLiceId != null && pravnoLiceId != undefined){
+				$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/pravno_lice/' + pravnoLiceId)
+				.success(function(data, status, header){
+					$scope.listaRacuna = data;
+				});
+			}
+			
+		}else{
+			$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')
+			.success(function(data, status, header){
+				$scope.listaRacuna = data;
+			});
+		}
+		
 		
 		if(zoomRacunFizickoService.getZoom()){
 			$scope.stanjePregled = false;
@@ -839,6 +858,10 @@
 			}
 		}
 		
+		$scope.nextFunction = function(){
+			$state.go('stanje_racuna', {id: $scope.sifraSelected});
+		}
+		
 		$scope.toXml = function()
 		{
 			$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/toXml/' + $scope.brRacuna)
@@ -887,7 +910,5 @@
 			}
 			
 		}
-		
-		
 	});
 })(angular)

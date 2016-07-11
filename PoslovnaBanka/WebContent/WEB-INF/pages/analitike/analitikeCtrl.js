@@ -7,11 +7,21 @@
 		
 		if(!angular.equals({}, $stateParams)){
 			var kliringId = $stateParams.id;
-			$scope.kliring_analitike = true;
-			$http.get('http://localhost:8080/PoslovnaBanka/kliring/' + kliringId + '/analitike')
-			.success(function(data, status, header){
-				$scope.lista = data;
-			});
+			var vrstaPlacanjaId = $stateParams.id2;
+			
+			if(kliringId != null && kliringId != undefined){
+				$scope.kliring_analitike = true;
+				$http.get('http://localhost:8080/PoslovnaBanka/kliring/' + kliringId + '/analitike')
+				.success(function(data, status, header){
+					$scope.lista = data;
+				});
+			}else if(vrstaPlacanjaId != null && vrstaPlacanjaId != undefined){
+				$http.get('http://localhost:8080/PoslovnaBanka/analitike/' + vrstaPlacanjaId)
+				.success(function(data, status, header){
+					$scope.lista = data;
+				});
+			}
+			
 		}else{
 			$http.get('http://localhost:8080/PoslovnaBanka/analitike/findAll')
 			.success(function(data, status, header)

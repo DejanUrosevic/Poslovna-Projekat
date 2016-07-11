@@ -19,4 +19,7 @@ public interface RacuniKlijenataService extends CrudService<RacuniKlijenata>{
 	
 	public void exportToXml(ListaAnalitika la, String brojRacuna) throws JAXBException;
 	
+	
+	public List<RacuniKlijenata> findRacuni(String idFizicko, String idPravno) throws SQLException;
+	
 }

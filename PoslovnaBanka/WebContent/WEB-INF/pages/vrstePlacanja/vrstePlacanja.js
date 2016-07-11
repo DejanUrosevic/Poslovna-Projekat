@@ -249,5 +249,12 @@
 			$state.go('analitike');
 		}
 		
+		$scope.nextFunction = function(){
+			if($scope.sifraSelected == null || $scope.sifraSelected == undefined || $scope.sifraSelected ==''){
+				alert("Morate nesto odabrati.");
+			}else{
+				$state.go('placanje_analitike', {id2: $scope.sifraSelected});
+			}
+		}
 	});
 })(angular)

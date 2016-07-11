@@ -314,7 +314,7 @@
 				}
 				else if($scope.izborNext === 'racuni_klijenata')
 				{
-					$state.go('racuni_klijenata', {id: $scope.sifraSelected});
+					$state.go('racuni', {id: $scope.sifraSelected});
 				}
 			}else{
 				alert("Odaberite fizicko lice.");

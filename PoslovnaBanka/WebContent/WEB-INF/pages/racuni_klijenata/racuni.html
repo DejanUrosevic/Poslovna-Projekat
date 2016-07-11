@@ -64,7 +64,7 @@
 						<td>&nbsp</td>
 						
 						<td><button type="button"
-								style="background-color: transparent; border-color: transparent;" ng-click="">
+								style="background-color: transparent; border-color: transparent;" ng-click="nextFunction()">
 								<img src="css/images/chain.jpg" height="35" />
 						</button></td>
 						<td><button type="button"
@@ -92,7 +92,7 @@
 						<th> Datum otvaranja </th>
 						<th> Validan </th>
 					</tr>													<!--   id,      jmbg,      imeKlijenta,      prezimeKlijenta,      valuta,     nazivValute,       pibKlijenta,      nazivKlijenta, pibBanke, nazivBanke, brRacuna, datumOtvaranja, vazeci -->
-					<tr ng-repeat="list in listaRacuna" ng-click="setSelected(list.id, list.jmbg, list.imeKlijenta, list.prezimeKlijenta, list.valuta, list.nazivValute, list.pibKlijenta, list.nazivKlijenta, list.pibBanke, list.nazivBanke, list.brRacuna, list.datumOtvaranja, list.vazeci)" ng-class="{selected: list.id === sifraSelected}">
+					<tr ng-hide="(zoom || zoomUkidanje || zoomStanje || zoomAnalitike) && !list.vazeci" ng-repeat="list in listaRacuna" ng-click="setSelected(list.id, list.jmbg, list.imeKlijenta, list.prezimeKlijenta, list.valuta, list.nazivValute, list.pibKlijenta, list.nazivKlijenta, list.pibBanke, list.nazivBanke, list.brRacuna, list.datumOtvaranja, list.vazeci)" ng-class="{selected: list.id === sifraSelected}">
 						<td> {{list.id}}</td>
 						<td ng-show="list.jmbg">  {{list.imeKlijenta}}&nbsp;{{list.prezimeKlijenta}} </td>
 						<td ng-show="list.pibKlijenta">{{list.nazivKlijenta}}</td>

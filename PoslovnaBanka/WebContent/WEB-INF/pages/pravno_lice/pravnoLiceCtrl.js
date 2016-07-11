@@ -621,7 +621,7 @@
 				}
 				else if($scope.izborNext === 'racuni_klijenata')
 				{
-					$state.go('racuni_klijenata', {id: $scope.sifraSelected.replace(/\s/g, '')});
+					$state.go('racuni_pravno_lice', {id2: $scope.sifraSelected.replace(/\s/g, '')});
 				}
 				else if($scope.izborNext === 'kursna_lista')
 				{

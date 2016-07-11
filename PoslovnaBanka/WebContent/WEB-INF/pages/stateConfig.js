@@ -98,5 +98,22 @@
 			templateUrl: 'analitike/analitike.html',
 			controller: 'analitikeCtrl'
 		})
+		.state('racuni', {url:'/fizicko_lice/:id/racuni',
+			templateUrl: 'racuni_klijenata/racuni.html',
+			controller: 'racuniCtrl'
+		})
+		.state('racuni_pravno_lice', {url:'/pravno_lice/:id2/racuni',
+			templateUrl: 'racuni_klijenata/racuni.html',
+			controller: 'racuniCtrl'
+		})
+		.state('stanje_racuna', {url:'/racun/:id/stanje',
+			templateUrl: 'dnevno_stanje/dnevno_stanje.html',
+			controller: 'stanjeCtrl'
+		})
+		.state('placanje_analitike', {url: '/placanje/:id2/analitike',
+			templateUrl: 'analitike/analitike.html',
+			controller: 'analitikeCtrl'
+		})
+		
 	});
 })(angular)
