@@ -9,6 +9,8 @@
 		$scope.zoomAnalitike = zoomServiceAnalitikaRacun.getZoom();
 		
 		
+		
+		
 		if(!angular.equals({}, $stateParams)){
 			var fizickoLiceId = $stateParams.id;
 			var pravnoLiceId = $stateParams.id2;
@@ -52,6 +54,7 @@
 			if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
 				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
 				$scope.banka = zoomRacunPravnoService.getNazivBanke();
+				
 			}
 			zoomRacunPravnoService.setIdKlijenta('');
 			zoomRacunPravnoService.setNazivKlijenta('');
@@ -84,6 +87,10 @@
 			if(zoomRacunPravnoService.getBanka()){
 				$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
 				$scope.banka = zoomRacunPravnoService.getNazivBanke();
+				$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+				.success(function(data, status, header){
+					$scope.sifraBanke = data.sifra;
+				});
 				
 				if(zoomRacunValutaService.getIdValute() != null || zoomRacunValutaService.getIdValute() != undefined){
 					$scope.idValuta = zoomRacunValutaService.getIdValute();
@@ -112,6 +119,7 @@
 				if(zoomRacunPravnoService.getIdBanke() != null || zoomRacunPravnoService.getIdBanke() != undefined){
 					$scope.pibBanka = zoomRacunPravnoService.getIdBanke();
 					$scope.banka = zoomRacunPravnoService.getNazivBanke();
+					
 				}
 				
 				if(zoomRacunValutaService.getIdValute() != null || zoomRacunValutaService.getIdValute() != undefined){
@@ -231,6 +239,11 @@
 			}else{
 				$scope.validan = 'ne';
 			}
+			
+			$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + pibBanke)
+			.success(function(data, status, header){
+				$scope.sifraBanke = data.sifra;
+			});
 		}
 		
 		$scope.refreshLica = function(){
@@ -262,9 +275,9 @@
 		
 		$scope.levoDoKraja = function(){
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaRacuna[0].id;
 			if($scope.listaRacuna[0].jmbg != null){
@@ -273,6 +286,7 @@
 				$scope.jmbgKlijenta = $scope.listaRacuna[0].jmbg;
 				$scope.imeKlijenta = $scope.listaRacuna[0].imeKlijenta;
 				$scope.prezimeKlijenta = $scope.listaRacuna[0].prezimeKlijenta;
+				
 			}
 			
 			if($scope.listaRacuna[0].pibKlijenta != null){
@@ -280,6 +294,7 @@
 				$scope.pravnoLice = true;
 				$scope.pibKlijenta = $scope.listaRacuna[0].pibKlijenta;
 				$scope.nazivKlijenta = $scope.listaRacuna[0].nazivKlijenta;
+				
 			}
 
 			$scope.idValuta = $scope.listaRacuna[0].valuta;
@@ -293,13 +308,17 @@
 			}else{
 				$scope.validan = 'ne';
 			}
+			$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+			.success(function(data, status, header){
+				$scope.sifraBanke = data.sifra;
+			});
 		}
 		
 		$scope.desnoDoKraja = function(){
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			$scope.sifraSelected = $scope.listaRacuna[$scope.listaRacuna.length-1].id;
 			if($scope.listaRacuna[$scope.listaRacuna.length-1].jmbg != null){
@@ -328,13 +347,17 @@
 			}else{
 				$scope.validan = 'ne';
 			}
+			$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+			.success(function(data, status, header){
+				$scope.sifraBanke = data.sifra;
+			});
 		}
 		
 		$scope.jedanLevo = function(){
 			$scope.stanjeAdd = false;
-			$scope.stanjePregled = true;
+			$scope.stanjePregled = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjeIzmena = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined){
 				$scope.sifraSelected = $scope.listaRacuna[$scope.listaRacuna.length-1].id;
@@ -364,6 +387,10 @@
 				}else{
 					$scope.validan = 'ne';
 				}
+				$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+				.success(function(data, status, header){
+					$scope.sifraBanke = data.sifra;
+				});
 			}else{
 				for(var i=0; i<$scope.listaRacuna.length; i++){
 					if($scope.sifraSelected == $scope.listaRacuna[i].id){
@@ -395,6 +422,10 @@
 							}else{
 								$scope.validan = 'ne';
 							}
+							$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+							.success(function(data, status, header){
+								$scope.sifraBanke = data.sifra;
+							});
 							break;
 						}else{
 							$scope.sifraSelected = $scope.listaRacuna[i-1].id;
@@ -424,6 +455,10 @@
 							}else{
 								$scope.validan = 'ne';
 							}
+							$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+							.success(function(data, status, header){
+								$scope.sifraBanke = data.sifra;
+							});
 							break;
 						}
 					}
@@ -434,8 +469,8 @@
 		$scope.jedanDesno = function(){
 			$scope.stanjeAdd = false;
 			$scope.stanjeSearch = false;
-			$scope.stanjePregled = true;
-			$scope.stanjeIzmena = false;
+			$scope.stanjePregled = false;
+			$scope.stanjeIzmena = true;
 			
 			if($scope.sifraSelected === null || $scope.sifraSelected === undefined){
 				$scope.sifraSelected = $scope.listaRacuna[0].id;
@@ -465,6 +500,10 @@
 				}else{
 					$scope.validan = 'ne';
 				}
+				$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+				.success(function(data, status, header){
+					$scope.sifraBanke = data.sifra;
+				});
 			}else{
 				for(var i=0; i<$scope.listaRacuna.length; i++){
 					if($scope.sifraSelected == $scope.listaRacuna[i].id){
@@ -496,6 +535,10 @@
 							}else{
 								$scope.validan = 'ne';
 							}
+							$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+							.success(function(data, status, header){
+								$scope.sifraBanke = data.sifra;
+							});
 							break;
 						}else{
 							$scope.sifraSelected = $scope.listaRacuna[i+1].id;
@@ -525,6 +568,10 @@
 							}else{
 								$scope.validan = 'ne';
 							}
+							$http.get('http://localhost:8080/PoslovnaBanka/kodoviBanke/findOne/' + $scope.pibBanka)
+							.success(function(data, status, header){
+								$scope.sifraBanke = data.sifra;
+							});
 							break;	
 						}
 					}
@@ -554,6 +601,8 @@
 			$scope.brRacuna = null;
 			$scope.datumOtvaranja = null;
 			$scope.validan = null;
+			$scope.sifraBanke = null;
+			$scope.kontrolniBroj = null;
 		}
 		
 		$scope.stanjePretrage = function(){
@@ -577,19 +626,23 @@
 			$scope.brRacuna = null;
 			$scope.datumOtvaranja = null;
 			$scope.validan = null;
+			$scope.sifraBanke = null;
+			$scope.kontrolniBroj = null;
 		}
 		
 		$scope.commitAction = function()
 		{
+			var broj = parseInt($scope.sifraBanke + $scope.brRacuna);
 			if($scope.stanjeAdd)
 			{
+				$scope.kontrolniBroj = 98-((broj*100)%97);
 				$http.post('http://localhost:8080/PoslovnaBanka/racuni_klijenata/save',
 						{id: $scope.sifraSelected, jmbg: $scope.jmbgKlijenta, 
 					ime: $scope.imeKlijenta, prezime: $scope.prezimeKlijenta,
 					pib: $scope.pibKlijenta, naziv: $scope.nazivKlijenta, 
 					idValute: $scope.idValuta, valuta: $scope.valuta,
 					pibBanke: $scope.pibBanka, nazivBanke: $scope.banka,
-					racun: $scope.brRacuna})
+					racun: $scope.sifraBanke+$scope.brRacuna+$scope.kontrolniBroj})
 				.success(function(data, status, header)
 				{
 					$http.get('http://localhost:8080/PoslovnaBanka/racuni_klijenata/findAll')

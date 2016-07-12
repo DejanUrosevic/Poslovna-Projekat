@@ -219,8 +219,10 @@
 						<tr>
 							<td>  Broj racuna: </td>
 							<td>
-								  <input type="text"  maxlength="18" ng-model="brRacuna" ng-show="stanjeIzmena || stanjePregled" disabled>
-								  <input type="text"  maxlength="18" ng-model="brRacuna" ng-show="stanjeSearch || stanjeAdd">
+								  <input type="text" maxlength="3" size="3" ng-model="sifraBanke" disabled>
+								  <input type="text"  maxlength="13" ng-model="brRacuna" ng-show="stanjeIzmena || stanjePregled" disabled>
+								  <input type="text"  maxlength="13" ng-model="brRacuna" ng-show="stanjeSearch || stanjeAdd">
+								  <input type="text" maxlength="2" size="2" ng-model="kontrolniBroj" disabled>
 							</td>
 						</tr>
 						<tr ng-show="stanjePregled || stanjeSearch || stanjeIzmena">

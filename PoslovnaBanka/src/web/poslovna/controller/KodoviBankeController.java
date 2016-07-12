@@ -66,5 +66,12 @@ public class KodoviBankeController {
 		kodSer.remove(id);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<KodoviBanke> findOneKodBanke(@PathVariable(value="id") String id) throws SQLException{
+		
+		
+		return new ResponseEntity<KodoviBanke>(kodSer.findOne(id), HttpStatus.OK);
+	}
 
 }

@@ -20,8 +20,18 @@ public class KodoviBankeServiceImpl implements KodoviBankeService{
 
 	@Override
 	public KodoviBanke findOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Statement stmt = DBConnection.getConnection().createStatement();
+		KodoviBanke kb = null;
+		ResultSet rs = stmt.executeQuery("SELECT SIFRA_BANKE, SWIFT_KOD, KODOVI_BANKE.PR_PIB, PR_NAZIV FROM KODOVI_BANKE"
+				+ " JOIN BANKA ON KODOVI_BANKE.PR_PIB = BANKA.PR_PIB WHERE KODOVI_BANKE.PR_PIB = '" + id +"'" );
+		
+		while(rs.next()){
+			kb = new KodoviBanke(rs.getString("SIFRA_BANKE"), rs.getString("SWIFT_KOD"), rs.getString("PR_PIB"), rs.getString("PR_NAZIV"));
+			break;
+		}
+		
+		return kb;
 	}
 
 	@Override
